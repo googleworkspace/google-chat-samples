@@ -1,0 +1,5 @@
+*.pyc
+.DS_Store
+basic-bot-py/env/
+basic-bot-py/lib/
+basic-bot-py/deactivate
