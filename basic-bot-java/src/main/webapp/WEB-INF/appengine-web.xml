@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<?xml version="1.0" encoding="utf-8"?>
 <!--
 Copyright 2017 Google Inc.
 
@@ -14,14 +14,10 @@ Copyright 2017 Google Inc.
  See the License for the specific language governing permissions and
  limitations under the License.
 -->
-<html>
-  <head>
-    <title>Hangouts Chat Bot sample</title>
-  </head>
-  <body>
-    <h1>Hangouts Chat Bot sample</h1>
-    <div>
-        Follow the instructions in the README file to run the sample.
-    </div>
-  </body>
-</html>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0">
+    <application>basic-bot-java</application>
+    <version>1</version>
+    <threadsafe>true</threadsafe>
+    <sessions-enabled>true</sessions-enabled>
+    <runtime>java8</runtime>
+</appengine-web-app>
