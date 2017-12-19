@@ -17,9 +17,12 @@ package com.google.hangouts.chat.basic.bot.java;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Scanner;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -58,12 +61,14 @@ public class BotServlet extends HttpServlet {
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
           throws ServletException, IOException {
 
-    Scanner requestStream = new Scanner(req.getInputStream());
-    String requestStr = requestStream.nextLine();
+    String requestStr;
+
+    try (BufferedReader br = req.getReader()) {
+      requestStr = br.lines().collect(Collectors.joining(System.lineSeparator()));
+    }
 
     logger.info(requestStr);
 
-    //http://www.baeldung.com/jackson-object-mapper-tutorial
     ObjectMapper mapper = new ObjectMapper();
     JsonNode jsonNode = mapper.readTree(requestStr);
     String eventType = jsonNode.get("type").asText();
@@ -79,7 +84,7 @@ public class BotServlet extends HttpServlet {
           message = String.format("Thanks for adding me to %s",
                   jsonNode.get("space").get("displayName").asText());
         } else {
-          message = String.format("Thannks for adding me to a DM, %s!",
+          message = String.format("Thanks for adding me to a DM, %s!",
                   jsonNode.get("user").get("displayName").asText());
         }
         break;
@@ -96,7 +101,12 @@ public class BotServlet extends HttpServlet {
         break;
     }
 
-    resp.getWriter().print(message);
+    JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
+    ObjectNode responseNode = jsonNodeFactory.objectNode();
+    responseNode.put("text", message);
+    resp.setContentType("application/json");
+
+    resp.getWriter().print(responseNode.toString());
   }
 
 }

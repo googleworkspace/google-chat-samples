@@ -8,13 +8,13 @@ Standard Environment.
 ## Run the sample locally
 
   1. Download the [Google App Engine Python SDK](https://cloud.google.com/appengine).
+  1. Start a virtual environment
+  ```
+  virtualenv env
+  source env/bin/activate
+  ```
   1. Install any extra libraries using `pip`.
      `pip install -t lib -r requirements.txt`
-  1. Start a virtual environment
-	```
-	virtualenv env
-	source env/bin/activate
-	```
   1. Run the sample.
     `dev_appserver.py app.yaml`
 
