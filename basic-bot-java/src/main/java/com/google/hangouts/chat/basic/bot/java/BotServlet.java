@@ -93,7 +93,8 @@ public class BotServlet extends HttpServlet {
                 jsonNode.get("message").get("text").asText());
         break;
       case "REMOVED_FROM_SPACE":
-        logger.info(String.format("Bot removed from a space");
+        logger.info(String.format("Bot removed from %s",
+                jsonNode.get("space").get("name").asText()));
         break;
       default:
         message = "Cannot determine event type";

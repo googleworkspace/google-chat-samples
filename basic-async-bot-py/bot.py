@@ -35,7 +35,7 @@ def home_post():
     # If the bot is removed from the space, it doesn't post a message
     # to the space. Instead, log a message showing that the bot was removed.
     if event_data['type'] == 'REMOVED_FROM_SPACE':
-        logging.info('Bot removed from a space')
+        logging.info('Bot removed from  %s' % event_data['space']['name']))
         return 'OK'
 
     else:
