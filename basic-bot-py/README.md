@@ -23,6 +23,21 @@ to incoming requests, run the following command from the terminal:
 
 curl -X POST -H 'Content-Type: application/json' 'http://localhost:8080' -d '{ "type": "MESSAGE", "message": { "text": "Hello!", "sender": { "displayName": "me"}}, "space": { "displayName": "some room"}}'
 
+Note: When running this sample, you may receive an error about
+SpooledTemporaryFile class missing from the werkzeug module. To fix this, after
+you've downloaded all of the support libraries to lib/ open up
+lib/werkzeug/formparser.py and change the following line
+
+```
+from tempfile import SpooledTemporaryFile
+```
+
+to
+
+```
+from tempfile import TemporaryFile
+```
+
 ## Run the local tests
 
 Run the following command from the `tests/` directory:

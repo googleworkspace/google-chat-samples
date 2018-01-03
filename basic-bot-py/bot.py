@@ -30,7 +30,7 @@ def home_post():
     resp = None
 
     if data['type'] == 'REMOVED_FROM_SPACE':
-        logging.info('Bot removed from %s' % data['space']['displayName'])
+        logging.info('Bot removed from a space')
 
     else:
         resp_dict = format_response(data)
