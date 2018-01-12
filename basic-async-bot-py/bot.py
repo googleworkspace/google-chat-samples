@@ -35,7 +35,7 @@ def home_post():
     # If the bot is removed from the space, it doesn't post a message
     # to the space. Instead, log a message showing that the bot was removed.
     if event_data['type'] == 'REMOVED_FROM_SPACE':
-        logging.info('Bot removed from  %s' % event_data['space']['name']))
+        logging.info('Bot removed from  %s' % event_data['space']['name'])
         return 'OK'
 
     else:
@@ -107,7 +107,7 @@ def format_response(event):
 
     # The following three lines of code update the thread that raised the event.
     # Delete them if you want to send the message in a new thread.
-    if event['message']['thread'] != None
+    if event['message']['thread'] != None:
         threadId = event['message']['thread']
         response['thread'] = threadId
 
