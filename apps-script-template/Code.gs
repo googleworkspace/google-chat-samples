@@ -7,11 +7,9 @@ var HEADER = {
 /**
  * Responds to a MESSAGE event triggered in Hangouts Chat.
  *
- * @param event the event object from Hangouts Chat
+ * @param {Object} event the event object from Hangouts Chat
  */
 function onMessage(event) {
-  console.info(event);
-
   var name = "";
 
   if (event.space.type == "DM") {
@@ -27,11 +25,9 @@ function onMessage(event) {
 /**
  * Responds to an ADDED_TO_SPACE event in Hangouts Chat.
  *
- * @param event the event object from Hangouts Chat
+ * @param {Object} event the event object from Hangouts Chat
  */
 function onAddToSpace(event) {
-  console.info(event);
-
   var message = "";
 
   if (event.space.type == "DM") {
@@ -46,17 +42,16 @@ function onAddToSpace(event) {
 /**
  * Responds to a REMOVED_FROM_SPACE event in Hangouts Chat.
  *
- * @param event the event object from Hangouts Chat
+ * @param {Object} event the event object from Hangouts Chat
  */
 function onRemoveFromSpace(event) {
-  console.info(event);
   console.info("Bot removed from ", event.space.name);
 }
 
 /**
  * Creates a card-formatted response.
  *
- * @param the message to send
+ * @param {String} message the message to send
  */
 function createCardResponse(message) {
   return {
