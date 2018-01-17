@@ -1,9 +1,3 @@
-var HEADER = {
-  "title" : "My Bot",
-  "subtitle" : "An Apps Script Bot",
-  "imageUrl" : "[YOUR IMAGE URL]"
-};
-
 /**
  * Responds to a MESSAGE event triggered in Hangouts Chat.
  *
@@ -19,7 +13,7 @@ function onMessage(event) {
   }
   var message = name + " said \"" + event.message.text + "\"";
 
-  return createCardResponse(message);
+  return { "text": message };
 }
 
 /**
@@ -36,7 +30,7 @@ function onAddToSpace(event) {
     message = "Thank you for adding me to " + event.space.displayName;
   }
 
-  return createCardResponse(message);
+  return { "text": message };
 }
 
 /**
@@ -46,27 +40,4 @@ function onAddToSpace(event) {
  */
 function onRemoveFromSpace(event) {
   console.info("Bot removed from ", event.space.name);
-}
-
-/**
- * Creates a card-formatted response.
- *
- * @param {String} message the message to send
- */
-function createCardResponse(message) {
-  return {
-    "cards": [
-      {
-        "header": HEADER
-      },
-      {
-        "sections": [{
-          "widgets": [{
-            "textParagraph": {
-              "text": message
-            }
-          }]
-        }]
-    }]
-  };
 }
