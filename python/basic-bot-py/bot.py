@@ -17,6 +17,7 @@ from flask import Flask, render_template, request, json, make_response
 
 app = Flask(__name__)
 
+# [START basic-bot]
 @app.route('/', methods=['POST'])
 def home_post():
     """Respond to POST requests to this endpoint.
@@ -37,17 +38,6 @@ def home_post():
         resp = json.jsonify(resp_dict)
 
     return resp
-
-@app.route('/', methods=['GET'])
-def home_get():
-    """Respond to GET requests to this endpoint.
-
-    This function responds to requests with a simple HTML landing page for this
-    App Engine instance.
-    """
-
-    return render_template('home.html')
-
 
 def format_response(event):
     """Determine what response to provide based upon event data.
@@ -71,3 +61,16 @@ def format_response(event):
         text = 'Your message: "%s"' % event['message']['text']
 
     return { 'text': text }
+
+# [END basic-bot]
+
+@app.route('/', methods=['GET'])
+def home_get():
+    """Respond to GET requests to this endpoint.
+
+    This function responds to requests with a simple HTML landing page for this
+    App Engine instance.
+    """
+
+    return render_template('home.html')
+
