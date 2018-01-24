@@ -26,13 +26,16 @@ following code samples:
     response. This sample is an HTTP endpoint bot built upon
     [Google App Engine](https://cloud.google.com/appengine/).
 
- For additional details about how to set up and run each sample, consult the
- README file included with the sample.
+For additional details about how to set up and run each sample, consult the
+README file included with the sample.
 
- # Contributing changes
+## Contributing changes
 
- See [CONTRIBUTING.md](CONTRIBUTING.md).
+See [CONTRIBUTING.md](CONTRIBUTING.md).
 
- # Licensing
+## Licensing
 
- This is not an official Google product. See [LICENSE](LICENSE).
+This is not an official product.
+
+This library is licensed under Apache 2.0.Full license text is available in
+[LICENSE](LICENSE).
