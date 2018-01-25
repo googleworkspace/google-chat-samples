@@ -12,9 +12,12 @@ Standard Environment.
      account secrets that you download.
   1. Create an App Engine instance for the bot
      `gcloud app create --region <REGION>`
+  1. Update the `src/main/webapp/WEB-INF/appengine-web.xml` file with your
+     Google Cloud project ID.
   1. Deploy the sample to App Engine
      `mvn appengine:update`
-  1. Enable the Hangouts Chat API, configure and publish the bot. Make sure to
-     register the URL for the App Engine instance as the **HTTP endpoint** of the bot.
+  1. [Enable the Hangouts Chat API, configure and publish the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
+     Make sure to register the URL for the App Engine instance as the
+     **HTTP endpoint** of the bot.
   1. Add the bot to a room or direct message.
-  1. Send the message to the bot with an @-message or directly in a DM.
+  1. Send the message to the bot with an @-message or directly in

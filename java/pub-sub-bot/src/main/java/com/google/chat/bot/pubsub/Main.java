@@ -10,7 +10,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 */
-package com.google.hangouts.chat;
+package com.google.chat.bot.pubsub;
 
 // [START pub-sub-bot]
 

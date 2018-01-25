@@ -6,3 +6,4 @@ basic-bot-py/deactivate
 service-account.json
 /pub-sub-bot/target/
 basic-bot-java/target
+/java/basic-bot/target/

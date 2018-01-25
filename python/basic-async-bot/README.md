@@ -1,4 +1,4 @@
-# Hangouts Chat basic bot
+# Hangouts Chat basic asynchronous bot
 
 This code sample creates a simple Hangouts Chat bot that responds to events and
 messages from a room asynchronously. The sample is built using Python on

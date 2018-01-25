@@ -4,7 +4,6 @@ This code sample creates a simple Hangouts Chat bot that responds to events and
 messages from a room. The sample is built using Python on Google App Engine,
 Standard Environment.
 
-
 ## Run the sample locally
 
   1. Download the [Google App Engine Python SDK](https://cloud.google.com/appengine).
