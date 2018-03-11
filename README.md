@@ -2,8 +2,8 @@
 
 This repository contains the code samples for
 [Hangouts Chat bots](https://developers.google.com/hangouts/chat/).
-There are two folders of samples, one folder that contains samples in Java
-and the other that contains samples in Python.
+There are three folders of samples, one folder that contains samples in Java
+and the second that contains samples in Python and final that contains sample in NodeJS.
 
 In each folder, you can find a language-specific implementation of the
 following code samples:
