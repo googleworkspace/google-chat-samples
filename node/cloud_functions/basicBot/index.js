@@ -96,8 +96,7 @@ function getInteractiveCard() {
     "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
   ];
   return {
-    cards: [
-      {
+    cards: [{
         header: {
           title: "Which type",
           subtitle: "Click on to Choose",
@@ -105,13 +104,10 @@ function getInteractiveCard() {
             "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png",
           imageStyle: "IMAGE"
         },
-        sections: [
-          {
+        sections: [{
             widgets: getWidgets(imageUrls, getImageButtonWidget)
-          }
-        ]
-      }
-    ]
+          }]
+      }]
   };
 }
 
@@ -136,24 +132,20 @@ function getImageButtonWidget(imageUrl, actionMethodName = "choose") {
     image: {
       imageUrl
     },
-    buttons: [
-      {
+    buttons: [{
         textButton: {
           text: "Select",
           onClick: {
             action: {
               actionMethodName,
-              parameters: [
-                {
+              parameters: [{
                   key: "url",
                   value: imageUrl
-                }
-              ]
+                }]
             }
           }
         }
-      }
-    ]
+      }]
   };
 }
 
@@ -164,21 +156,15 @@ function getImageButtonWidget(imageUrl, actionMethodName = "choose") {
  */
 function getSingleImage(imageUrl) {
   return {
-    cards: [
-      {
-        sections: [
-          {
-            widgets: [
-              {
+    cards: [{
+        sections: [{
+            widgets: [{
                 image: {
                   imageUrl
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              }]
+          }]
+      }]
   };
 }
 
@@ -192,8 +178,7 @@ function getHelp({ user }) {
     ["Interactive Command", `@${BOTNAME} i love dogs`]
   ];
   return {
-    cards: [
-      {
+    cards: [{
         header: {
           title: `Need Help ${user.displayName}?`,
           subtitle: "Examples Below:",
@@ -201,13 +186,10 @@ function getHelp({ user }) {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2000px-Google_%22G%22_Logo.svg.png",
           imageStyle: "IMAGE"
         },
-        sections: [
-          {
+        sections: [{
             widgets: getWidgetValuePair(commands)
-          }
-        ]
-      }
-    ]
+          }]
+      }]
   };
 }
 
