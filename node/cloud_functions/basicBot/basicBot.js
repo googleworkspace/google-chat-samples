@@ -71,9 +71,13 @@ function cleanText(text) {
  * @returns {Object}
  */
 function getInteractiveCard() {
+  let imageUrls = [
+    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png",
+    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png",
+    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
+  ];
   return {
-    cards: [
-      {
+    cards: [{
         header: {
           title: "Which type",
           subtitle: "Click on to Choose",
@@ -81,139 +85,48 @@ function getInteractiveCard() {
             "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png",
           imageStyle: "IMAGE"
         },
-        sections: [
-          {
-            widgets: [
-              {
-                image: {
-                  imageUrl:
-                    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
-                },
-                buttons: [
-                  {
-                    textButton: {
-                      text: "Select",
-                      onClick: {
-                        action: {
-                          actionMethodName: "choose",
-                          parameters: [
-                            {
-                              key: "url",
-                              value:
-                                "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png" //mojiurl
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                image: {
-                  imageUrl:
-                    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
-                },
-                buttons: [
-                  {
-                    textButton: {
-                      text: "Select",
-                      onClick: {
-                        action: {
-                          actionMethodName: "choose",
-                          parameters: [
-                            {
-                              key: "url",
-                              value:
-                                "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png" //mojiurl
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                image: {
-                  imageUrl:
-                    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
-                },
-                buttons: [
-                  {
-                    textButton: {
-                      text: "Select",
-                      onClick: {
-                        action: {
-                          actionMethodName: "choose",
-                          parameters: [
-                            {
-                              key: "url",
-                              value:
-                                "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png" //mojiurl
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                image: {
-                  imageUrl:
-                    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
-                },
-                buttons: [
-                  {
-                    textButton: {
-                      text: "Select",
-                      onClick: {
-                        action: {
-                          actionMethodName: "choose",
-                          parameters: [
-                            {
-                              key: "url",
-                              value:
-                                "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png" //mojiurl
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              },
-              {
-                image: {
-                  imageUrl:
-                    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png"
-                },
-                buttons: [
-                  {
-                    textButton: {
-                      text: "Select",
-                      onClick: {
-                        action: {
-                          actionMethodName: "choose",
-                          parameters: [
-                            {
-                              key: "url",
-                              value:
-                                "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png" //mojiurl
-                            }
-                          ]
-                        }
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
+        sections: [{
+            widgets: getWidgets(imageUrls, getImageButtonWidget)
+          }]
+      }]
+  };
+}
+
+/**
+ * Return an array of widgets
+ * @param {Array} urls a simple array of imageUrls, strings
+ * @param {Function} widgetComposer a function used to compose a widget object
+ * @returns {Array}
+ */
+function getWidgets(urls, widgetComposer) {
+  return urls.map(url => widgetComposer(url));
+}
+
+/**
+ * Returns a Widget with an image and button with a set url parameter
+ * @param {String} imageUrl
+ * @param {String} actionMethodName a simple string that can be passed to choose what actionMethodName is to be specified
+ * @return {Object} a widget with an image and button
+ */
+function getImageButtonWidget(imageUrl, actionMethodName = "choose") {
+  return {
+    image: {
+      imageUrl
+    },
+    buttons: [{
+        textButton: {
+          text: "Select",
+          onClick: {
+            action: {
+              actionMethodName,
+              parameters: [{
+                  key: "url",
+                  value: imageUrl
+                }]
+            }
           }
-        ]
-      }
-    ]
+        }
+      }]
   };
 }
 
@@ -224,21 +137,15 @@ function getInteractiveCard() {
  */
 function getSingleImage(imageUrl) {
   return {
-    cards: [
-      {
-        sections: [
-          {
-            widgets: [
-              {
+    cards: [{
+        sections: [{
+            widgets: [{
                 image: {
                   imageUrl
                 }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+              }]
+          }]
+      }]
   };
 }
 
@@ -247,9 +154,9 @@ function getSingleImage(imageUrl) {
  * @returns {Object}
  */
 function getHelp({ user }) {
+  let commands = [["Your First Command",`@${BOTNAME} {command name}`],["Interactive Command",`@${BOTNAME} i love dogs`]];
   return {
-    cards: [
-      {
+    cards: [{
         header: {
           title: `Need Help ${user.displayName}?`,
           subtitle: "Examples Below:",
@@ -257,25 +164,23 @@ function getHelp({ user }) {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2000px-Google_%22G%22_Logo.svg.png",
           imageStyle: "IMAGE"
         },
-        sections: [
-          {
-            widgets: [
-              {
-                keyValue: {
-                  topLabel: "Your First Command",
-                  content: `@${BOTNAME} {command name}`
-                }
-              },
-              {
-                keyValue: {
-                  topLabel: "Interactive Command",
-                  content: `@${BOTNAME} i love dogs`
-                }
-              }
-            ]
-          }
-        ]
-      }
-    ]
+        sections: [{
+            widgets: getWidgetValuePair(commands)
+          }]
+      }]
   };
+}
+
+/**
+ * Creates an array of widget objects with key value pairs
+ * @param {Array} commands an array of array of length 2 (aka array of tuples or key value pairs)
+ * @returns {Array}
+ */
+function getWidgetValuePair(commands){
+  return commands.map(com=>({
+    keyValue: {
+      topLabel: com[0],
+      content: com[1]
+    }
+  }));
 }
