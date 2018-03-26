@@ -7,4 +7,4 @@
 
 * **Using the Chatbot API**: [Enable Here](https://console.cloud.google.com/apis/library/chat.googleapis.com/?q=hango&id=cfc98718-48f9-4d87-aa40-597dbd379326)
 
-* **Inside of Configuration and Connection Settings Use Bot Url**: Paste the Cloud Function Trigger Url Here.
+* **Inside of Configuration and Connection Settings Use Bot Url**: Paste the Cloud Function Trigger Url There.
