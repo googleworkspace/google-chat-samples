@@ -91,9 +91,8 @@ function cleanText(text) {
  */
 function getInteractiveCard() {
   let imageUrls = [
-    "http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png",
-    "https://i.imgflip.com/1y2gxy.jpg",
-    "http://www.yourpurebredpuppy.com/dogbreeds/photos-AB/brusselsgriffonsf6.jpg"
+    "https://photos.app.goo.gl/5noEuKjptkjWd01n1",
+    "https://photos.app.goo.gl/DRqnKP4YBO12SnLT2"
   ];
   return {
     cards: [{
