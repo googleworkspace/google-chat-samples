@@ -25,6 +25,9 @@ following code samples:
     [card-formatted](https://developers.google.com/hangouts/chat/concepts/cards)
     response. This sample is an HTTP endpoint bot built upon
     [Google App Engine](https://cloud.google.com/appengine/).
+  - **Vote bot**: This bot demonstrates updating interactive cards by providing
+    a platform whereby users can vote on topics, such as who can do lunch today,
+    who wants to play ball at lunch, etc. Samples feature images or be text-only.
 
 For additional details about how to set up and run each sample, consult the
 README file included with the sample.
