@@ -5,7 +5,7 @@ This repository contains the code samples for
 There are folders of samples dependent on language and platform. Generally
 the Java and Python samples live in each respective directory, but JavaScript
 has multiple form factors (client-side, server-side/Node.js, Google Apps
-Script [also server side], and Cloud Functions (GCP or Firebase).
+Script [also server side], and Cloud Functions [GCP or Firebase]).
 
 Which JS platform you choose depends on the type of bot application you're
 using/writing. Apps Script features tighter integration with G Suite data and
