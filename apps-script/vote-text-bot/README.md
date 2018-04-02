@@ -2,7 +2,9 @@
 
 This code sample creates a Hangouts Chat simple text-only Vote bot that
 allows a user to vote (+1 or -1) on a message. This implementation is
-written in JavaScript and hosted on Google Apps Script.
+written in JavaScript and hosted on Google Apps Script. It should look
+like this:
+<img src="/static/images/vote-bot-text-only.png" alt="Vote bot (text-only)"/>
 
 ## Run the sample
 

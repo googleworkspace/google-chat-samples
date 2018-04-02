@@ -4,11 +4,10 @@ This code sample creates a Hangouts Chat simple text-only Vote bot that
 allows a user to vote (+1 or -1) on a message. This implementation is
 written in Python and hosted on Google App Engine. It uses the `webapp2`
 micro framework but can be ported to Flask if desired for App Engine or
-alternative hosting.
+alternative hosting. It should look like this:
+<img src="/static/images/vote-bot-text-only.png" alt="Vote bot (text-only)"/>
 
 ## Run the sample
-
-Before you can run the sample, do the following:
 
 To run this sample, you must follow these directions to create an App
 Engine project, create the bot and publish it for yourself in your G
