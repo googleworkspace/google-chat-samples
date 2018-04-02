@@ -14,24 +14,22 @@
 
 /**
  * Hangouts Chat simple text-only vote bot in Google Apps Script
- *
  * @see developers.google.com/hangouts/chat/how-tos/cards-onclick
  */
 
 /**
- * Create and return new interactive card or update existing one
- *
+ * Create and return a new interactive card or update an existing one.
  * @param {string} voter Google user name
  * @param {number} voteCount Current vote count
- * @param {boolean} update Update existing or create new card?
+ * @param {boolean} shouldUpdate Update existing or create new card?
  * @return {object} actual JSON payload to return to Hangouts Chat
  * @see developers.google.com/hangouts/chat/concepts/cards
  */
-function createMessage(voter, voteCount, update) {
+function createMessage(voter, voteCount, shouldUpdate) {
   var parameters = [{key: 'count', value: voteCount.toString()}];
   return {
     actionResponse: {
-      type: update ? 'UPDATE_MESSAGE' : 'NEW_MESSAGE'
+      type: shouldUpdate ? 'UPDATE_MESSAGE' : 'NEW_MESSAGE'
     },
     cards: [{
       header: {

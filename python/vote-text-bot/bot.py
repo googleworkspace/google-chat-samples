@@ -19,7 +19,7 @@ Hangouts Chat simple text-only vote bot in Python App Engine
 import json
 import webapp2
 
-def createMessage(voter, vote_count=0, update=False):
+def create_message(voter, vote_count=0, should_update=False):
     """
     Create and return new interactive card or update existing one
 
@@ -27,8 +27,8 @@ def createMessage(voter, vote_count=0, update=False):
     @param voter:       user (display) name
     @type  vote_count:  int
     @param vote_count:  current vote count
-    @type  update:      bool
-    @param update:      update existing or create new card?
+    @type  should_update:      bool
+    @param should_update:      update existing or create new card?
     @rtype:             dict
     @return:            JSON payload to return to Hangouts Chat
     @see:   developers.google.com/hangouts/chat/concepts/cards
@@ -37,7 +37,7 @@ def createMessage(voter, vote_count=0, update=False):
     PARAMETERS = [{'key': 'count', 'value': str(vote_count)}]
     return {
         'actionResponse': {
-            'type': 'UPDATE_MESSAGE' if update else 'NEW_MESSAGE'
+            'type': 'UPDATE_MESSAGE' if should_update else 'NEW_MESSAGE'
         },
         'cards': [{
             'header': {'title': 'Last vote by %s!' % voter},
@@ -80,7 +80,11 @@ def createMessage(voter, vote_count=0, update=False):
         }]
     }
 
-class MainPage(webapp2.RequestHandler):
+class VoteBot(webapp2.RequestHandler):
+    """The VoteBot class handle requests from the Hangouts Chat service.
+       GET requests are ignored as Hangouts Chat only supports bots via
+       HTTPS POST calls, so the post() method is implemented.
+    """
     def post(self):
         """Handle requests from Hangouts Chat
 
@@ -98,15 +102,15 @@ class MainPage(webapp2.RequestHandler):
             method = event['action']['actionMethodName']
             # Create new vote when "NEW" button clicked
             if method == 'newvote':
-                body = createMessage(user)
-            # Update card in-place when "+1" or "-1" button clicked
+                body = create_message(user)
             else:
+                # Update card in-place when "+1" or "-1" button clicked
                 delta = 1 if method == 'upvote' else -1
                 vote_count = int(event['action']['parameters'][0]['value']) + delta
-                body = createMessage(user, vote_count, True)
+                body = create_message(user, vote_count, True)
         # Create new vote for any msg
         elif event['type'] == 'MESSAGE':
-            body = createMessage(user)
+            body = create_message(user)
         else: # no response for ADDED_TO_SPACE or REMOVED_FROM_SPACE
             return
 
@@ -114,7 +118,7 @@ class MainPage(webapp2.RequestHandler):
         self.response.headers['Content-Type'] = 'application/json'
         self.response.out.write(json.dumps(body))
 
-# start server loop
+# setup server to listen to one path: /
 app = webapp2.WSGIApplication([
-    ('/', MainPage),
+    ('/', VoteBot),
 ], debug=True)

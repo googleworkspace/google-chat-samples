@@ -1,35 +1,35 @@
-# Hangouts Chat text-only Vote bot sample
+# Hangouts Chat Vote bot sample (text-only)
 
-This code sample creates a Hangouts Chat simple text-only Vote bot
-written in JavaScript and hosted on Google Apps Script. While Apps
-Script features tight integration with G Suite data and applications,
-developers can port it to Google Cloud Functions for a tighter
-integration with Google Cloud Platform if desired. The Vote bot can
-also be ported to Node.js for alternative hosting.
+This code sample creates a Hangouts Chat simple text-only Vote bot that
+allows a user to vote (+1 or -1) on a message. This implementation is
+written in JavaScript and hosted on Google Apps Script.
 
 ## Run the sample
 
-Before you can run the sample, do the following:
+To run this sample, you must follow these directions to create the bot
+and publish it for yourself in your G Suite domain. Once it's published,
+you can find it and add it to a chat room or direct message.
 
-1. Read the [directions for setting up a Google Apps Script
+1. Follow most of these [directions for setting up a Google Apps Script
   bot](http://developers.google.com/hangouts/chat/quickstart/apps-script-bot).
-1. Follow all of those directions _except_:
-  - Replace the template code with the Vote bot (vote-text-bot.js) in the editor.
-  - Name the project "Vote bot" and click **OK**.
-  - In the **Bot name** field, enter "Vote bot".
-  - In the **Avatar URL** field, enter `https://www.gstatic.com/images/icons/material/system/2x/how_to_vote_black_48dp.png`
-  - In the **Description** field, enter "Vote bot".
-  - Under **Functionality**, select both checkboxes.
-  - Under **Connection settings**, select Apps Script project and paste the Deployment ID into the field.
-  - Under **Permissions**, select _Specific people and groups in your domain_, and enter your own email.
-1. Once you click the **Save changes** button, your bot will be published!
+1. Make these customizations for your Apps Script Vote bot:
+  - Replace the template code in the editor with the Vote bot (`vote-text-bot.js`).
+  - **Project name**: "Vote bot"
+  - **Bot name**: "Vote bot"
+  - **Avatar URL**: `https://www.gstatic.com/images/icons/material/system/2x/how_to_vote_black_48dp.png`
+  - **Description**: "Vote bot"
+  - **Functionality**: enable for (at least) chat rooms
+  - **Connection settings**: select _Apps Script_ and add _Deployment ID_ (per general directions above)
+  - **Permissions**: select _Specific people and groups in your domain_, and enter your G Suite email address
+1. Click **Save changes** to publish your bot
 1. Add the Vote bot to a chat room and see a new message from the bot with
-the vote card ready to accept its first vote!
+  the vote card ready to accept its first vote!
 
 ## Reference
 
-- Hangouts Chat developer [documentation](https://developers.google.com/hangouts/chat)
-- If you're new to Apps Script, you may wish to first check [the
-  documentation](https://developers.google.com/apps-script) to
-  familiarize yourself with it or watch some
-  [videos](https://developers.google.com/apps-script/guides/videos).
+- [Creating Hangouts Chat interactive cards](https://developers.google.com/hangouts/chat/how-tos/cards-onclick) featuring the same vote bot that supports images and hosted on [Google Cloud Functions](https://cloud.google.com/functions)
+- [Hangouts Chat bot concept page](https://developers.google.com/hangouts/chat/concepts/bots)
+- [Creating new bots in Hangouts Chat](https://developers.google.com/hangouts/chat/how-tos/bots-develop)
+- [Hangouts Chat developer documentation](https://developers.google.com/hangouts/chat)
+- [Google Apps Script documentation](https://developers.google.com/apps-script)
+- [Google Apps Script video library](https://developers.google.com/apps-script/guides/videos)
