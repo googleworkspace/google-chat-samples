@@ -80,7 +80,6 @@ function createMessage(voter, voteCount, shouldUpdate) {
 /**
  * Handler for bot-added-to-room and message events. Create new
  * vote when any MESSAGE events are received in Hangouts Chat.
- *
  * @param {Event} e The Hangouts Chat event
  * @return {object} JSON payload for new vote card
  * @see developers.google.com/hangouts/chat/how-tos/bots-apps-script#apps_script_bot_concepts
@@ -92,7 +91,6 @@ function onMessage(e) {
 
 /**
  * Card click event handler
- *
  * @param {Event} e The Hangouts Chat event
  * @return {object} payload for appropriate vote card, depending on user input
  * @see developers.google.com/hangouts/chat/how-tos/cards-onclick
