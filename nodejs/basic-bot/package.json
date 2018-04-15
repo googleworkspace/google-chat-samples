@@ -4,15 +4,17 @@
   "description": "This is a basic bot to interact with Hangouts Chat",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "contributors": [
-    {"name": "Barathwaja S",
+    {
+     "name": "Barathwaja S",
      "email": "sbarathwaj4@gmail.com",
      "url": "https://github.com/Barathwaja"
     },
-    {"name": "Ashok V",
+    {
+     "name": "Ashok V",
      "email": "ash.srinivasan94@gmail.com",
      "url":"https://github.com/ashoksrinivas"
     }
@@ -21,7 +23,5 @@
     "body-parser": "^1.18.2",
     "express": "^4.16.2"
   },
-  "devDependencies": {
-    "nodemon": "^1.17.1"
-  }
+  "license": "Apache-2.0"
 }
