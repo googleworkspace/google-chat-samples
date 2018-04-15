@@ -27,7 +27,7 @@ app.post('/',function(req, res){
   
   //Case 1: When BOT was added to the ROOM
   if(req.body.type == 'ADDED_TO_SPACE' && req.body.space.type == 'ROOM') {
-      text = `Thanks for adding me to ${req.body.user.displayName}`;
+      text = `Thanks for adding me to ${req.body.space.displayName}`;
   }
   //Case 2: When BOT was added to a DM
   else if(req.body.type == 'ADDED_TO_SPACE' && req.body.space.type == 'DM') {
