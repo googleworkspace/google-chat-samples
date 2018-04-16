@@ -1,9 +1,13 @@
 module.exports = {
-  "extends": "google",
+  "extends": ["eslint:recommended", "google"],
   "env": {
     "node": true,
   },
   "parserOptions": {
-    "ecmaVersion": 8,
-  }
-}
+    "ecmaVersion": 2016,
+  },
+  "rules": {
+    "no-console": "off",
+    "prefer-arrow-callback": "error",
+  },
+};

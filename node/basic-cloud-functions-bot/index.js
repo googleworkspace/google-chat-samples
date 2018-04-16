@@ -53,7 +53,6 @@ function handleMessage({body}) {
   switch (cleanText(body.text)) {
     case 'i love dogs':
       return getInteractiveCard();
-      break;
   }
 }
 
@@ -64,7 +63,7 @@ function handleMessage({body}) {
  *     update the existing comment
  */
 function handleCardClick(body) {
-  let {cards} = getSingleImage(body.action.parameters[0].value);
+  const {cards} = getSingleImage(body.action.parameters[0].value);
   return {
     actionResponse: {
       type: 'UPDATE_MESSAGE',
@@ -121,7 +120,7 @@ function getInteractiveCard() {
  * @return {Array}
  */
 function getWidgets(urls, widgetComposer) {
-  return urls.map((url) => widgetComposer(url));
+  return urls.map(widgetComposer);
 }
 
 /**
@@ -178,8 +177,8 @@ function getSingleImage(imageUrl) {
  */
 function getHelp({user}) {
   let commands = [
-    ['Your First Command', `@${BOTNAME} {command name}`],
-    ['Interactive Command', `@${BOTNAME} i love dogs`],
+    ['Your First Command', `@${BOT_NAME} {command name}`],
+    ['Interactive Command', `@${BOT_NAME} i love dogs`],
   ];
   return {
     cards: [{
