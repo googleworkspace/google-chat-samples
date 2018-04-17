@@ -17,10 +17,6 @@ package com.google.chat.bot.basic;
 
 // [START basic-bot]
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.JsonNodeFactory;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.api.client.json.GenericJson;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.JsonGenerator;
@@ -29,11 +25,8 @@ import com.google.api.client.util.Key;
 import com.google.api.services.chat.v1.model.Message;
 import com.google.api.services.chat.v1.model.Space;
 import com.google.api.services.chat.v1.model.User;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Date;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
