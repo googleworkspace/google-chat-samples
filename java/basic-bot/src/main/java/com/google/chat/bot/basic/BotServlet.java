@@ -21,8 +21,17 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.api.client.json.GenericJson;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.JsonGenerator;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.Key;
+import com.google.api.services.chat.v1.model.Message;
+import com.google.api.services.chat.v1.model.Space;
+import com.google.api.services.chat.v1.model.User;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.servlet.ServletException;
@@ -37,6 +46,8 @@ public class BotServlet extends HttpServlet {
 
   private static final Logger logger =
           Logger.getLogger(BotServlet.class.getName());
+  private static final JsonFactory JSON_FACTORY =
+      JacksonFactory.getDefaultInstance();
 
   /**
    * Handles a GET request to the /bot endpoint.
@@ -62,55 +73,58 @@ public class BotServlet extends HttpServlet {
   @Override
   protected void doPost(HttpServletRequest req, HttpServletResponse resp)
           throws ServletException, IOException {
+    Event event = JSON_FACTORY.fromReader(req.getReader(), Event.class);
+    logger.info(event.toPrettyString());
 
-    String requestStr;
-
-    try (BufferedReader br = req.getReader()) {
-      requestStr = br.lines().collect(Collectors.joining(System.lineSeparator()));
-    }
-
-    logger.info(requestStr);
-
-    ObjectMapper mapper = new ObjectMapper();
-    JsonNode jsonNode = mapper.readTree(requestStr);
-    String eventType = jsonNode.get("type").asText();
-
-    logger.info(eventType);
-
-    String message = "";
-
-    switch (eventType) {
+    String replyText = "";
+    switch (event.type) {
       case "ADDED_TO_SPACE":
-        String spaceType = jsonNode.get("space").get("type").asText();
-        if (spaceType.contains("ROOM")) {
-          message = String.format("Thanks for adding me to %s",
-                  jsonNode.get("space").get("displayName").asText());
+        String spaceType = event.space.getType();
+        if ("ROOM".equals(spaceType)) {
+          replyText = String.format("Thanks for adding me to %s", event.space.getDisplayName());
         } else {
-          message = String.format("Thanks for adding me to a DM, %s!",
-                  jsonNode.get("user").get("displayName").asText());
+          replyText = String.format("Thanks for adding me to a DM, %s!",
+              event.user.getDisplayName());
         }
         break;
       case "MESSAGE":
-        message = String.format("Your message: %s\n",
-                jsonNode.get("message").get("text").asText());
+          replyText = String.format("Your message: %s", event.message.getText());
         break;
       case "REMOVED_FROM_SPACE":
-        logger.info(String.format("Bot removed from %s",
-                jsonNode.get("space").get("name").asText()));
+        logger.info(String.format("Bot removed from %s", event.space.getName()));
         break;
       default:
-        message = "Cannot determine event type";
+        replyText = "Cannot determine event type";
         break;
     }
 
-    JsonNodeFactory jsonNodeFactory = new JsonNodeFactory(false);
-    ObjectNode responseNode = jsonNodeFactory.objectNode();
-    responseNode.put("text", message);
     resp.setContentType("application/json");
-
-    resp.getWriter().print(responseNode.toString());
+    Message reply = new Message()
+        .setText(replyText);
+    JsonGenerator jsonGenerator = JSON_FACTORY.createJsonGenerator(resp.getWriter());
+    jsonGenerator.serialize(reply);
+    jsonGenerator.close();
   }
 
+  /**
+   * Stub class for parsing Event JSON payloads.
+   */
+  public static class Event extends GenericJson {
+    @Key
+    public String type;
+    @Key
+    public String eventTime;
+    @Key
+    public Space space;
+    @Key
+    public User user;
+    @Key
+    public Message message;
+    @Key
+    public String token;
+    @Key
+    public String configCompleteRedirectUrl;
+  }
 }
 
 // [END basic-bot]

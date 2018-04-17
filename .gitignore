@@ -7,3 +7,5 @@
 **/deactivate
 **/client_secret.json
 service-account.json
+**/.idea/
+**/*.iml
