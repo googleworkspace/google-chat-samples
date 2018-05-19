@@ -1,4 +1,4 @@
-# Cloud Functions Basic Chat bot
+# App Engine Basic Chat bot
 
 This code sample creates a simple Hangouts Chat bot that responds to events and
 messages from a room. The sample is built using Go on Google Cloud
