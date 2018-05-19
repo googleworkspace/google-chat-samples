@@ -14,3 +14,7 @@ App Engine Standard Env.
 3.  Add the bot to a room or direct message.
 4.  Send the message to the bot with an @-message or directly in a DM, example:
     `@BotName random` will return a recipe with ingredients
+
+## Example Output:
+
+!(Taco Chat Bot)[https://github.com/BaReinhard/random_assets/blob/master/NachoLibreBot.png?raw=true]
