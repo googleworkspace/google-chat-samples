@@ -17,4 +17,4 @@ App Engine Standard Env.
 
 ## Example Output:
 
-!(Taco Chat Bot)[https://github.com/BaReinhard/random_assets/blob/master/NachoLibreBot.png?raw=true]
+![Taco Chat Bot](https://github.com/BaReinhard/random_assets/blob/master/NachoLibreBot.png?raw=true)
