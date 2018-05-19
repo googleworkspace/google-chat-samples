@@ -2,7 +2,7 @@
 runtime: go
 api_version: go1
 
-service: basic-bot
+service: basic-taco-bot
 
 handlers:
 - url: /.*
