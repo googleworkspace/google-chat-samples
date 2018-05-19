@@ -109,6 +109,7 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// Generates a chat message from the taco payload
 func getTacoResponse(taco TacoPayload) chat.Message {
 	basePara := chat.TextParagraph{Text: taco.BaseLayer.Name}
 	baseWidget := chat.WidgetMarkup{TextParagraph: &basePara}
