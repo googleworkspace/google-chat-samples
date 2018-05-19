@@ -75,7 +75,7 @@ type TacoPayload struct {
 // Details from each property on TacoPayload
 type DetailsPayload struct {
 	Name   string `json:"name"`
-	Url    string `json:"url"`
+	URL    string `json:"url"`
 	Recipe string `json:"recipe"`
 	Slug   string `json:"slug"`
 }
@@ -99,41 +99,50 @@ func indexHandler(w http.ResponseWriter, r *http.Request) {
 			json.NewEncoder(w).Encode(chat.Message{Text: "An error getting your taco occurred"})
 			return
 		}
-		basePara := chat.TextParagraph{Text: taco.BaseLayer.Name}
-		baseWidget := chat.WidgetMarkup{TextParagraph: &basePara}
-		condimentPara := chat.TextParagraph{Text: taco.Condiment.Name}
-		condimentWidget := chat.WidgetMarkup{TextParagraph: &condimentPara}
-		seasoningPara := chat.TextParagraph{Text: taco.Seasoning.Name}
-		seasoningWidget := chat.WidgetMarkup{TextParagraph: &seasoningPara}
-		mixinPara := chat.TextParagraph{Text: taco.Mixin.Name}
-		mixinWidget := chat.WidgetMarkup{TextParagraph: &mixinPara}
-		shellPara := chat.TextParagraph{Text: taco.Shell.Name}
-		shellWidget := chat.WidgetMarkup{TextParagraph: &shellPara}
-		// Url Component Seems Iffy
-		// link := chat.OpenLink{Url: getLink(taco)}
-		// onClick := chat.OnClick{OpenLink: &link}
-		// button := chat.TextButton{Text: "Go Now!", OnClick: &onClick}
-		// buttonObject := chat.Button{TextButton: &button}
-		// buttonArray := []*chat.Button{&buttonObject}
-		// buttonWidget := chat.WidgetMarkup{Buttons: buttonArray}
-		//widgets := []*chat.WidgetMarkup{&baseWidget, &seasoningWidget, &condimentWidget, &mixinWidget, &shellWidget, &buttonWidget}
-		widgets := []*chat.WidgetMarkup{&baseWidget, &seasoningWidget, &condimentWidget, &mixinWidget, &shellWidget}
-
-		section := chat.Section{Widgets: widgets}
-		sections := []*chat.Section{&section}
-		header := chat.CardHeader{Title: "Nacho's Taco of the Day", Subtitle: taco.Name}
-		card := chat.Card{Sections: sections, Header: &header}
-		cards := []*chat.Card{&card}
-		message := chat.Message{Cards: cards, Text: "```" + taco.Recipe + "```"}
+		message := getTacoResponse(taco)
 
 		json.NewEncoder(w).Encode(message)
 		return
-	} else {
-		json.NewEncoder(w).Encode(chat.Message{Text: "Try keyword random"})
-		return
 	}
+	json.NewEncoder(w).Encode(chat.Message{Text: "Try keyword random"})
 	return
+
 }
+
+func getTacoResponse(taco TacoPayload) chat.Message {
+	basePara := chat.TextParagraph{Text: taco.BaseLayer.Name}
+	baseWidget := chat.WidgetMarkup{TextParagraph: &basePara}
+	condimentPara := chat.TextParagraph{Text: taco.Condiment.Name}
+	condimentWidget := chat.WidgetMarkup{TextParagraph: &condimentPara}
+	seasoningPara := chat.TextParagraph{Text: taco.Seasoning.Name}
+	seasoningWidget := chat.WidgetMarkup{TextParagraph: &seasoningPara}
+	mixinPara := chat.TextParagraph{Text: taco.Mixin.Name}
+	mixinWidget := chat.WidgetMarkup{TextParagraph: &mixinPara}
+	shellPara := chat.TextParagraph{Text: taco.Shell.Name}
+	shellWidget := chat.WidgetMarkup{TextParagraph: &shellPara}
+	var widgets []*chat.WidgetMarkup
+	if taco.ShellURL != "" && taco.BaseLayerURL != "" && taco.CondimentURL != "" && taco.MixinURL != "" && taco.SeasoningURL != "" {
+		// Url Component Seems Iffy
+		link := chat.OpenLink{Url: getLink(taco)}
+		onClick := chat.OnClick{OpenLink: &link}
+		button := chat.TextButton{Text: "Go Now!", OnClick: &onClick}
+		buttonObject := chat.Button{TextButton: &button}
+		buttonArray := []*chat.Button{&buttonObject}
+		buttonWidget := chat.WidgetMarkup{Buttons: buttonArray}
+		widgets = []*chat.WidgetMarkup{&baseWidget, &seasoningWidget, &condimentWidget, &mixinWidget, &shellWidget, &buttonWidget}
+	} else {
+		widgets = []*chat.WidgetMarkup{&baseWidget, &seasoningWidget, &condimentWidget, &mixinWidget, &shellWidget}
+	}
+	section := chat.Section{Widgets: widgets}
+	sections := []*chat.Section{&section}
+	header := chat.CardHeader{Title: "Nacho's Taco of the Day", Subtitle: taco.Name}
+	card := chat.Card{Sections: sections, Header: &header}
+	cards := []*chat.Card{&card}
+	message := chat.Message{Cards: cards, Text: "```" + taco.Recipe + "```"}
+	return message
+}
+
+// An attempt and creating a url with the proper slugs
 func getLink(taco TacoPayload) string {
 	slugs := ""
 	if taco.BaseLayerURL != "" {
