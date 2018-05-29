@@ -43,6 +43,10 @@ one or more of the following code samples:
 For additional details about how to set up and run each sample, consult the
 README file included with the sample.
 
+**Note**: The Hangouts Chat application, and the developer platform, are only
+available to G Suite accounts. You will not be able to develop or test a bot
+with an @gmail.com account.
+
 ## Contributing changes
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
