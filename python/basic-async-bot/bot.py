@@ -102,7 +102,7 @@ def format_response(event):
 
     # The following three lines of code update the thread that raised the event.
     # Delete them if you want to send the message in a new thread.
-    if event['message']['thread'] != None:
+    if eventType == 'MESSAGE' and event['message']['thread'] is not None:
         threadId = event['message']['thread']
         response['thread'] = threadId
 
