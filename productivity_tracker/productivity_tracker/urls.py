@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-from productivity_bot.views import ChatbotEvent
+from productivity_bot.views import ChatbotEvent, MessageUsers
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    # url(r'^message_users/', MessageUsers.as_view()),
-    url(r'^chatbot_event/', ChatbotEvent.as_view()),
+    url(r'^message_users', MessageUsers.as_view()),
+    url(r'^chatbot_event', ChatbotEvent.as_view()),
 ]
