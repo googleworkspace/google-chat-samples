@@ -5,7 +5,8 @@ from django.contrib import admin
 
 from productivity_bot.models import User, ActiveLoops, UserResponses
 
-# Register your models here.
+# Registers Django models.
+# https://docs.djangoproject.com/en/2.0/topics/db/models/
 admin.site.register(User)
 admin.site.register(ActiveLoops)
 admin.site.register(UserResponses)
