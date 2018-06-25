@@ -12,7 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from productivity_bot.models import User, ActiveLoops
+from productivity_bot.models import User, ActiveLoops, UserResponses
+from django.shortcuts import get_object_or_404
 
 COMMAND_ERROR = 'Sorry, that was an invalid command.'
 SESSION_BEGIN = 'Working session has begun! To end the session, say "stop"'
@@ -50,17 +51,14 @@ def handle_inbound_message(message_text, username, space_name):
     )[0]
     # User wants to start working session
     if message[0] == 'start':
-        mssg_freq = message[1]
-        if (len(message) != 3):
-            return COMMAND_ERROR
-        if (not mssg_freq.isdigit() or message[2] != 'hours'):
+        if (len(message) != 1 or in_active_loop(user)):
             return COMMAND_ERROR
 
-        response = start_active_loop(user, mssg_freq, space_name)
+        response = start_active_loop(user, space_name)
         return response
     # User wants to stop working session
     elif message[0] == 'stop':
-        if len(message) != 1 and not in_active_loop(user): 
+        if len(message) != 1 or not in_active_loop(user): 
             return COMMAND_ERROR
 
         response = end_active_loop(user)
@@ -74,7 +72,7 @@ def handle_inbound_message(message_text, username, space_name):
         return response
 
 
-def start_active_loop(user, mssg_freq, space_name):
+def start_active_loop(user, space_name):
     """Starts a working session/active loop for the user
 
     This function will create an ActiveLoop object for the user indicating that
@@ -86,7 +84,6 @@ def start_active_loop(user, mssg_freq, space_name):
     Args:
         user: The User object referring to the user who's requested the active 
             loop
-        mssg_freq: The frequency at which the user should be pinged
         space_name: The space's name field (via 
             https://developers.google.com/hangouts/chat/reference/rest/v1/spaces)
 
@@ -103,10 +100,7 @@ def start_active_loop(user, mssg_freq, space_name):
     active_loop = in_active_loop(user)
     if active_loop: active_loop.delete()
 
-    active_loop = ActiveLoops(
-        user=user, 
-        mssg_freq=int(mssg_freq),
-        mins_to_mssg = -1*int(mssg_freq))
+    active_loop = ActiveLoops(user=user)
     active_loop.save()
 
     return SESSION_BEGIN
@@ -189,11 +183,16 @@ def log_user_response(user, text):
 
     Raises:
         No errors should be raised. An error would be unexpected behavior.
+        Note: the Object.objects.get() method returns an error if no object
+            exists with the given parameters. However, before calling this
+            function, we check if this active_loop exists, so the call is safe.
     """
 
-    # TODO(ahez): Implement this function
-    # TODO(ahez): Decide whether to analyze data (using NLP API) here or when
-    #    copying to Sheets in end_active_loop(user)
+    active_loop = ActiveLoops.objects.get(user=user)
 
+    raw_text = " ".join(text)
+
+    user_response = UserResponses(active_loop=active_loop, raw_text=raw_text)
+    user_response.save()
 
     return "Response has been logged!"

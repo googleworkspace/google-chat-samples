@@ -43,20 +43,6 @@ class ActiveLoops(models.Model):
         related_name="active_loop"
     )
 
-    # a field to store the frequency of messages (in minutes)
-    # i.e. the number of minutes between each bot message
-    mssg_freq = models.IntegerField()
-
-    # a field to store the amount of time until the next message
-    # 
-    # This field will start at -mssg_freq and every minute,
-    # when the cron job fires, we will increase this number
-    # by one. 
-    # To determine who to message, we will filter this table
-    # by all instances whose mins_to_mssg are 0.
-    # After messaging those instances, we will reset these values.
-    mins_to_mssg = models.IntegerField()
-
 #
 # To be used as a job/batch queue
 #

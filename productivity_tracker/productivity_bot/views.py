@@ -54,8 +54,7 @@ class ChatbotEvent(View):
         if event['type'] == 'ADDED_TO_SPACE':
             response = ('Hi, my name is Productivity Bot! I\'m going to help '+
                 'you keep track of your productivity. To start your first'+
-                'Working Session, say "start every X hours" (you can define '+
-                'X to be anything over 1, including decimal values!)')
+                'working session, say "start"')
             return JsonResponse({'text': response})
 
         elif event['type'] == 'MESSAGE':
@@ -95,22 +94,7 @@ class MessageUsers(View):
         # TODO(ahez): Modularize this code into functions
         #    productivity_bot.message_users_helpers.py to make testing easier
 
-        # increment all time units
-        active_loops = ActiveLoops.objects.all()
-        increment_loop_counters(active_loops)
-
-        loops_to_mssg = active_loops.filter(mins_to_mssg=0)
-
-        # Message spaces attributed to elems of loops_to_mssg
-        spaces_to_message = map(
-            lambda active_loop: active_loop.user.space_name, 
-            loops_to_mssg
-        )
-        map(send_reminder,spaces_to_message)
-
-        # Reset mins_to_mssg attribute for loops in loops_to_mssg
-        for active_loop in loops_to_mssg:
-            active_loop.mins_to_mssg = -1*active_loop.mssg_freq
-            active_loop.save()
+        for active_loop in ActiveLoops.objects.all():
+            send_reminder(active_loop.user.space_name)
 
         return JsonResponse({'status': '404'})
