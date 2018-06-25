@@ -22,7 +22,7 @@ class User(models.Model):
 
     # A field to identify a user in their chat
     # (this will be used to match a user to their sheet_id)
-    user_name = models.CharField(max_length=100)
+    username = models.CharField(max_length=100)
 
     # A field to store whether or not a sheet has been created
     sheet_created = models.BooleanField(blank=True, default=False)

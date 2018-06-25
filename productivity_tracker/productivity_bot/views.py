@@ -59,10 +59,10 @@ class ChatbotEvent(View):
             return JsonResponse({'text': response})
 
         elif event['type'] == 'MESSAGE':
-            mssg_text = event['message']['text']
-            user_name = event['user']['name']
+            message_text = event['message']['text']
+            username = event['user']['name']
             space_name = event['space']['name']
-            response = handle_inbound_message(mssg_text, user_name, space_name)
+            response = handle_inbound_message(message_text, username, space_name)
             return JsonResponse({'text': response})
 
         return JsonResponse({'status': '404'})
