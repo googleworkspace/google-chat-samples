@@ -48,6 +48,8 @@ class ChatbotEvent(View):
 
     def post(self, request):
         event = json.loads(request.body)
+        print(request.POST)
+        print(request.body)
 
         if event['type'] == 'ADDED_TO_SPACE':
             response = ('Hi, my name is Productivity Bot! I\'m going to help '+

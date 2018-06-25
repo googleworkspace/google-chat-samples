@@ -18,11 +18,6 @@ COMMAND_ERROR = 'Sorry, that was an invalid command.'
 SESSION_BEGIN = 'Working session has begun! To end the session, say "stop"'
 SESSION_END = 'Working session has ended! See a summary of your work here: %s'
 
-################################################################################
-# used to parse user responses and redirect to react
-#
-# called by productivity_bot.ChatbotEvent.post
-################################################################################
 def handle_inbound_message(mssg_text, user_name, space_name):
     """Handles inbound messages sent to the bot.
 

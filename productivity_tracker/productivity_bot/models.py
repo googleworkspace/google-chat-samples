@@ -16,7 +16,7 @@ from django.db import models
 
 class User(models.Model):
 
-    # A field to identify the user’s chat space (must be DM)
+    # A field to identify the user's chat space (must be DM)
     # (this will be used to match a user to their chat space)
     space_name = models.CharField(max_length=100)
 
