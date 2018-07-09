@@ -15,46 +15,43 @@
 from django.db import models
 
 class User(models.Model):
+    '''Stores persistant information about all users
 
-    # A field to identify the user's chat space (must be DM)
-    # (this will be used to match a user to their chat space)
+    Fields:
+        space_name (charfield): identifies a user's chat space
+        user_name (charfield): identifies a user in their chat space
+        user_email (charfield): stores the User's email address
+        spreadsheet_id (charfield): identifies the user's sheet
+    '''
     space_name = models.CharField(max_length=100)
-
-    # A field to identify a user in their chat
-    # (this will be used to match a user to their sheet_id)
-    username = models.CharField(max_length=100)
-
-    # A field to store whether or not a sheet has been created
-    sheet_created = models.BooleanField(blank=True, default=False)
-
-    # a field to identify and retrieve info about the user's sheet
-    sheet_id = models.CharField(max_length=100, blank=True, default="")
+    user_id = models.CharField(max_length=100, unique=True)
+    email = models.CharField(max_length=100)
+    spreadsheet_id = models.CharField(max_length=100, blank=True, default="")
 
 
-#
-# To be used as a job/batch queue
-#
 class ActiveLoops(models.Model):
+    ''' To store all of the users that are currently in a working session
 
-    # a field to match each loop to a user
+    Fields:
+        user (OnToOne): identifies each loop's matching user
+    '''
     user = models.OneToOneField(
         User,
         on_delete=models.CASCADE,
         related_name="active_loop"
     )
 
-#
-# To be used as a job/batch queue
-#
-class UserResponses(models.Model):
 
-    # a field to match each loop to a user
+class UserResponses(models.Model):
+    ''' To store user responses during active loops
+
+    Fields:
+        active_loop (foreignkey): identifies each response's matching loop
+        raw_text (charfield): Stores the raw user response
+    '''
     active_loop = models.ForeignKey(
         ActiveLoops,
         on_delete=models.CASCADE,
         related_name="user_responses"
     )
-
-    # a field to store the raw user response
     raw_text = models.CharField(max_length=300)
-

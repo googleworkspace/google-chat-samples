@@ -1,2 +1,7 @@
 Django==1.11.13
 pytz==2018.4
+jsonpickle==0.9.6
+google-cloud-language==1.0.0
+gunicorn==19.7.1
+google-api-python-client==1.7.3
+mysqlclient==1.3.12
