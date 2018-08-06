@@ -5,7 +5,8 @@ allows a user to vote (+1 or -1) on a message. This implementation is
 written in Python and hosted on Google App Engine. It uses the `webapp2`
 micro framework but can be ported to Flask if desired for App Engine or
 alternative hosting. It should look like this:
-<img src="/static/images/vote-bot-text-only.png" alt="Vote bot (text-only)"/>
+
+![Vote bot (text-only)](https://user-images.githubusercontent.com/744973/43745610-9fdfc1c4-9994-11e8-9f47-b16fe3438458.png)
 
 ## Run the sample
 
