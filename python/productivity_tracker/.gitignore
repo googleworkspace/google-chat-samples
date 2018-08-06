@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django
+db.sqlite3
+
+# Environments
+.venv
+venv/
+
+# database migrations
+**/migrations/**
+!**/migrations
+!**/migrations/__init__.py
+
+# .DS_Store
+.DS_Store
+
+# sql proxy
+cloud_sql_proxy
