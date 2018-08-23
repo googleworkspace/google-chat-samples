@@ -55,7 +55,7 @@ This bot uses the following Google APIs:
 
 1. [Create a project on the Google Cloud Platform Console](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project)
 1. [Enable Billing on that Project](https://cloud.google.com/billing/docs/how-to/modify-project)
-1. Enable the following APIs in [Google Cloud's API Library](https://cloud.google.com/apis/library)
+1. Enable the following APIs in [Google Cloud's API Library](https://console.cloud.google.com/apis/library)
     - [Cloud SQL API](https://cloud.google.com/sql/)
     - [Google Drive API](https://developers.google.com/drive/)
     - [Google Sheets API](https://developers.google.com/sheets/)
