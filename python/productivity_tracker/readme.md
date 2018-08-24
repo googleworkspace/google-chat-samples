@@ -70,4 +70,4 @@ This bot uses the following Google APIs:
 ### 3. Deployment
 
 1. [Deploy the application](https://cloud.google.com/python/django/flexible-environment).
-1. [Publish the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
+1. [Publish the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish). Set "https://mcbotterstein.appspot.com/chatbot_event" as the bot url.
