@@ -3,10 +3,6 @@
 This code sample creates a simple Hangouts Chat bot that can responds to events and 
 messages from a room. This sample is built using NodeJS ( ExpressJS Framework ) on Standard Environment.
 
-This code sample creates a simple Hangouts Chat bot that responds to events and
-messages from a room. The sample is built using Python on Google App Engine,
-Standard Environment.
-
 ## Run the sample locally
   
   1. Install libraries using `npm`. </br>
