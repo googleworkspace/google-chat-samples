@@ -68,7 +68,7 @@ def send_response(response, space_name):
         os.environ[CREDENTIALS_PATH_ENV_PROPERTY], scopes)
     http_auth = credentials.authorize(Http())
 
-    chat = build('chat', 'v1', http=http_auth)
+    chat = build('chat', 'v1', http=http_auth, cache_discovery=False)
     chat.spaces().messages().create(
         parent=space_name,
         body=response).execute()
