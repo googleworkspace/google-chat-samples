@@ -1,0 +1,2 @@
+runtime: go111
+service: basic-chat-bot
