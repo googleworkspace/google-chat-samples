@@ -1,0 +1,4 @@
+runtime: go111
+service: basic-async-chat-bot
+env_variables:
+  SERVICE_ACCOUNT_PATH: account.json
