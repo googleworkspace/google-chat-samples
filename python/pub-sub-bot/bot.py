@@ -99,11 +99,12 @@ def format_response(event):
 
     response = { 'text': text }
 
-    # The following three lines of code update the thread that raised the event.
+    # The following few lines of code update the thread that raised the event.
     # Delete them if you want to send the message in a new thread.
-    if event['message']['thread'] != None:
-        threadId = event['message']['thread']
-        response['thread'] = threadId
+    if 'message' in event:
+        if event['message']['thread'] != None:
+            threadId = event['message']['thread']
+            response['thread'] = threadId
 
     return response
 
