@@ -80,11 +80,11 @@ function handleCardClick(body) {
  */
 function cleanText(text) {
   return text
-    .toLowerCase()
-    .replace(`@${BOT_NAME.toLowerCase()}`, '')
-    .split(' ')
-    .filter((char) => char !== '')
-    .join(' ');
+      .toLowerCase()
+      .replace(`@${BOT_NAME.toLowerCase()}`, '')
+      .split(' ')
+      .filter((char) => char !== '')
+      .join(' ');
 }
 
 /**
@@ -93,23 +93,23 @@ function cleanText(text) {
  * @return {Object}
  */
 function getInteractiveCard() {
-  let imageUrls = [
+  const imageUrls = [
     'https://photos.app.goo.gl/5noEuKjptkjWd01n1',
     'https://photos.app.goo.gl/DRqnKP4YBO12SnLT2',
   ];
   return {
     cards: [{
-        header: {
-          title: 'Which type',
-          subtitle: 'Click on to Choose',
-          imageUrl:
+      header: {
+        title: 'Which type',
+        subtitle: 'Click on to Choose',
+        imageUrl:
             'http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png',
-          imageStyle: 'IMAGE',
-        },
-        sections: [{
-            widgets: getWidgets(imageUrls, getImageButtonWidget),
-          }],
+        imageStyle: 'IMAGE',
+      },
+      sections: [{
+        widgets: getWidgets(imageUrls, getImageButtonWidget),
       }],
+    }],
   };
 }
 
@@ -136,19 +136,19 @@ function getImageButtonWidget(imageUrl, actionMethodName = 'choose') {
       imageUrl,
     },
     buttons: [{
-        textButton: {
-          text: 'Select',
-          onClick: {
-            action: {
-              actionMethodName,
-              parameters: [{
-                  key: 'url',
-                  value: imageUrl,
-                }],
-            },
+      textButton: {
+        text: 'Select',
+        onClick: {
+          action: {
+            actionMethodName,
+            parameters: [{
+              key: 'url',
+              value: imageUrl,
+            }],
           },
         },
-      }],
+      },
+    }],
   };
 }
 
@@ -160,14 +160,14 @@ function getImageButtonWidget(imageUrl, actionMethodName = 'choose') {
 function getSingleImage(imageUrl) {
   return {
     cards: [{
-        sections: [{
-            widgets: [{
-                image: {
-                  imageUrl,
-                },
-              }],
-          }],
+      sections: [{
+        widgets: [{
+          image: {
+            imageUrl,
+          },
+        }],
       }],
+    }],
   };
 }
 
@@ -176,23 +176,23 @@ function getSingleImage(imageUrl) {
  * @return {Object}
  */
 function getHelp({user}) {
-  let commands = [
+  const commands = [
     ['Your First Command', `@${BOT_NAME} {command name}`],
     ['Interactive Command', `@${BOT_NAME} i love dogs`],
   ];
   return {
     cards: [{
-        header: {
-          title: `Need Help ${user.displayName}?`,
-          subtitle: 'Examples Below:',
-          imageUrl:
+      header: {
+        title: `Need Help ${user.displayName}?`,
+        subtitle: 'Examples Below:',
+        imageUrl:
             'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2000px-Google_%22G%22_Logo.svg.png',
-          imageStyle: 'IMAGE',
-        },
-        sections: [{
-            widgets: getWidgetValuePair(commands),
-          }],
+        imageStyle: 'IMAGE',
+      },
+      sections: [{
+        widgets: getWidgetValuePair(commands),
       }],
+    }],
   };
 }
 

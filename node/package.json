@@ -2,17 +2,18 @@
   "name": "hangouts-chat-node-samples",
   "version": "1.0.0",
   "description": "Node samples for the Hangouts Chat API.",
-  "private": "true",
+  "private": true,
   "keywords": [
     "Hangouts Chat"
   ],
   "author": "Eric Koleda",
   "license": "Apache-2.0",
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-google": "^0.9.1"
+    "eslint": "^6.4.0",
+    "eslint-config-google": "^0.14.0"
   },
   "scripts": {
-    "lint": "eslint **/*.js"
+    "lint": "eslint **/*.js",
+    "lint:fix": "eslint --fix **/*.js"
   }
 }
