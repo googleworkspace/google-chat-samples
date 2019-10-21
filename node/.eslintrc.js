@@ -8,6 +8,5 @@ module.exports = {
   },
   "rules": {
     "no-console": "off",
-    "prefer-arrow-callback": "error",
   },
 };
