@@ -10,16 +10,16 @@ Standard Environment.
      to install Python and the Google Cloud SDK
 
   1. Follow the steps in [Setting Up Your GCP Resources](https://cloud.google.com/appengine/docs/standard/python3/console/#create)
-     to create a project and emable App Engine.
+     to create a project and enable App Engine.
 
-  1. Rum the following command to deploy the app:
+  1. Run the following command to deploy the app:
      ```
      gcloud app deploy
      ```
 
 ## Configure the bot for Hangouts Chat
 
-  1. To configure the bot to respond to @ mentions in Hangouts Chat, follow
+  1. To configure the bot to respond to @mentions in Hangouts Chat, follow
      the steps to enable the API in
      [Publishing bots](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
   1. When configuring the bot on the **Configuration** tab on the
@@ -29,7 +29,7 @@ Standard Environment.
 
 ## Interact with the bot
 
-Either add and @-mention the bot in a room or in a direct mention to engage with the bot.
+Either add and @mention the bot in a room or in a direct mention to engage with the bot.
 
 When added to a room or messaged, the bot will respond with a simple reply.
 
