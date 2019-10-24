@@ -16,10 +16,9 @@
 # See https://cloud.google.com/appengine/docs/managed-vms/python/runtime
 #
 
-runtime: python27
-api_version: 1
-threadsafe: true
-
-handlers:
-- url: /.*
-  script: bot.app
+runtime: python37
+# Use specific service account instead of default from environemnt.
+# TODO - Remoe pending fix to python auth library to support scoping
+# credentials from the metadata API.
+env_variables:
+  GOOGLE_APPLICATION_CREDENTIALS: service-acct.json

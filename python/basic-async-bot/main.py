@@ -11,16 +11,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+#
+# pylint: disable=invalid-name
+"""
+Hangouts Chat bot that responds to events and messages from a room asynchronously.
+"""
 
 # [START async-bot]
 
+
 import logging
-from apiclient.discovery import build, build_from_document
-from flask import Flask, render_template, request, json, make_response
-from httplib2 import Http
-from oauth2client.service_account import ServiceAccountCredentials
+from googleapiclient.discovery import build
+from flask import Flask, render_template, request, json
+import google.auth
 
 app = Flask(__name__)
+
+scopes = ['https://www.googleapis.com/auth/chat.bot']
+credentials, project_id = google.auth.default()
+credentials = credentials.with_scopes(scopes=scopes)
+chat = build('chat', 'v1', credentials=credentials)
+
 
 @app.route('/', methods=['POST'])
 def home_post():
@@ -37,37 +48,28 @@ def home_post():
     # If the bot is removed from the space, it doesn't post a message
     # to the space. Instead, log a message showing that the bot was removed.
     if event_data['type'] == 'REMOVED_FROM_SPACE':
-        logging.info('Bot removed from  %s' % event_data['space']['name'])
-        return 'OK'
+        logging.info('Bot removed from  %s', event_data['space']['name'])
+        return json.jsonify({})
 
-    else:
-        resp = format_response(event_data)
+    resp = format_response(event_data)
+    space_name = event_data['space']['name']
+    send_async_response(resp, space_name)
 
-    spaceName = event_data['space']['name']
-
-    send_async_response(resp, spaceName)
-
-    # Need to return a response to avoid an error in the Flask app.
-    return 'OK'
+    # Return empty jsom respomse simce message already sent via REST API
+    return json.jsonify({})
 
 # [START async-response]
 
-def send_async_response(response, spaceName):
+def send_async_response(response, space_name):
     """Sends a response back to the Hangouts Chat room asynchronously.
 
     Args:
       response: the response payload
-      spaceName: The URL of the Hangouts Chat room
+      space_name: The URL of the Hangouts Chat room
 
     """
-    scopes = ['https://www.googleapis.com/auth/chat.bot']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        'service-acct.json', scopes)
-    http_auth = credentials.authorize(Http())
-
-    chat = build('chat', 'v1', http=http_auth)
     chat.spaces().messages().create(
-        parent=spaceName,
+        parent=space_name,
         body=response).execute()
 
 # [END async-response]
@@ -80,31 +82,29 @@ def format_response(event):
 
     """
 
-    eventType = event['type']
-
-    logging.info(eventType)
+    event_type = event['type']
 
     text = ""
-    senderName = event['user']['displayName']
+    sender_name = event['user']['displayName']
 
     # Case 1: The bot was added to a room
-    if eventType == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
+    if event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
         text = 'Thanks for adding me to {}!'.format(event['space']['displayName'])
 
     # Case 2: The bot was added to a DM
-    elif eventType == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
-        text = 'Thanks for adding me to a DM, {}!'.format(senderName)
+    elif event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
+        text = 'Thanks for adding me to a DM, {}!'.format(sender_name)
 
-    elif eventType == 'MESSAGE':
-        text = 'Your message, {}: "{}"'.format(senderName, event['message']['text'])
+    elif event_type == 'MESSAGE':
+        text = 'Your message, {}: "{}"'.format(sender_name, event['message']['text'])
 
-    response = { 'text': text }
+    response = {'text': text}
 
     # The following three lines of code update the thread that raised the event.
     # Delete them if you want to send the message in a new thread.
-    if eventType == 'MESSAGE' and event['message']['thread'] is not None:
-        threadId = event['message']['thread']
-        response['thread'] = threadId
+    if event_type == 'MESSAGE' and event['message']['thread'] is not None:
+        thread_id = event['message']['thread']
+        response['thread'] = thread_id
 
     return response
 
@@ -119,3 +119,9 @@ def home_get():
     """
 
     return render_template('home.html')
+
+
+if __name__ == '__main__':
+    # This is used when running locally. Gunicorn is used to run the
+    # application on Google App Engine. See entrypoint in app.yaml.
+    app.run(host='127.0.0.1', port=8080, debug=True)
