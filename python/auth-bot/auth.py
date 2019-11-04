@@ -90,7 +90,7 @@ def get_user_credentials(user_name: str):
     store = Store()
     return store.get_user_credentials(user_name)
 
-def get_authorization_url(event):
+def get_config_url(event):
     """Gets the authorization URL to redirect the user to.
 
     Args:

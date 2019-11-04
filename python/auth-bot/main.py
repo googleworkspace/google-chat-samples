@@ -58,7 +58,7 @@ def on_mention(event: dict) -> dict:
         return flask.jsonify({
             'actionResponse': {
                 'type': 'REQUEST_CONFIG',
-                'url': auth.get_authorization_url(event),
+                'url': auth.get_config_url(event),
             },
         })
     logging.info('Found existing auth credentials for user %s', user_name)
