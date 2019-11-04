@@ -157,9 +157,4 @@ if __name__ == '__main__':
             'Set the environment variable GOOGLE_APPLICATION_CREDENTIALS with '
             'the path to your service account JSON file.')
 
-    if not os.environ['CLIENT_SECRET_PATH']:
-        raise Exception(
-            'Set the environment variable CLIENT_SECRET_PATH with '
-            'the path to your client secret JSON file.')
-
     app.run(port=8080, debug=True)
