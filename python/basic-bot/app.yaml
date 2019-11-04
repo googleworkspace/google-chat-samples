@@ -16,10 +16,4 @@
 # See https://cloud.google.com/appengine/docs/managed-vms/python/runtime
 #
 
-runtime: python27
-api_version: 1
-threadsafe: true
-
-handlers:
-- url: /.*
-  script: bot.app
+runtime: python37

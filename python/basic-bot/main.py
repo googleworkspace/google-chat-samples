@@ -11,10 +11,15 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+#
+# pylint: disable=invalid-name
+"""
+Simple Hangouts Chat bot that responds to events and
+messages from a room.
+"""
 # [START basic-bot]
 import logging
-from flask import Flask, render_template, request, json, make_response
+from flask import Flask, render_template, request, json
 
 app = Flask(__name__)
 
@@ -60,7 +65,7 @@ def format_response(event):
     elif event['type'] == 'MESSAGE':
         text = 'Your message: "%s"' % event['message']['text']
 
-    return { 'text': text }
+    return {'text': text}
 
 # [END basic-bot]
 
@@ -74,3 +79,7 @@ def home_get():
 
     return render_template('home.html')
 
+if __name__ == '__main__':
+    # This is used when running locally. Gunicorn is used to run the
+    # application on Google App Engine. See entrypoint in app.yaml.
+    app.run(host='127.0.0.1', port=8080, debug=True)
