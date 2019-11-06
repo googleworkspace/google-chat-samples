@@ -8,40 +8,45 @@ Datastore for storing user credentials.
 import logging
 import os
 import flask
-import google_auth_httplib2
-import werkzeug.contrib.fixers
-from apiclient import discovery
-from google.oauth2 import credentials
+from googleapiclient import discovery
+from google.oauth2.credentials import Credentials
+from  werkzeug.middleware.proxy_fix import ProxyFix
 import auth
-
-Credentials = credentials.Credentials
 
 app = flask.Flask(__name__)
 app.register_blueprint(auth.mod, url_prefix='/auth')
-app.wsgi_app = werkzeug.contrib.fixers.ProxyFix(app.wsgi_app)
+app.wsgi_app = ProxyFix(app.wsgi_app)
+
+# Set the secret key for sessions
+app.secret_key = os.environ.get('SESSION_SECRET', 'notasecret')
 
 logging.basicConfig(
     level=logging.INFO,
     style='{',
     format='{levelname:.1}{asctime} {filename}:{lineno}] {message}')
 
+@app.route('/', methods=['GET'])
+def home():
+    """Default home page"""
+    return flask.render_template('home.html')
 
 @app.route('/', methods=['POST'])
 def on_event():
     """Handler for events from Hangouts Chat."""
     event = flask.request.get_json()  # type: dict
-    if event['type'] == 'MESSAGE' or (
-            event['type'] == 'ADDED_TO_SPACE' and 'message' in event):
-        if 'logout' in event['message']['text'].lower():
-            return on_logout(event)
+    message = event.get('message')
+    if message is not None and 'logout' in message.get('text', '').lower():
+        return on_logout(event)
+    if message is not None:
         return on_mention(event)
-    elif event['type'] == 'ADDED_TO_SPACE':
+    if event['type'] == 'ADDED_TO_SPACE':
         return flask.jsonify({
             'text': (
                 'Thanks for adding me! '
                 'Try mentioning me with `@MyProfile` to see your profile.'
             )
         })
+    return flask.jsonify({})
 
 
 def on_mention(event: dict) -> dict:
@@ -50,11 +55,10 @@ def on_mention(event: dict) -> dict:
     user_credentials = auth.get_user_credentials(user_name)
     if user_credentials is None:
         logging.info('Requesting credentials for user %s', user_name)
-        oauth2_url = auth.get_authorization_url(event)
         return flask.jsonify({
             'actionResponse': {
                 'type': 'REQUEST_CONFIG',
-                'url': oauth2_url,
+                'url': auth.get_config_url(event),
             },
         })
     logging.info('Found existing auth credentials for user %s', user_name)
@@ -79,8 +83,7 @@ def on_logout(event):
 
 def produce_profile_message(creds: Credentials):
     """Generate a message containing the users profile inforamtion."""
-    http = google_auth_httplib2.AuthorizedHttp(creds)
-    people_api = discovery.build('people', 'v1', http=http)
+    people_api = discovery.build('people', 'v1', credentials=creds)
     try:
         person = people_api.people().get(
             resourceName='people/me',
@@ -152,5 +155,6 @@ if __name__ == '__main__':
     if not os.environ['GOOGLE_APPLICATION_CREDENTIALS']:
         raise Exception(
             'Set the environment variable GOOGLE_APPLICATION_CREDENTIALS with '
-            'the path to your service_account.json file.')
+            'the path to your service account JSON file.')
+
     app.run(port=8080, debug=True)
