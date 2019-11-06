@@ -1,4 +1,4 @@
-Django==1.11.13
+Django==1.11.23
 pytz==2018.4
 jsonpickle==0.9.6
 google-cloud-language==1.0.0
