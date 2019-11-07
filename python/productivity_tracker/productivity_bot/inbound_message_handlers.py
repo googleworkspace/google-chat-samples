@@ -45,16 +45,15 @@ def handle_inbound_message(message_text, user_id, space_name, email):
             return COMMAND_ERROR
 
         return start_active_loop(user)
-    elif message[0] == 'stop':
+    if message[0] == 'stop':
         if len(message) != 1 or not get_active_loop(user):
             return COMMAND_ERROR
 
         return end_active_loop(user)
-    else:
-        if not get_active_loop(user):
-            return COMMAND_ERROR
+    if not get_active_loop(user):
+        return COMMAND_ERROR
 
-        return log_user_response(user, message)
+    return log_user_response(user, message)
 
 
 def start_active_loop(user):
@@ -70,7 +69,8 @@ def start_active_loop(user):
     # Check if this user is in an active loop
     # If they are, delete that active loop to create a new one.
     active_loop = get_active_loop(user)
-    if active_loop: active_loop.delete()
+    if active_loop:
+        active_loop.delete()
 
     ActiveLoops(user=user).save()
 
@@ -87,7 +87,8 @@ def end_active_loop(user):
         str: The bot's response
     """
     active_loop = get_active_loop(user)
-    if not active_loop: return "You are not in a working session."
+    if not active_loop:
+        return "You are not in a working session."
 
     api_helper = APIHelper('service_account.json')
 
@@ -125,7 +126,8 @@ def get_active_loop(user):
 
     """
     active_loop = ActiveLoops.objects.filter(user=user)
-    if active_loop.exists(): return active_loop[0]
+    if active_loop.exists():
+        return active_loop[0]
     return None
 
 def log_user_response(user, text):

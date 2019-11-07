@@ -16,7 +16,7 @@ from google.cloud import language
 from google.cloud.language import enums
 from google.cloud.language import types
 
-class NLPHelper(object):
+class NLPHelper:
     ENTITY_TYPE = ('UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION',
                    'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
     POS_TAG = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM',

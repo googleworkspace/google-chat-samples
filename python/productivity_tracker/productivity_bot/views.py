@@ -56,7 +56,7 @@ class ChatbotEvent(View):
                         'first working session, say "start"')
             return JsonResponse({'text': response})
 
-        elif event['type'] == 'MESSAGE':
+        if event['type'] == 'MESSAGE':
             message_text = event['message']['text']
             user_id = event['user']['name']
             email = event['user']['email']
