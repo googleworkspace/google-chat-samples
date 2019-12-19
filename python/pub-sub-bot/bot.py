@@ -11,80 +11,71 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+"""
+Hangouts Chat bot that listens for messages via Cloud Pub/Sub.
+"""
 
 # [START pub-sub-bot]
 
-from google.cloud import pubsub_v1
-import time
 import json
-from httplib2 import Http
-from oauth2client.service_account import ServiceAccountCredentials
-from apiclient.discovery import build, build_from_document
+import logging
 import os
-
-PROJECT_ID = 'YOUR PROJECT ID'
-SUBSCRIPTION_NAME = 'YOUR SUBSCRIPTION NAME'
-CREDENTIALS_PATH_ENV_PROPERTY = 'GOOGLE_APPLICATION_CREDENTIALS'
+import sys
+import time
+from google.cloud import pubsub_v1
+from googleapiclient.discovery import build
+import google.auth
 
 def receive_messages():
     """Receives messages from a pull subscription."""
+
+    scopes = ['https://www.googleapis.com/auth/chat.bot']
+    credentials, project_id = google.auth.default()
+    credentials = credentials.with_scopes(scopes=scopes)
+    chat = build('chat', 'v1', credentials=credentials)
+
+    subscription_id = os.environ.get('SUBSCRIPTION_ID')
     subscriber = pubsub_v1.SubscriberClient()
     subscription_path = subscriber.subscription_path(
-        PROJECT_ID, SUBSCRIPTION_NAME)
+        project_id, subscription_id)
 
     def callback(message):
-        print('Received message: {}'.format(message.data))
+        logging.info('Received message: %s', message.data)
 
-        event_data = json.loads(message.data)
-        space_name = event_data['space']['name']
+        event = json.loads(message.data)
+        space_name = event['space']['name']
 
         # If the bot was removed, we don't need to return a response.
-        if event_data['type'] == 'REMOVED_FROM_SPACE':
-            print 'Bot removed rom space {}'.format(space_name)
+        if event['type'] == 'REMOVED_FROM_SPACE':
+            logging.info('Bot removed rom space %s', space_name)
             return
 
-        response = format_response(event_data)
+        response = format_response(event)
 
         # Send the asynchronous response back to Hangouts Chat
-        send_response(response, space_name)
+        chat.spaces().messages().create(
+            parent=space_name,
+            body=response).execute()
         message.ack()
 
     subscriber.subscribe(subscription_path, callback=callback)
+    logging.info('Listening for messages on %s', subscription_path)
 
-    print('Listening for messages on {}'.format(subscription_path))
+    # Keep main thread from exiting while waiting for messages
     while True:
         time.sleep(60)
 
-def send_response(response, space_name):
-    """Sends a response back to the Hangouts Chat room using the asynchronous API.
-
-    Args:
-      response: the response payload
-      space_name: The URL of the Hangouts Chat room
-
-    """
-    scopes = ['https://www.googleapis.com/auth/chat.bot']
-    credentials = ServiceAccountCredentials.from_json_keyfile_name(
-        os.environ[CREDENTIALS_PATH_ENV_PROPERTY], scopes)
-    http_auth = credentials.authorize(Http())
-
-    chat = build('chat', 'v1', http=http_auth, cache_discovery=False)
-    chat.spaces().messages().create(
-        parent=space_name,
-        body=response).execute()
 
 def format_response(event):
     """Determine what response to provide based upon event data.
-
     Args:
       event: A dictionary with the event data.
-
     """
 
     event_type = event['type']
 
     text = ""
-    senderName = event['user']['displayName']
+    sender_name = event['user']['displayName']
 
     # Case 1: The bot was added to a room
     if event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
@@ -92,25 +83,30 @@ def format_response(event):
 
     # Case 2: The bot was added to a DM
     elif event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
-        text = 'Thanks for adding me to a DM, {}!'.format(senderName)
+        text = 'Thanks for adding me to a DM, {}!'.format(sender_name)
 
     elif event_type == 'MESSAGE':
-        text = 'Your message, {}: "{}"'.format(senderName, event['message']['text'])
+        text = 'Your message, {}: "{}"'.format(sender_name, event['message']['text'])
 
-    response = { 'text': text }
+    response = {'text': text}
 
-    # The following few lines of code update the thread that raised the event.
+    # The following three lines of code update the thread that raised the event.
     # Delete them if you want to send the message in a new thread.
-    if 'message' in event:
-        if event['message']['thread'] != None:
-            threadId = event['message']['thread']
-            response['thread'] = threadId
+    if event_type == 'MESSAGE' and event['message']['thread'] is not None:
+        thread_id = event['message']['thread']
+        response['thread'] = thread_id
 
     return response
 
-
 if __name__ == '__main__':
-	print(os.environ[CREDENTIALS_PATH_ENV_PROPERTY])
-	receive_messages()
+    if 'SUBSCRIPTION_ID' not in os.environ:
+        logging.error('Missing SUBSCRIPTION_ID env var.')
+        sys.exit(1)
+
+    logging.basicConfig(
+        level=logging.INFO,
+        style='{',
+        format='{levelname:.1}{asctime} {filename}:{lineno}] {message}')
+    receive_messages()
 
 # [END pub-sub-bot]
