@@ -65,6 +65,7 @@ function createMessage(displayName, imageURL) {
 
   return {
     'cards': [{
+      'name': 'Avatar Card',
       'header': cardHeader,
       'sections': [avatarSection],
     }],
