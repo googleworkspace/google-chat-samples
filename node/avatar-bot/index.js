@@ -26,7 +26,7 @@
 exports.helloHangoutsChat = function helloHangoutsChat(req, res) {
   if (req.method === 'GET' || !req.body.message) {
     res.send('Hello! This function is meant to be used in a Hangouts Chat ' +
-     'Room.');
+      'Room.');
   }
 
   const sender = req.body.message.sender.displayName;
@@ -44,26 +44,29 @@ exports.helloHangoutsChat = function helloHangoutsChat(req, res) {
  * @return {Object} a card with the user's avatar.
  */
 function createMessage(displayName, imageURL) {
-  const HEADER = {
+  const cardHeader = {
     'title': 'Hello ' + displayName + '!',
   };
 
-  const SENDER_IMAGE_WIDGET = {
-    'imageUrl': imageURL,
+  const avatarWidget = {
+    'textParagraph': { 'text': 'Your avatar picture: ' },
+  };
+
+  const avatarImageWidget = {
+    image: { 'imageUrl': imageURL },
+  };
+
+  const avatarSection = {
+    'widgets': [
+      avatarWidget,
+      avatarImageWidget,
+    ]
   };
 
   return {
     'cards': [{
-      'header': HEADER,
-      'sections': [{
-        'widgets': [{
-          'textParagraph': {
-            'text': 'Your avatar picture:',
-          },
-        }, {
-          'image': SENDER_IMAGE_WIDGET,
-        }],
-      }],
+      'header': cardHeader,
+      'sections': [avatarSection],
     }],
   };
 }
