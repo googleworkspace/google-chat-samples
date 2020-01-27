@@ -49,18 +49,18 @@ function createMessage(displayName, imageURL) {
   };
 
   const avatarWidget = {
-    'textParagraph': { 'text': 'Your avatar picture: ' },
+    'textParagraph': {'text': 'Your avatar picture: '},
   };
 
   const avatarImageWidget = {
-    image: { 'imageUrl': imageURL },
+    image: {'imageUrl': imageURL},
   };
 
   const avatarSection = {
     'widgets': [
       avatarWidget,
       avatarImageWidget,
-    ]
+    ],
   };
 
   return {
