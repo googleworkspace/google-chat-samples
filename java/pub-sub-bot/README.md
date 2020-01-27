@@ -1,21 +1,23 @@
 # Hangouts Chat Cloud Pub/Sub bot sample
 
-## Run the sample
+This code sample creates a simple Hangouts Chat bot that listens for
+messages via Cloud Pub/Sub.
+
+## Run the sample locally
 
 Before you can run the sample, do the following:
 
-  - Follow the directions for setting up a topic and subscription as
-    described in
-    [Using Cloud Pub/Sub as an endpoint for your bot](https://developers.google.com/hangouts/chat/how-tos/pub-sub).
-  - In `Main.java`, replace the value of the constants `PROJECT_ID` and
-    `SUBSCRIPTION_ID` with the IDs of the project and subscription that
-    you created.
-  - Make sure that you have set the GOOGLE_APPLICATION_CREDENTIALS variable
-    to point to the location of your service account secret file in your
-    environment before you invoke Maven.
+  1. Follow the directions for setting up a topic and subscription as
+     described in
+     [Using Cloud Pub/Sub as an endpoint for your bot](https://developers.google.com/hangouts/chat/how-tos/pub-sub).
+  1. Run the sample, substituting your subscription id and service account JSON file from step 1.
+    ```
+    SUBSCRIPTION_ID=your-subscription-id GOOGLE_APPLICATION_CREDENTIALS=your-service-account.json mvn compile exec:java \
+    -Dexec.mainClass=com.google.chat.bot.pubsub.Main
+    ```
 
-Run the following command from the project directory
+## Interact with the bot
 
-```
-mvn exec:java -Dexec.mainClass=com.google.chat.bot.pubsub.Main
-```
+Either add and @mention the bot in a room or in a direct mention to engage with the bot.
+
+When added to a room or messaged, the bot will respond with a simple reply.
