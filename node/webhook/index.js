@@ -28,7 +28,6 @@ fetch(webhookURL, {
   method: 'POST',
   headers: {
     'Content-Type': 'application/json; charset=UTF-8',
-    'Content-Length': data.length,
   },
   body: data,
 }).then((response) => {
