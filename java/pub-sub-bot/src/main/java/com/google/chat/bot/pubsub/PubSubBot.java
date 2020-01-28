@@ -16,7 +16,7 @@ package com.google.chat.bot.pubsub;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
-import com.google.api.client.http.*;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.chat.v1.HangoutsChat;
 import com.google.api.services.chat.v1.model.Message;
@@ -30,15 +30,16 @@ import com.google.cloud.pubsub.v1.Subscriber;
 import com.google.pubsub.v1.ProjectSubscriptionName;
 import com.google.pubsub.v1.PubsubMessage;
 
+import java.util.Optional;
+
 /**
  * Creates a bot that subscribes to a Google Cloud Pub/Sub topic to
  * receive messages from Hangouts Chat. The bot then sends a simple response
  * back to Hangouts Chat.
  */
-public class Main {
+public class PubSubBot {
 
   public static void main(String[] args) {
-    System.out.println(System.getenv().toString());
     String projectId = ServiceOptions.getDefaultProjectId();
     String subscriptionId = System.getenv().get("SUBSCRIPTION_ID");
     ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(projectId, subscriptionId);
@@ -60,10 +61,18 @@ public class Main {
    */
   static class EchoBot implements MessageReceiver {
 
+    static final String BOT_NAME = "pubsub-bot-java";
+    static final String CHAT_BOT_SCOPE = "https://www.googleapis.com/auth/chat.bot";
+
     EchoBot() {
     }
 
-    // Called when a message is received by the subscriber.
+    /**
+     * Bot implemetnation -- called when a message is received by the subscriber.
+     *
+     * @param pubsubMessage Message received via Cloud PubSub, contains chat message payload
+     * @param consumer to ack/nack messages
+     */
     @Override
     public void receiveMessage(PubsubMessage pubsubMessage, AckReplyConsumer consumer) {
       System.out.println("Id : " + pubsubMessage.getMessageId());
@@ -73,7 +82,7 @@ public class Main {
         ObjectMapper mapper = new ObjectMapper();
         JsonNode chatEvent = mapper.readTree(content);
 
-        Message reply = null;
+        Message reply = new Message();
 
         String eventType = chatEvent.path("type").asText();
         switch (eventType) {
@@ -82,40 +91,35 @@ public class Main {
             // through to the MESSAGE case and let the bot respond. If the bot was added using the
             // invite flow, we just post a thank you message in the space.
             if (!chatEvent.has("message")) {
-              reply = new Message().setText("Thank you for adding me!");
+              reply.setText("Thank you for adding me!");
               break;
             }
           case "MESSAGE":
             String userText = chatEvent.at("/message/text").asText();
             String threadName = chatEvent.at("/message/thread/name").asText();
-            reply = new Message()
-                    .setText(String.format("You said: %s", userText))
+            reply.setText(String.format("You said: %s", userText))
                     .setThread(new Thread().setName(threadName));
             break;
           default:
-            // Do nothing
-        }
-
-        // Nothing to reply with, just ack the message and stop
-        if (reply == null) {
-          consumer.ack();
-          return;
+            // Nothing to reply with, just ack the message and stop
+            consumer.ack();
+            return;
         }
 
         // Send the reply message via chat API.
         String spaceName = chatEvent.at("/space/name").asText();
         GoogleCredentials credentials = GoogleCredentials.getApplicationDefault().createScoped(
-                "https://www.googleapis.com/auth/chat.bot"
+                CHAT_BOT_SCOPE
         );
         HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(credentials);
         HangoutsChat chatService = new HangoutsChat.Builder(
                 GoogleNetHttpTransport.newTrustedTransport(),
                 JacksonFactory.getDefaultInstance(),
                 requestInitializer)
-                .setApplicationName("pubsub-bot-java")
+                .setApplicationName(BOT_NAME)
                 .build();
 
-        chatService.spaces().messages().create(spaceName, reply).execute();
+        chatService.spaces().messages().create(spaceName, reply).execute();x
         consumer.ack();
       } catch (Exception e) {
         e.printStackTrace();

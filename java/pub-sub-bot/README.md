@@ -13,7 +13,7 @@ Before you can run the sample, do the following:
   1. Run the sample, substituting your subscription id and service account JSON file from step 1.
     ```
     SUBSCRIPTION_ID=your-subscription-id GOOGLE_APPLICATION_CREDENTIALS=your-service-account.json mvn compile exec:java \
-    -Dexec.mainClass=com.google.chat.bot.pubsub.Main
+    -Dexec.mainClass=com.google.chat.bot.pubsub.PubSubBot
     ```
 
 ## Interact with the bot
