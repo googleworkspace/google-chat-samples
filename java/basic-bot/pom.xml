@@ -68,11 +68,11 @@ Copyright 2017 Google Inc.
       <version>2.1.6.RELEASE</version>
     </dependency>
 
-      <dependency>
-          <groupId>com.google.apis</groupId>
-          <artifactId>google-api-services-chat</artifactId>
-          <version>v1-rev114-1.25.0</version>
-      </dependency>
+    <dependency>
+       <groupId>com.google.apis</groupId>
+       <artifactId>google-api-services-chat</artifactId>
+       <version>v1-rev114-1.25.0</version>
+    </dependency>
   </dependencies>
 
   <build>
