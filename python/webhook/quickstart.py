@@ -15,7 +15,7 @@
 """
 A sample script for using an incoming webhook for Hangouts chat rooms.
 """
-# START hangouts_python_webhook
+# [START hangouts_python_webhook]
 from json import dumps
 
 from httplib2 import Http
@@ -42,4 +42,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-# END hangouts_python_webhook
+# [END hangouts_python_webhook]
