@@ -35,9 +35,10 @@ Standard Environment.
 
 Either add and @mention the bot in a room or in a direct mention to engage with the bot.
 
-In the message to the bot, send a list of the widgets for the bot to send back.
-For example, if you want the bot to send a header and a text paragraph widget,
-type 'header textparagraph'.
+In the message to the bot, send a list of the
+[widgets](https://developers.google.com/hangouts/chat/reference/rest/v1/cards#WidgetMarkup)
+for the bot to send back. For example, if you want the bot to send a header and a
+text paragraph widget, type 'header textparagraph'.
 
 The bot responds to the following user input:
 
@@ -49,7 +50,6 @@ The bot responds to the following user input:
   - keyvalue
   - interactivetextbutton
   - interactiveimagebutton
-
 
 ## Run the sample locally
 

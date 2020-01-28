@@ -17,7 +17,21 @@ package com.google.hangouts.chat.card;
 
 // [START card-bot]
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.services.chat.v1.model.*;
+import com.google.api.services.chat.v1.model.ActionParameter;
+import com.google.api.services.chat.v1.model.Button;
+import com.google.api.services.chat.v1.model.Card;
+import com.google.api.services.chat.v1.model.CardHeader;
+import com.google.api.services.chat.v1.model.FormAction;
+import com.google.api.services.chat.v1.model.Image;
+import com.google.api.services.chat.v1.model.ImageButton;
+import com.google.api.services.chat.v1.model.KeyValue;
+import com.google.api.services.chat.v1.model.Message;
+import com.google.api.services.chat.v1.model.OnClick;
+import com.google.api.services.chat.v1.model.OpenLink;
+import com.google.api.services.chat.v1.model.Section;
+import com.google.api.services.chat.v1.model.TextButton;
+import com.google.api.services.chat.v1.model.TextParagraph;
+import com.google.api.services.chat.v1.model.WidgetMarkup;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,7 +39,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -58,31 +74,30 @@ public class Bot {
         String eventType = event.get("type").asText();
         switch (eventType) {
             case "ADDED_TO_SPACE":
-                JsonNode space = event.get("space");
-                String spaceType = space.get("type").asText();
+                String spaceType = event.at("/space/type").asText();
                 if ("ROOM".equals(spaceType)) {
-                    String displayName = space.get("displayName").asText();
+                    String displayName = event.at("/space/displayName").asText();
                     String replyText = String.format("Thanks for adding me to %s", displayName);
                     reply.setText(replyText);
                 } else {
-                    String displayName = event.get("user").get("displayName").asText();
+                    String displayName = event.at("/user/displayName").asText();
                     String replyText = String.format("Thanks for adding me to a DM, %s!", displayName);
                     reply.setText(replyText);
                 }
                 break;
             case "MESSAGE":
-                Card card = createCardResponse(event.get("message").get("text").asText());
+                Card card = createCardResponse(event.at("/message/text").asText());
                 reply.setCards(Collections.singletonList(card));
                 break;
             case "CARD_CLICKED":
                 // Get the custom action name and custom parameter value out of the event object.
-                String actionName = event.get("action").get("actionMethodName").asText();
-                String customParameterValue = event.get("action").get("parameters").get(0).get("value").asText();
+                String actionName = event.at("/action/actionMethodName").asText();
+                String customParameterValue = event.at("/action/parameters/0/value").asText();
                 card = respondToInteractiveCardClick(actionName, customParameterValue);
                 reply.setCards(Collections.singletonList(card));
                 break;
             case "REMOVED_FROM_SPACE":
-                String name = event.get("space").get("name").asText();
+                String name = event.at("/space/name").asText();
                 logger.info(String.format("Bot removed from %s", name));
                 break;
             default:
@@ -92,15 +107,11 @@ public class Bot {
         return reply;
     }
 
-
     /**
      * Creates a card-formatted response based on the message sent in Hangouts Chat.
      *
-     * See the reference for JSON keys and format for cards:
-     * https://developers.google.com/hangouts/chat/reference/message-formats/cards
-     *
      * @param message the event object sent from Hangouts Chat
-     * @return a card responseStr as a JSON object node
+     * @return a card instance
      */
     private Card createCardResponse(String message) {
         Card card = new Card();
@@ -178,7 +189,7 @@ public class Bot {
     }
 
     /**
-     * Creates a responseStr for when the user clicks on an interactive card.
+     * Handles the click for an interactive button.
      *
      * @param actionName name of action invoked
      * @param customParameterValue custom payload from event
