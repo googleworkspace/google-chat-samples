@@ -18,7 +18,7 @@ The sample is built using Python on Google App Engine, Standard Environment.
      to create a project and enable App Engine.
   1. Enable the People API for your project using
      [this wizard](https://console.cloud.google.com/flows/enableapi?apiid=people.googleapis.com).
-  1. Enable the People API for your project using
+  1. Enable the Cloud Datastore API for your project using
      [this wizard](https://console.cloud.google.com/flows/enableapi?apiid=datastore.googleapis.com).
   1. Follow [instructions](https://support.google.com/googleapi/answer/6158849?hl=en) for creating
      an oauth client ID for your project. USe the ype "Web application" and a redirect
