@@ -1,1 +1,12 @@
-YOUR SERVICE ACCOUNT SECRET HERE.
+{
+  "type": "service_account",
+  "project_id": "chat-bots-1570552104237",
+  "private_key_id": "b9bf1478b939935a3cedd51c1b3b36dbb2f0b014",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCvuxEw0lpH4aix\nIbyv1JervzOeoAvSpcktwVBJ7dELEJnXmpF4E6At4i130m8S2ahDrKa+awnpB55i\n+7qcVWg6fokMRt53cr/JS5TiqidWxMle0WaYSCEzDwTFcMdNgBFtCBwg3IijK532\nlXxQCgi0G1mojZg+6P1JF8TJY+W7WCgvMu8hsgEenlFqm68e2XwXVii7aGCQM/rf\n26aDbqFLySGltZGZ4/3C8zU/77r0bPePfNztXOuf2E1gYTqhGKKEqImnxyLyLJZM\n8ue/axf6KrAugxLxA842n5g2nDzgdJw47D4+Hz3TGhsJtm6yRnbMgg4w9wqvRR13\ncfm3nlvlAgMBAAECggEASajJY2QA2LmDer/v9enQK3rpObfPTNwWEDpEG8D2C0PJ\noICXMjRTw3fXZC7ORSH78GX5vL5kOIvrfYUTqvz3w/EPJBi+nmX4cvld7oaxF6ND\n3x05+mHdnKfScao8uEUSyNeJ5tJZ6b9aJqZxJaGXFVuTgN3dL518sbsnTt0zSgvP\nYEwTy9QZr4CwAmj0h4NBCoLOneVsKgIPBxEoAd1eDoneZ7AwaUHV6HLx2qJbuJO8\nGp0LNEr4c7b1n5ISL3y0KBrL0z0k5BWdzXqO9BN4zji03nnNQwMoXGmccxO2YbLY\nCg9+F0qzhTxkMf70mIMLVhX4EmTVEHs6YFjJepttrwKBgQDbHx1PI7CeF6SIOpA1\nX0X5mQ4YCpNqJQsZSv/fthdvW3joA+Ee9x+b/YEkhIdz7PHJJDCbKCFcIMU0GnlP\ndOvqRTPjjkJiMUSB+Hb21ombGbwezKpJPwgExRDB69G8E2uK3YwH6an2r18ye3rS\nwDbOK5y4TEQwscabfVDOM1/HiwKBgQDNTnPxTVgs5Eb8L3s52jGMB2Y5qQR4gR9p\no5S49VpwWEmBr9JU2Qxqu8wJz9jGMFPAJdT/Yf336Q6HevZcYCmJMWORTcaQKWRg\n4qviPEvyDGY1NJZLQW7Z0QqlqKMsHCELKR9SbwKYIxLth0Py6o7Y1u8z9Yxmv1jc\nJKkNoGhYTwKBgGCJR7dbCO/NiL4/1tK8w65gQPZUinekFEyzXyFnLtHvocfOFbs3\nsqRdviyheq+W/zrXh9aDipb1FQyMcU+ROnJ+xIqHXTW3cPA1z+uVvxAm+Vs0Xf1h\nGJ5JV8WnqEJM5/9I9e1yg1/cCXvLLOR2rG6OhkAn0Y8Gc3KDdjsyJQtbAoGBAI6w\nwRprxCXnPoLVyVJLGPaWyfC3TNkn/RohzCLEu+erJOOSvJ+l/uBLx6LmJ2aPfhXk\n9WXNyIK+Iw/8YS+Q0i18+xOpN6FIc3B2+jmR6MLA5WSDORXy00Vl6X17eHUW08x6\n9z8G0onEjsoxogM6DLAeqj+1oLBkuzC99hT3cK43AoGATx4C6kGpIjrManAzwXLe\nbr9/MO0UTTybVD15pNz4f4WhDTHwMGGWd1atQSfzNYvXgHuZNqFam6ZtTzSnpPfi\noO1Xqy7y8AGzb/kg2QIQo4xa+OestryDIG220DyNdRJhUJvc2kP8X3JrYX5midzy\nE3GWTHRvdl9L8KRtVqBneSA=\n-----END PRIVATE KEY-----\n",
+  "client_email": "chat-bots-1570552104237@appspot.gserviceaccount.com",
+  "client_id": "105158392985800666062",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/chat-bots-1570552104237%40appspot.gserviceaccount.com"
+}
