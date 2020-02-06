@@ -13,12 +13,11 @@
 # limitations under the License.
 
 from os import environ
-from oauth2client.service_account import ServiceAccountCredentials
-from apiclient.discovery import build
-from httplib2 import Http
+from googleapiclient.discovery import build
+from google.oauth2 import service_account
 from productivity_bot.nlp_helper import NLPHelper
 
-class APIHelper(object):
+class APIHelper:
 
     scopes = [
         'https://www.googleapis.com/auth/spreadsheets',
@@ -27,10 +26,10 @@ class APIHelper(object):
     ]
 
     def __init__(self, keyfile_name):
-        self.credentials = ServiceAccountCredentials.from_json_keyfile_name(
-            keyfile_name, APIHelper.scopes)
-        self.sheets_service = build('sheets', 'v4', http=self.credentials.authorize(Http()))
-        self.drive_service = build('drive', 'v3', http=self.credentials.authorize(Http()))
+        credentials = service_account.Credentials.from_service_account_file(keyfile_name)
+        self.credentials = credentials.with_scopes(scopes=APIHelper.scopes)
+        self.sheets_service = build('sheets', 'v4', credentials=self.credentials)
+        self.drive_service = build('drive', 'v3', credentials=self.credentials)
 
     def get_or_create_sheet(self, user):
         """Return or create-and-return info for the user's sheet
@@ -73,7 +72,8 @@ class APIHelper(object):
             fileId=file_id,
         )
         # Wait for the file to exist
-        while get_files.execute().get('error'): continue
+        while get_files.execute().get('error'):
+            continue
 
         # Share the file
         self.drive_service.permissions().create(
@@ -86,7 +86,7 @@ class APIHelper(object):
             },
         ).execute()
 
-    def copy_sql_table_to_sheet(self, Table, query_parameters, spreadsheet_id,
+    def copy_sql_table_to_sheet(self, table, query_parameters, spreadsheet_id,
                                 sheet_title):
         """Copy elements from a sql table to a sheet
 
@@ -98,18 +98,18 @@ class APIHelper(object):
             spreadsheet_id (str): The id for the spreadsheet we'll copy to
             sheet_title (str): Title of the specific sheet we'll copy to
         """
-        table = self.get_sql_contents(Table, query_parameters)
+        data = self.get_sql_contents(table, query_parameters)
 
         if environ.get('ENABLE_NLP'): # OPTIONAL: will add columns with more data
-            self.add_nlp_columns(table)
+            self.add_nlp_columns(data)
 
-        self.write_to_sheet(table, spreadsheet_id, sheet_title)
+        self.write_to_sheet(data, spreadsheet_id, sheet_title)
 
-    def write_to_sheet(self, table, spreadsheet_id, sheet_title):
+    def write_to_sheet(self, data, spreadsheet_id, sheet_title):
         """Write contents of a 2-dimensional list to a sheet
 
         Args:
-            table (list): The 2-dimensional list to be copied
+            data (list): The 2-dimensional list to be copied
             spreadsheet_id (str): The id for the spreadsheet we'll copy to
             sheet_title (str): Title of the specific sheet we'll copy to
         """
@@ -118,20 +118,20 @@ class APIHelper(object):
             range=sheet_title,
             valueInputOption='RAW',
             body={
-                'values': table
+                'values': data
             }
         ).execute()
 
     @staticmethod
-    def get_sql_contents(Table, query_parameters):
-        """Write contents of a 2-dimensional list to a sheet
+    def get_sql_contents(table, query_parameters):
+        """Loads model data in to a 2D array
 
         Args:
-            Table (Django models object): The Table to query
+            table (Django models object): The table to query
             query_parameters (dict): Parameters to specify which rows to copy
         """
-        sql_rows = Table.objects.filter(**query_parameters)
-        sql_fields = Table._meta.get_fields()
+        sql_rows = table.objects.filter(**query_parameters)
+        sql_fields = table._meta.get_fields()
 
         # Set first row of headers to names of SQL Columns
         table = [[field.name for field in sql_fields]]
@@ -141,11 +141,11 @@ class APIHelper(object):
         return table
 
     @staticmethod
-    def add_nlp_columns(table):
+    def add_nlp_columns(data):
         """Add columns to the table list with natural-language info
 
         Args:
-            table (list): The 2-dimensional list of conversation data
+            data (list): The 2-dimensional list of conversation data
 
 
         Example input structure before method call:
@@ -163,12 +163,12 @@ class APIHelper(object):
             IndexError: The input list is empty
         """
         # Add new headers
-        table[0].extend(['action(s)', 'other persons', 'external parties'])
+        data[0].extend(['action(s)', 'other persons', 'external parties'])
 
         nlp = NLPHelper()
 
         # Loop over all input elements
-        for row in table[1:]: # table[0] is the header row, so we can skip it
+        for row in data[1:]: # table[0] is the header row, so we can skip it
             raw_text = row[2]
             entities = nlp.analyze_text(raw_text, 'entities')
             tokens = nlp.analyze_text(raw_text, 'syntax')

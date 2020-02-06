@@ -33,7 +33,7 @@ This bot uses the following Google APIs:
 - A [Google Cloud Platform](https://cloud.google.com/) account where you can create a project and enable billing.
 - A local terminal with Python 2.7 and pip installed.
 
-> Go [here](https://www.python.org/downloads/release/python-2710/) to install Python 2.7. Pip comes installed with most Python distributions.
+> Go [here](https://www.python.org/downloads/) to install the latest version of Python. Pip comes installed with most Python distributions.
 
 ### 1. Environment Setup
 
@@ -64,10 +64,11 @@ This bot uses the following Google APIs:
 1. [Create a service account and download the service account key](https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account).
     -  When creating the service account, select **Project** > **Owner** under **Project Role**
     - Save the service account key as `service_account.json`.
-1. [Set the environment variable for your service account key](https://cloud.google.com/docs/authentication/getting-started#setting_the_environment_variable) to tell your Google Cloud project where to look for your service account locally.
-
+1. [Create a Cloud SQL MySQL instance](https://cloud.google.com/sql/docs/mysql/create-instance).
+1. Update `app.yaml` to set the [connection instance name](https://cloud.google.com/sql/docs/mysql/connect-app-engine#configuring).
+1. Update `settings.py` to set the database connection settings.
 
 ### 3. Deployment
 
 1. [Deploy the application](https://cloud.google.com/python/django/flexible-environment).
-1. [Publish the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
+1. [Configure the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.

@@ -1,12 +1,6 @@
-runtime: python
-env: flex
+runtime: python37
 entrypoint: gunicorn -b :$PORT productivity_tracker.wsgi
-
-beta_settings:
-  cloud_sql_instances: <your-cloudsql-connection-string>
-
-runtime_config:
-  python_version: 2
 
 env_variables:
   ENABLE_NLP: True
+
