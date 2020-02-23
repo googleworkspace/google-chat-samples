@@ -12,7 +12,7 @@ const ACCOUNT_IMAGE_URL = 'https://www.gstatic.com/images/icons/material/system_
 */
 exports.accountsBot = async (req, res) => {
   const message = req.query.message || req.body.message;
-  if (!message || !message.text || !getAccountName(JSON.stringify(message.text))) {
+  if (!message || !message.text) {
     console.log('invalid input');
     res.send(createTextResponse('Please provide an account to look up'));
   }
@@ -46,7 +46,6 @@ async function accountLookup(client, accountName) {
   let data = [];
 
   accountsTable.forEach((entry) => {
-    console.log(`entry: ${entry}` );
     if (entry[0] == accountName) {
       data = entry;
     }
@@ -147,6 +146,7 @@ function createOwnerCard(data) {
 function createErrorCard(accountName) {
   const cardHeader = {
     title: 'Account Information Not Found',
+    subtitle: 'Account requested: ' + accountName,
     imageUrl: ACCOUNT_IMAGE_URL,
     imageStyle: 'IMAGE',
   };
