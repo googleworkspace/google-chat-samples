@@ -1,32 +1,38 @@
 # Accounts Bot
 
 This demo bot serves account owner information for a fictional sales team. This code sample 
-shows how create a bot that looks up information from a [Google Sheet][data_sheet] and served by a Google 
-Cloud Function. With this bot, a user who requests an account owner's information will either receive
-a card with contact info or an option ensure the data is up-to-date. 
+shows how create a bot that looks up information from a [Google Sheet][data_sheet] and served by a
+[Google Cloud Function][gcf]. With this bot, a user who requests an account owner's information will
+either receive a card with contact info or an option ensure the data is up-to-date if the requested
+account could not be found. 
 
 ![Acme-Lookup](https://cdn.jsdelivr.net/gh/gsuitedevs/hangouts-chat-samples@master/node/accounts-bot/assests/AcmeLookup.png)
 
-Prerequsites: 
-1. `gcloud` set up on your machine
+[gcf]: https://cloud.google.com/functions
+[data_sheet]: https://docs.google.com/spreadsheets/d/1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU/copy
+
+## Prerequisites
+
+1. The [Google Cloud SDK][cloud_sdk] and `gcloud` set up on your machine.
 1. Please be sure to have completed or understood the concepts in the Hangouts Chat 
 Google Cloud Functions [quickstart guide][gcf_bot] first.
 
-[gcf_bot]:https://developers.google.com/hangouts/chat/quickstart/gcf-bot
+[cloud_sdk]: https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup
+[gcf_bot]: https://developers.google.com/hangouts/chat/quickstart/gcf-bot
 
 ## Set up instructions
 
 1. Make a copy of the [data sheet][data_sheet] in your Google Drive.
 1. Create a new Node.js project in your working directory with:
+
 `npm init`
+
 1. Copy the code in index.js to your working directory.
 1. Install the googleapis library to access the Sheets API:
+
 `npm install googleapis --save`
 
-[data_sheet]: https://docs.google.com/spreadsheets/d/1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU/copy
-
-
-### Set up a Google Cloud Project
+### Set up a Google Cloud Project (if needed)
 
 1. [Create a new project][new_project] in the Google Cloud Developer Console.
 Name it "AccountsBot", select a **Billing Account** if prompted, and
@@ -58,14 +64,17 @@ the **ENABLE** button.
 
 1. The Cloud Function at runtime will run as your GCP project's AppEngine Default
 Service Account. Read more [here][functions_iam]. In the Cloud Console, navigate
-to your project's service accounts and copy your AppEngine Service Account address
-which should be in this format: 
-ADD THE REAL URL HERE
+to your project's [service accounts][service_accounts] and copy your AppEngine 
+Service Account address which should be in this format: 
+
+`PROJECT_ID@appspot.gserviceaccount.com`
+
   1. If one is not already present, trigger your Cloud Function from the Functions Console.
   1. Navigate back to your service accounts and it should be present.
 1. Open your data sheet and give this address view-only permissions. 
 
 [cloud_console]: https://console.cloud.google.com/
+[service_accounts]: https://console.cloud.google.com/iam-admin/serviceaccounts
 [functions_iam]: https://cloud.google.com/functions/docs/concepts/iam
 
 ### Publish the bot to Hangouts Chat
