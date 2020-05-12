@@ -55,7 +55,7 @@ def home_post():
     space_name = event_data['space']['name']
     send_async_response(resp, space_name)
 
-    # Return empty jsom respomse simce message already sent via REST API
+    # Return empty json response since message already sent via REST API
     return json.jsonify({})
 
 # [START async-response]
