@@ -11,19 +11,23 @@ const ACCOUNT_IMAGE_URL = 'https://www.gstatic.com/images/icons/material/system_
  * @param {!express:Response} res HTTP response context.
 */
 exports.accountsBot = async (req, res) => {
-  const message = req.query.message || req.body.message;
+  const message = req.body.message;
   if (!message || !message.text) {
-    console.log('invalid input');
-    res.send(createTextResponse('Please provide an account to look up'));
+    console.log('invalid request');
   }
 
-  const accountName = getAccountName(JSON.stringify(message.text));
+  const messageParts = message.text.split(/[ ,]+/);
+  if (messageParts.length != 2) {
+    res.send(createTextResponse('Please enter a single account to look up.'));
+  }
+
+  const accountName = messageParts[1];
   console.log(`accountName: ${accountName}`);
   const sheetsClient = await getSheetsClient();
-  const ownerData = await accountLookup(sheetsClient, accountName);
-  if (ownerData.length > 0) {
+  try {
+    const ownerData = await accountLookup(sheetsClient, accountName);
     res.send(createOwnerCard(ownerData));
-  } else {
+  } catch (error) {
     res.send(createErrorCard(accountName));
   }
 };
@@ -41,16 +45,8 @@ async function accountLookup(client, accountName) {
     range: 'Sheet1!A:D',
   });
   const accountsTable = accountsSheet.data.values;
-  console.log(`accounts: ${JSON.stringify(accountsTable, null, 4)}`);
 
-  let data = [];
-
-  accountsTable.forEach((entry) => {
-    if (entry[0] == accountName) {
-      data = entry;
-    }
-  });
-  return data;
+  return accountsTable.find((entry) => entry[0] === accountName);
 }
 
 /**
@@ -73,28 +69,11 @@ async function getSheetsClient() {
  * @return {JSON} the reponse data
 */
 function createTextResponse(message) {
-  const data = JSON.stringify({
-    text: message,
-  });
-  return data;
+  return {text: message};
 }
 
 /**
- * Gets the last word in the text and removes punctuation if present.
- *
- * @param {String} text the text to strip
- * @return {String} the last word in the input text
- */
-function getAccountName(text) {
-  const words = text.split(/[ ,]+/);
-  // Remove trailing quote
-  const name = words.pop().replace('"', '');
-  // Remove the trailing ? if present
-  return name.replace('?', '');
-}
-
-/**
- *
+ * Creates a JSON with the fields specified.
  *
  * @param {Array} data owner info
  * @return {Object} a card with the owner info
