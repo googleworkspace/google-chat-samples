@@ -38,7 +38,7 @@ This bot uses the following Google APIs:
 ### 1. Environment Setup
 
 1. Clone this repo:
-    `git clone https://github.com/gsuitedevs/hangouts-chat-samples`
+    `git clone https://github.com/googleworkspace/hangouts-chat-samples`
 1. Open a terminal.
 1. Open the root directory:
     `cd hangouts-chat-samples/python/productivity_tracker`
