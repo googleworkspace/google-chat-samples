@@ -55,7 +55,7 @@ This bot uses the following Google APIs:
 
 1. [Create a project on the Google Cloud Platform Console](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project)
 1. [Enable Billing on that Project](https://cloud.google.com/billing/docs/how-to/modify-project)
-1. [Enable the Cloud SQL, Google Drive, Google Sheets, Secret Manager, Cloud Natural Language and Hangouts Chat APIs](https://console.cloud.google.com/flows/enableapi?apiid=drive.googleapis.com,sqladmin.googleapis.com,sheets.googleapis.com,secretmanager.googleapis.com,language.googleapis.com,chat.googleapis.com).
+1. [Enable the Cloud SQL, Compute Engine, Google Drive, Google Sheets, Secret Manager, Cloud Natural Language and Hangouts Chat APIs](https://console.cloud.google.com/flows/enableapi?apiid=compute.googleapis.com,drive.googleapis.com,sqladmin.googleapis.com,sheets.googleapis.com,secretmanager.googleapis.com,language.googleapis.com,chat.googleapis.com).
 1. [Create a service account and download the service account key](https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account).
     -  When creating the service account, select **Project** > **Owner** under **Project Role**
 1. [Create a Cloud SQL MySQL instance](https://cloud.google.com/sql/docs/mysql/create-instance).
