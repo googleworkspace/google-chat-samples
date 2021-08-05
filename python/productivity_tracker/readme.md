@@ -50,6 +50,7 @@ This bot uses the following Google APIs:
     `source env/bin/activate`
 1. Install project dependencies:
     `pip install -r requirements.txt`
+    Note: you may need to `sudo apt-get install libmysqlclient-dev -y`
 
 ### 2. Set up on Cloud Console
 
@@ -69,4 +70,4 @@ This bot uses the following Google APIs:
     Note: you will have to use `tcp=3306` for MySQL
 1. Deploy the application with the service account: 
     `gcloud beta app deploy --service-account SERVICEACCOUNT@PROJECT_ID.iam.gserviceaccount.com`
-1. [Configure the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
+1. [Configure the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish) in the [console](https://console.cloud.google.com/apis/api/chat.googleapis.com/hangouts-chat). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
