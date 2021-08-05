@@ -185,7 +185,7 @@ class APIHelper:
             people = APIHelper.filter_nlp_results(
                 entities,
                 nlp.ENTITY_TYPE,
-                lambda token: token.type,
+                lambda token: token.type_,
                 lambda token: token.name,
                 lambda tag: tag == 'PERSON',
             )
@@ -193,7 +193,7 @@ class APIHelper:
             other_parties = APIHelper.filter_nlp_results(
                 entities,
                 nlp.ENTITY_TYPE,
-                lambda token: token.type,
+                lambda token: token.type_,
                 lambda token: token.name,
                 lambda tag: tag != 'PERSON',
             )
