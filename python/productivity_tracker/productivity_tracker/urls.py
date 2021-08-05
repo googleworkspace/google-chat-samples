@@ -12,7 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from django.conf import settings
 from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
 from productivity_bot.views import ChatbotEvent, MessageUsers
 
@@ -20,4 +22,4 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^message_users', MessageUsers.as_view()),
     url(r'^chatbot_event', ChatbotEvent.as_view()),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
