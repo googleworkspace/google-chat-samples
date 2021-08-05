@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.auth
 from os import environ
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
@@ -25,8 +26,8 @@ class APIHelper:
         'https://www.googleapis.com/auth/drive.file'
     ]
 
-    def __init__(self, keyfile_name):
-        credentials = service_account.Credentials.from_service_account_file(keyfile_name)
+    def __init__(self):
+        credentials, _ = google.auth.default()
         self.credentials = credentials.with_scopes(scopes=APIHelper.scopes)
         self.sheets_service = build('sheets', 'v4', credentials=self.credentials)
         self.drive_service = build('drive', 'v3', credentials=self.credentials)

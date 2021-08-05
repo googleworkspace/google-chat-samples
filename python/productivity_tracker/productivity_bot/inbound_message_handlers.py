@@ -90,7 +90,7 @@ def end_active_loop(user):
     if not active_loop:
         return "You are not in a working session."
 
-    api_helper = APIHelper('service_account.json')
+    api_helper = APIHelper()
 
     sheet_properties, file_existed = api_helper.get_or_create_sheet(user)
     sheet_id = sheet_properties['sheetId']
