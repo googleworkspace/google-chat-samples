@@ -34,7 +34,7 @@ app.post('/', (req, res) => {
   } else if (req.body.type === 'MESSAGE') {
     text = `Your message : ${req.body.message.text}`;
   }
-  return res.json({text});
+  return res.json({text:text});
 });
 
 app.listen(PORT, () => {
