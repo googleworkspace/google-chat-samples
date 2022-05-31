@@ -12,7 +12,20 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import io
 import os
+from google.cloud import secretmanager
+import environ
+
+env = environ.Env(DEBUG=(bool, False))
+
+if os.environ.get("GOOGLE_CLOUD_PROJECT", None):
+    client = secretmanager.SecretManagerServiceClient()
+    name = f"projects/{os.environ.get('GOOGLE_CLOUD_PROJECT')}/secrets/django_settings/versions/latest"
+    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+    env.read_env(io.StringIO(payload))
+else:
+    raise Exception("No GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,7 +35,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'w8m4g!u-(%3&x@bxw4ohekaa-us4a0#xvwe%br52zpgw1@j*66'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -87,40 +100,29 @@ except ImportError:
     pymysql.install_as_MySQLdb()
 
 # [START db_setup]
-if os.getenv('GAE_INSTANCE'):
-    # Running on production App Engine, so connect to Google Cloud SQL using
-    # the unix socket at /cloudsql/<your-cloudsql-connection string>
-    DATABASES = {
-        'default': {
-            # If you are using Cloud SQL for PostgreSQL rather than MySQL, set
-            # 'ENGINE': 'django.db.backends.postgresql' instead of the following.
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '/cloudsql/<your-cloudsql-connection-string>',
-            'NAME': '<your-database-name>',
-            'USER': '<your-database-user>',
-            'PASSWORD': '<your-database-password>',
-            # For PostgresQL, set 'PORT': '5432' instead of the following. Any Cloud
-            # SQL Proxy instances running locally must also be set to tcp:3306.
-            'PORT': '3306',
-        }
+DATABASES = {
+    'default': {
+        # If you are using Cloud SQL for PostgreSQL rather than MySQL, set
+        # 'ENGINE': 'django.db.backends.postgresql' instead of the following.
+        'ENGINE': 'django.db.backends.mysql',
+        'HOST': f'/cloudsql/{env("DB_HOST")}',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD': env("DB_PASSWORD"),
+        # For PostgresQL, set 'PORT': '5432' instead of the following. Any Cloud
+        # SQL Proxy instances running locally must also be set to tcp:3306.
+        'PORT': '3306',
     }
-else:
+}
+
+if os.getenv('USE_CLOUD_SQL_AUTH_PROXY'):
     # Running locally so connect to either a local MySQL instance or connect to
     # Cloud SQL via the proxy. To start the proxy via command line:
     #
     #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
     #
     # See https://cloud.google.com/sql/docs/mysql-connect-proxy
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'HOST': '127.0.0.1',
-            'PORT': '3306',
-            'NAME': '<your-database-name>',
-            'USER': '<your-database-user>',
-            'PASSWORD': '<your-database-password>',
-        }
-    }
+    DATABASES["default"]["HOST"] = "127.0.0.1"
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -157,5 +159,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-
-STATIC_URL = '/static/'
+STATIC_ROOT = "static"
+STATIC_URL = "/static/"
+STATICFILES_DIRS = []

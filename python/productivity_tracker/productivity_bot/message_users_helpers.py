@@ -12,6 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import google.auth
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
@@ -25,7 +26,7 @@ def send_reminder(space_name):
     response = {'text': 'What have you completed since I last checked in?'}
 
     scopes = ['https://www.googleapis.com/auth/chat.bot']
-    credentials = service_account.Credentials.from_service_account_file('service_account.json')
+    credentials, _ = google.auth.default()
     credentials = credentials.with_scopes(scopes=scopes)
     chat = build('chat', 'v1', credentials=credentials)
     chat.spaces().messages().create(

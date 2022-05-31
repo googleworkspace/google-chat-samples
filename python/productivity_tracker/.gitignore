@@ -20,3 +20,6 @@ venv/
 
 # sql proxy
 cloud_sql_proxy
+
+# secret settings
+settings.txt

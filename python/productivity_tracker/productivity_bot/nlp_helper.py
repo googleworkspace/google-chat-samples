@@ -13,14 +13,14 @@
 # limitations under the License.
 
 from google.cloud import language
-from google.cloud.language import enums
-from google.cloud.language import types
+
 
 class NLPHelper:
     ENTITY_TYPE = ('UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION',
                    'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
     POS_TAG = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM',
                'PRON', 'PRT', 'PUNCT', 'VERB', 'X', 'AFFIX')
+
     def __init__(self):
         self.client = language.LanguageServiceClient()
 
@@ -41,10 +41,12 @@ class NLPHelper:
                         (see here:
                         https://cloud.google.com/natural-language/docs/reference/rest/v1/Entity)
         """
-        document = types.Document(
-            content=text,
-            type=enums.Document.Type.PLAIN_TEXT)
+        document = {"content": text, "type_": language.Document.Type.PLAIN_TEXT}
 
-        if analysis_type == 'entities':
-            return self.client.analyze_entities(document).entities
-        return self.client.analyze_syntax(document).tokens
+        if analysis_type == "entities":
+            return self.client.analyze_entities(
+                document=document, encoding_type=language.EncodingType.UTF8
+            ).entities
+        return self.client.analyze_syntax(
+            document=document, encoding_type=language.EncodingType.UTF8
+        ).tokens

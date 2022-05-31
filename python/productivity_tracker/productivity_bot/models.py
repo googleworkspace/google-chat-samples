@@ -28,6 +28,8 @@ class User(models.Model):
     email = models.CharField(max_length=100)
     spreadsheet_id = models.CharField(max_length=100, blank=True, default="")
 
+    def __str__(self):
+        return str(self.email)
 
 class ActiveLoops(models.Model):
     ''' To store all of the users that are currently in a working session
@@ -40,6 +42,13 @@ class ActiveLoops(models.Model):
         on_delete=models.CASCADE,
         related_name="active_loop"
     )
+
+    def __str__(self):
+        return f"Activity loop for {self.user}"
+
+    class Meta:
+        verbose_name = "Activity Loop"
+
 
 
 class UserResponses(models.Model):
@@ -55,3 +64,9 @@ class UserResponses(models.Model):
         related_name="user_responses"
     )
     raw_text = models.CharField(max_length=300)
+
+    def __str__(self):
+        return f"User response in {self.active_loop}"
+
+    class Meta:
+        verbose_name = "User Response"
