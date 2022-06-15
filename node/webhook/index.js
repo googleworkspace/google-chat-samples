@@ -1,6 +1,5 @@
 /**
- * @license
- * Copyright Google Inc.
+ * Copyright 2022 Google LLC.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,21 +15,31 @@
  */
 // [START hangouts_chat_node_webhook]
 
-const fetch = require('node-fetch');
+/**
+ * Sends asynchronous message into Google Chat
+ * @return{obj} response
+ */
+function webhook() {
+  const fetch = require('node-fetch');
+  const webhookURL = 'https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=u9IG_MuTBXw-tnqupPrPNinY2spKFcRBDp6dSldGUAw%3D';
 
-const webhookURL = '<INCOMING-WEBHOOK-URL>';
+  const data = JSON.stringify({
+    'text': 'Hello from a Node script!',
+  });
+  let resp;
+  fetch(webhookURL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+    },
+    body: data,
+  }).then((response) => {
+    resp = response;
+    console.log(response);
+  });
+  return resp;
+}
 
-const data = JSON.stringify({
-  'text': 'Hello from a Node script!',
-});
-
-fetch(webhookURL, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json; charset=UTF-8',
-  },
-  body: data,
-}).then((response) => {
-  console.log(response);
-});
 // [END hangouts_chat_node_webhook]
+
+webhook();
