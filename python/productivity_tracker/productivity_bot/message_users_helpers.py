@@ -17,7 +17,7 @@ from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
 # Adapted from
-# https://github.com/googleworkspace/hangouts-chat-samples/blob/master/python/basic-async-bot/bot.py
+# https://github.com/googleworkspace/hangouts-chat-samples/blob/main/python/basic-async-bot/bot.py
 def send_reminder(space_name):
     """Sends a response back to the Hangouts Chat room asynchronously.
     Args:
