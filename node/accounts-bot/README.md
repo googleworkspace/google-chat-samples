@@ -6,7 +6,7 @@ shows how create a bot that looks up information from a [Google Sheet][data_shee
 either receive a card with contact info or an option ensure the data is up-to-date if the requested
 account could not be found. 
 
-![Acme-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/master/node/accounts-bot/assets/AcmeLookup.png)
+![Acme-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/main/node/accounts-bot/assets/AcmeLookup.png)
 
 [gcf]: https://cloud.google.com/functions
 [data_sheet]: https://docs.google.com/spreadsheets/d/1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU/copy
@@ -106,6 +106,6 @@ Service Account address which should be in this format:
 1.  From the list, select the **AccountsBot** that you created.
 1.  Send the message "Acme" to the bot, you should receive a card shown above.
 1.  Send the message "foo", you should receive the default card:
-![Foo-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/master/node/accounts-bot/assets/FooLookup.png)
+![Foo-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/main/node/accounts-bot/assets/FooLookup.png)
 
 [hangouts_chat]: https://chat.google.com
