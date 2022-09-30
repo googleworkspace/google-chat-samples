@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START hangouts_chat_avatar_bot]
+// [START hangouts_chat_apps_script_webhook]
 function webhook() {
   var url = "https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages";
   var options = {
@@ -28,4 +28,4 @@ function webhook() {
   var response = UrlFetchApp.fetch(url, options);
   Logger.log(response);
 }
-// [END hangouts_chat_avatar_bot]
+// [END hangouts_chat_apps_script_webhook]
