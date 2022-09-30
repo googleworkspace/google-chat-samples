@@ -15,6 +15,7 @@
  */
 package com.google.hangouts.chat.webhook;
 
+// [START hangouts_chat_java_webhook]
 import com.google.gson.Gson;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -22,7 +23,6 @@ import java.net.http.HttpResponse;
 import java.util.Map;
 import java.net.URI;
 
-// [START hangouts_chat_java_webhook]
 public class App {
   private static final String URL = "https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages";
   private static final Gson gson = new Gson();
