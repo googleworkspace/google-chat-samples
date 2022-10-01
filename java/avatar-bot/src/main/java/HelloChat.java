@@ -1,4 +1,3 @@
-
 /**
  * Copyright 2022 Google Inc.
  *
@@ -14,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 // [START hangouts_chat_avatar_bot]
 import com.google.api.services.chat.v1.model.Card;
 import com.google.api.services.chat.v1.model.CardHeader;
