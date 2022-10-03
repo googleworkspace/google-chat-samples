@@ -15,7 +15,7 @@
  */
 package com.google.hangouts.chat.webhook;
 
-// [START hangouts_chat_java_webhook]
+// [START hangouts_chat_webhook]
 import com.google.gson.Gson;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -42,4 +42,4 @@ public class App {
     System.out.println(response.body());
   }
 }
-// [END hangouts_chat_java_webhook]
+// [END hangouts_chat_webhook]
