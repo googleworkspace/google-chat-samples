@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START hangouts_chat_apps_script_webhook]
+
+// [START hangouts_chat_webhook]
 function webhook() {
-  var url = "https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages";
-  var options = {
+  const url = "https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages";
+  const options = {
     "method": "post",
     "headers": {
       "Content-Type": "application/json; charset=UTF-8"
@@ -25,7 +26,7 @@ function webhook() {
       "text": "Hello from Apps Script!"
     })
   };
-  var response = UrlFetchApp.fetch(url, options);
+  const response = UrlFetchApp.fetch(url, options);
   Logger.log(response);
 }
-// [END hangouts_chat_apps_script_webhook]
+// [END hangouts_chat_webhook]
