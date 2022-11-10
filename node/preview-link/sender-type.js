@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START hangouts_chat_node_preview_link]
+// [START hangouts_chat_preview_link]
 
 /**
  * Responds to messages that have links whose URLs match URL patterns
@@ -50,4 +50,4 @@ exports.onMessage = (req, res) => {
   }
 };
 
-// [END hangouts_chat_node_preview_link]
+// [END hangouts_chat_preview_link]
