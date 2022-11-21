@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START python-vote-text-bot]
+# [START vote-text-bot]
 from __future__ import annotations
 
 from typing import Any, Mapping
@@ -117,4 +117,4 @@ def create_message(voter: str, count: int, update: bool) -> Mapping[str, Any]:
       }]
   }
 
-# [END python-vote-text-bot]
+# [END vote_text_bot]

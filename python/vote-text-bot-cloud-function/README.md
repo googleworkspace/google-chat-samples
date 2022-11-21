@@ -11,6 +11,5 @@ Python 3.10 and is hosted on Google Cloud Functions.
 1. [Enable the Hangouts Chat API, configure and publish the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
     Make sure to register the URL for the App Engine instance as the
     **HTTP endpoint** of the bot.
-1. Add the bot to a room or direct message.
 1. Add the Vote bot to a chat room and see a new message from the bot with
   the vote card ready to accept its first vote!
