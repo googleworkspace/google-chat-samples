@@ -119,7 +119,7 @@ public class PubSubBot {
                 .setApplicationName(BOT_NAME)
                 .build();
 
-        chatService.spaces().messages().create(spaceName, reply).execute();x
+        chatService.spaces().messages().create(spaceName, reply).execute();
         consumer.ack();
       } catch (Exception e) {
         e.printStackTrace();
