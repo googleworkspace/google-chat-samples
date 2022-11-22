@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# [START vote-text-bot]
+# [START vote_text_bot]
 from __future__ import annotations
 
 from typing import Any, Mapping
