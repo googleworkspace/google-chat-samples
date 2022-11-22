@@ -7,6 +7,7 @@
 #   $ gcloud topic gcloudignore
 #
 .gcloudignore
+
 # If you would like to upload your .git directory, .gitignore file or files
 # from your .gitignore file, remove the corresponding line
 # below:
@@ -15,5 +16,12 @@
 
 # Python pycache:
 __pycache__/
+
 # Ignored by the build system
 /setup.cfg
+
+# VSCode temporary files
+.history/
+
+# Python virtual envs
+python3.10/

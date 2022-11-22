@@ -16,7 +16,7 @@
 # See https://cloud.google.com/appengine/docs/managed-vms/python/runtime
 #
 
-runtime: python37
+runtime: python310
 
 env_variables:
   CLIENT_SECRET_PATH: "client_secret.json"

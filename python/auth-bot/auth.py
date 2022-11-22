@@ -1,18 +1,35 @@
+# Copyright 2022 Google Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Functionality related to the OAuth2 flow and storing credentials.
 
 Credentials are persisted to Google Cloud Datastore.
 """
 
+from __future__ import annotations
+
 import logging
 import os
 import time
-from typing import Union
+from typing import Any, Union
+
 import flask
 import jwt
-from google.cloud import datastore
-from google.oauth2.credentials import Credentials
-from google.oauth2 import id_token
 from google.auth.transport import requests
+from google.cloud import datastore
+from google.oauth2 import id_token
+from google.oauth2.credentials import Credentials
 from google_auth_oauthlib import flow
 
 CLIENT_SECRET_PATH = os.environ.get('CLIENT_SECRET_PATH', 'client_secret.json')
@@ -33,10 +50,10 @@ PEOPLE_API_SCOPES = [
 class Store:
     """Manages storage in Google Cloud Datastore."""
 
-    def __init__(self):
+    def __init__(self) -> Store:
         self.datastore_client = datastore.Client()
 
-    def get_user_credentials(self, user_name: str) -> Union[Credentials, None]:
+    def get_user_credentials(self, user_name: str) -> Credentials | None:
         """Retrieves stored OAuth2 credentials for a user.
 
         Args:
@@ -52,8 +69,7 @@ class Store:
             return None
         return Credentials(**entity['credentials'])
 
-    def put_user_credentials(
-            self, user_name: str, creds: Credentials) -> None:
+    def put_user_credentials(self, user_name: str, creds: Credentials) -> None:
         """Stores OAuth2 credentials for a user.
 
         Args:
@@ -75,7 +91,7 @@ class Store:
         })
         self.datastore_client.put(entity)
 
-    def delete_user_credentials(self, user_name: str):
+    def delete_user_credentials(self, user_name: str) -> None:
         """Deleted stored OAuth2 credentials for a user.
 
         Args:
@@ -85,12 +101,12 @@ class Store:
         self.datastore_client.delete(key)
 
 
-def get_user_credentials(user_name: str):
+def get_user_credentials(user_name: str) -> Credentials:
     """Gets stored crednetials for a user, if it exists."""
     store = Store()
     return store.get_user_credentials(user_name)
 
-def get_config_url(event):
+def get_config_url(event) -> Any:
     """Gets the authorization URL to redirect the user to.
 
     Args:
@@ -106,7 +122,7 @@ def get_config_url(event):
     token = jwt.encode(payload, JWT_SECRET, algorithm='HS256')
     return flask.url_for('auth.start_auth', token=token, _external=True)
 
-def logout(user_name: str):
+def logout(user_name: str) -> None:
     """Logs out the user, removing their stored credentials and revoking the
     grant
 
@@ -128,7 +144,7 @@ def logout(user_name: str):
 
 
 @mod.route('/start')
-def start_auth():
+def start_auth() -> flask.Response:
     """Begins the oauth flow to authorize access to profile data."""
     token = flask.request.args['token']
     request = jwt.decode(token, JWT_SECRET, algorithm='HS256')
@@ -146,7 +162,7 @@ def start_auth():
     return flask.redirect(oauth2_url)
 
 @mod.route('/callback')
-def on_oauth2_callback():
+def on_oauth2_callback() -> flask.Response:
     """Handles the OAuth callback."""
     saved_state = flask.session['state']
     state = flask.request.args['state']
