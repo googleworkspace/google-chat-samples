@@ -56,15 +56,15 @@ Note: Follow the steps for deployment and configuring the bot for Hangouts Chat
 before running locally.
 
   1. Create a service account for the bot, as documented
-     [here](https://developers.google.com/hangouts/chat/how-tos/service-accounts). 
+     [here](https://developers.google.com/hangouts/chat/how-tos/service-accounts).
      Save the private key in a `service-acct.json` file in the working directory.
   1. Start a virtual environment
   ```
-  virtualenv env
-  source env/bin/activate
+  python3 -m venv python3.10
+  source python3.10/bin/activate
   ```
   1. Install libraries using `pip`.
-     `pip install -r requirements.txt`
+     `pip install -r requirements.txt --upgrade`
   1. Run the sample.
     `GOOGLE_APPLICATION_CREDENTIALS=service-acct.json python main.py`
 
@@ -77,7 +77,7 @@ curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "configComp
 ## Shut down the local environment
 
 ```
-virtualenv deactivate
+deactivate
 ```
 
 ## Troubleshooting

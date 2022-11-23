@@ -1,16 +1,33 @@
-#!/usr/bin/env python3
+# Copyright 2022 Google Inc. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 """Simple bot that exercises Google OAuth and Google People API.
 
 This bot runs on the App Engine Flexible Environment, and uses Google Cloud
 Datastore for storing user credentials.
 """
+from __future__ import annotations
 
 import logging
 import os
+from typing import Any
+
 import flask
-from googleapiclient import discovery
 from google.oauth2.credentials import Credentials
-from  werkzeug.middleware.proxy_fix import ProxyFix
+from googleapiclient import discovery
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 import auth
 
 app = flask.Flask(__name__)
@@ -31,29 +48,31 @@ def home():
     return flask.render_template('home.html')
 
 @app.route('/', methods=['POST'])
-def on_event():
+def on_event() -> (Any | dict):
     """Handler for events from Hangouts Chat."""
-    event = flask.request.get_json()  # type: dict
-    message = event.get('message')
-    if message is not None and 'logout' in message.get('text', '').lower():
-        return on_logout(event)
-    if message is not None:
-        return on_mention(event)
-    if event['type'] == 'ADDED_TO_SPACE':
-        return flask.jsonify({
-            'text': (
-                'Thanks for adding me! '
-                'Try mentioning me with `@MyProfile` to see your profile.'
-            )
-        })
-    return flask.jsonify({})
+    if event := flask.request.get_json():
+      if message := event.get('message'):
+        if 'logout' in message.get('text', '').lower():
+            return on_logout(event)
+        else:
+            return on_mention(event)
+      if event['type'] == 'ADDED_TO_SPACE':
+          return flask.jsonify({
+              'text': (
+                  'Thanks for adding me! '
+                  'Try mentioning me with `@MyProfile` to see your profile.'
+              )
+          })
+      return flask.jsonify({})
+
+    return 'Error: Unknown action'
 
 
 def on_mention(event: dict) -> dict:
     """Handles a mention from Hangouts Chat."""
     user_name = event['user']['name']
     user_credentials = auth.get_user_credentials(user_name)
-    if user_credentials is None:
+    if not user_credentials:
         logging.info('Requesting credentials for user %s', user_name)
         return flask.jsonify({
             'actionResponse': {
@@ -65,7 +84,7 @@ def on_mention(event: dict) -> dict:
     return flask.jsonify(produce_profile_message(user_credentials))
 
 
-def on_logout(event):
+def on_logout(event) -> dict:
     """Handles logging out the user."""
     user_name = event['user']['name']
     try:
@@ -81,7 +100,7 @@ def on_logout(event):
         })
 
 
-def produce_profile_message(creds: Credentials):
+def produce_profile_message(creds: Credentials) -> dict:
     """Generate a message containing the users profile inforamtion."""
     people_api = discovery.build('people', 'v1', credentials=creds)
     try:
