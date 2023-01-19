@@ -40,34 +40,37 @@ exports.helloHangoutsChat = function helloHangoutsChat(req, res) {
 /**
  * Creates a card with two widgets.
  * @param {string} displayName the sender's display name
- * @param {string} imageURL the URL for the sender's avatar
+ * @param {string} imageUrl the URL for the sender's avatar
  * @return {Object} a card with the user's avatar.
  */
-function createMessage(displayName, imageURL) {
+function createMessage(displayName, imageUrl) {
   const cardHeader = {
-    'title': 'Hello ' + displayName + '!',
+    title: `Hello ${displayName}!`,
   };
 
   const avatarWidget = {
-    'textParagraph': {'text': 'Your avatar picture: '},
+    textParagraph: {text: 'Your avatar picture: '},
   };
 
   const avatarImageWidget = {
-    image: {'imageUrl': imageURL},
+    image: {imageUrl},
   };
 
   const avatarSection = {
-    'widgets': [
+    widgets: [
       avatarWidget,
       avatarImageWidget,
     ],
   };
 
   return {
-    'cards': [{
-      'name': 'Avatar Card',
-      'header': cardHeader,
-      'sections': [avatarSection],
+    cardsV2: [{
+      cardId: 'avatarCard',
+      card: {
+        name: 'Avatar Card',
+        header: cardHeader,
+        sections: [avatarSection],
+      }
     }],
   };
 }
