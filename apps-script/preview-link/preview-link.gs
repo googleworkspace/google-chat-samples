@@ -31,56 +31,58 @@ function onMessage(event) {
       'actionResponse': {
         'type': 'UPDATE_USER_MESSAGE_CARDS',
       },
-      'cards': [{
-        'header': {
-          'title': 'Example Customer Service Case',
-          'subtitle': 'Case basics',
-        },
-        'sections': [{
-          'widgets': [
-            {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
-            {'keyValue': {'topLabel': 'Assignee', 'content': 'Charlie'}},
-            {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
-            {'keyValue': {
-              'topLabel': 'Subject', 'content': 'It won\'t turn on...',
-            }},
-          ],
-        },
-        {
-          'widgets': [{
-            'buttons': [{
-              'textButton': {
-                'text': 'OPEN CASE',
-                'onClick': {
-                  'openLink': {
-                    'url': 'https://support.example.com/orders/case123',
-                  },
-                },
+      'cardsV2': [{
+        'cardId': 'previewLink',
+        'card': {
+          'header': {
+            'title': 'Example Customer Service Case',
+            'subtitle': 'Case basics',
+          },
+          'sections': [{
+            'widgets': [
+              {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
+              {'keyValue': {'topLabel': 'Assignee', 'content': 'Charlie'}},
+              {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
+              {
+                'keyValue': {
+                  'topLabel': 'Subject', 'content': 'It won\'t turn on...',
+                }
               },
-            },
-            {
-              'textButton': {
-                'text': 'RESOLVE CASE',
-                'onClick': {
-                  'openLink': {
-                    'url': 'https://support.example.com/orders/case123?resolved=y',
-                  },
-                },
-              },
-            },
-            {
-              'textButton': {
-                'text': 'ASSIGN TO ME',
-                'onClick': {
-                  'action': {
-                    'actionMethodName': 'assign',
-                  },
-                },
-              },
-            },
             ],
+          },
+          {
+            'widgets': [{
+              'buttons': [
+                {
+                  'textButton': {
+                    'text': 'OPEN CASE',
+                    'onClick': {
+                      'openLink': {
+                        'url': 'https://support.example.com/orders/case123',
+                      },
+                    },
+                  },
+                },
+                {
+                  'textButton': {
+                    'text': 'RESOLVE CASE',
+                    'onClick': {
+                      'openLink': {
+                        'url': 'https://support.example.com/orders/case123?resolved=y',
+                      },
+                    },
+                  },
+                },
+                {
+                  'textButton': {
+                    'text': 'ASSIGN TO ME',
+                    'onClick': {'action': {'actionMethodName': 'assign'}}
+                  },
+                },
+              ],
+            }],
           }],
-        }],
+        },
       }],
     };
   }
@@ -126,56 +128,58 @@ function assignCase(actionResponseType) {
       // Dynamically returns the correct actionResponse type.
       'type': actionResponseType,
     },
-    'cards': [{
-      'header': {
-        'title': 'Example Customer Service Case',
-        'subtitle': 'Case basics',
-      },
-      'sections': [{
-        'widgets': [
-          {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
-          {'keyValue': {'topLabel': 'Assignee', 'content': 'You'}},
-          {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
-          {'keyValue': {
-            'topLabel': 'Subject', 'content': 'It won\'t turn on...',
-          }},
-        ],
-      },
-      {
-        'widgets': [{
-          'buttons': [{
-            'textButton': {
-              'text': 'OPEN CASE',
-              'onClick': {
-                'openLink': {
-                  'url': 'https://support.example.com/orders/case123',
-                },
-              },
+    'cardsV2': [{
+      'cardId': 'assignCase',
+      'card': {
+        'header': {
+          'title': 'Example Customer Service Case',
+          'subtitle': 'Case basics',
+        },
+        'sections': [{
+          'widgets': [
+            {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
+            {'keyValue': {'topLabel': 'Assignee', 'content': 'You'}},
+            {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
+            {
+              'keyValue': {
+                'topLabel': 'Subject', 'content': 'It won\'t turn on...',
+              }
             },
-          },
-          {
-            'textButton': {
-              'text': 'RESOLVE CASE',
-              'onClick': {
-                'openLink': {
-                  'url': 'https://support.example.com/orders/case123?resolved=y',
-                },
-              },
-            },
-          },
-          {
-            'textButton': {
-              'text': 'ASSIGN TO ME',
-              'onClick': {
-                'action': {
-                  'actionMethodName': 'assign',
-                },
-              },
-            },
-          },
           ],
+        },
+        {
+          'widgets': [{
+            'buttons': [
+              {
+                'textButton': {
+                  'text': 'OPEN CASE',
+                  'onClick': {
+                    'openLink': {
+                      'url': 'https://support.example.com/orders/case123',
+                    },
+                  },
+                },
+              },
+              {
+                'textButton': {
+                  'text': 'RESOLVE CASE',
+                  'onClick': {
+                    'openLink': {
+                      'url': 'https://support.example.com/orders/case123?resolved=y',
+                    },
+                  },
+                },
+              },
+              {
+                'textButton': {
+                  'text': 'ASSIGN TO ME',
+                  'onClick': {'action': {'actionMethodName': 'assign'}},
+                },
+              },
+            ],
+          }],
         }],
-      }],
+      },
     }],
   };
 }

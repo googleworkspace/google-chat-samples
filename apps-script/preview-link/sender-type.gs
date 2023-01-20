@@ -50,7 +50,7 @@ function assignCase(actionResponseType) {
       'type': actionResponseType,
     },
     // Preview card details
-    'cards': [{}],
+    'cardsV2': [{}],
   };
 }
 
