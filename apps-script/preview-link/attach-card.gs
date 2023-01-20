@@ -31,8 +31,9 @@ function onMessage(event) {
       'actionResponse': {
         'type': 'UPDATE_USER_MESSAGE_CARDS',
       },
-      'cards': [
-        {
+      'cardsV2': [{
+        'cardId': 'attachCard',
+        'card': {
           'header': {
             'title': 'Example Customer Service Case',
             'subtitle': 'Case basics',
@@ -75,20 +76,14 @@ function onMessage(event) {
                 {
                   'textButton': {
                     'text': 'ASSIGN TO ME',
-                    'onClick': {
-                      'action': {
-                        'actionMethodName': 'assign',
-                      },
-                    },
+                    'onClick': {'action': {'actionMethodName': 'assign'}},
                   },
                 },
               ],
-            },
-            ],
-          },
-          ],
+            }],
+          }],
         },
-      ],
+      }],
     };
   }
 
