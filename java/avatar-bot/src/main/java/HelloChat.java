@@ -15,13 +15,14 @@
  */
 
 // [START hangouts_chat_avatar_bot]
-import com.google.api.services.chat.v1.model.Card;
-import com.google.api.services.chat.v1.model.CardHeader;
-import com.google.api.services.chat.v1.model.Image;
+import com.google.api.services.chat.v1.model.CardWithId;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1Card;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1CardHeader;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1Image;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1Section;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1TextParagraph;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1Widget;
 import com.google.api.services.chat.v1.model.Message;
-import com.google.api.services.chat.v1.model.Section;
-import com.google.api.services.chat.v1.model.TextParagraph;
-import com.google.api.services.chat.v1.model.WidgetMarkup;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
@@ -50,15 +51,37 @@ public class HelloChat implements HttpFunction {
   }
 
   Message createMessage(String displayName, String avatarUrl) {
-    CardHeader cardHeader = new CardHeader().setTitle(String.format("Hello %s!", displayName));
-    TextParagraph textParagraph = new TextParagraph().setText("Your avatar picture: ");
-    WidgetMarkup avatarWidget = new WidgetMarkup().setTextParagraph(textParagraph);
-    Image image = new Image().setImageUrl(avatarUrl);
-    WidgetMarkup avatarImageWidget = new WidgetMarkup().setImage(image);
-    Section section = new Section().setWidgets(List.of(avatarWidget, avatarImageWidget));
-    Card card = new Card().setName("Avatar Card").setHeader(cardHeader).setSections(List.of(section));
+    GoogleAppsCardV1CardHeader cardHeader = new GoogleAppsCardV1CardHeader();
+    cardHeader.setTitle(String.format("Hello %s!", displayName));
 
-    return new Message().setCards(List.of(card));
+    GoogleAppsCardV1TextParagraph textParagraph = new GoogleAppsCardV1TextParagraph();
+    textParagraph.setText("Your avatar picture: ");
+
+    GoogleAppsCardV1Widget avatarWidget = new GoogleAppsCardV1Widget();
+    avatarWidget.setTextParagraph(textParagraph);
+
+    GoogleAppsCardV1Image image = new GoogleAppsCardV1Image();
+    image.setImageUrl(avatarUrl);
+
+    GoogleAppsCardV1Widget avatarImageWidget = new GoogleAppsCardV1Widget();
+    avatarImageWidget.setImage(image);
+
+    GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
+    section.setWidgets(List.of(avatarWidget, avatarImageWidget));
+
+    GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
+    card.setName("Avatar Card");
+    card.setHeader(cardHeader);
+    card.setSections(List.of(section));
+
+    CardWithId cardWithId = new CardWithId();
+    cardWithId.setCardId("previewLink");
+    cardWithId.setCard(card);
+
+    Message message = new Message();
+    message.setCardsV2(List.of(cardWithId));
+
+    return message;
   }
 }
 // [END hangouts_chat_avatar_bot]

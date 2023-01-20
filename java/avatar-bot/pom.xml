@@ -46,9 +46,9 @@ limitations under the License.
 
     <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-chat -->
     <dependency>
-        <groupId>com.google.apis</groupId>
-        <artifactId>google-api-services-chat</artifactId>
-        <version>v1-rev135-1.25.0</version>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-chat</artifactId>
+      <version>v1-rev20230115-2.0.0</version>
     </dependency>
   </dependencies>
 
