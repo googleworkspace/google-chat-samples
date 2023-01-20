@@ -25,7 +25,7 @@
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res.send(
-        'Hello! This function is meant to be used in a Google Chat Space.');
+      'Hello! This function is meant to be used in a Google Chat Space.');
   }
 
   // Checks for the presence of event.message.matchedUrl and attaches a card
@@ -60,69 +60,72 @@ exports.onMessage = (req, res) => {
  * @return {Object} a card with URL preview
  */
 function createMessage(
-    actionResponseType = 'UPDATE_USER_MESSAGE_CARDS',
-    assignee = 'Charlie'
+  actionResponseType = 'UPDATE_USER_MESSAGE_CARDS',
+  assignee = 'Charlie'
 ) {
   return {
     'actionResponse': {'type': actionResponseType},
-    'cards': [
+    'cardsV2': [
       {
-        'header': {
-          'title': 'Example Customer Service Case',
-          'subtitle': 'Case basics',
-        },
-        'sections': [
-          {
-            'widgets': [
-              {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
-              {'keyValue': {'topLabel': 'Assignee', 'content': assignee}},
-              {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
-              {
-                'keyValue': {
-                  'topLabel': 'Subject', 'content': 'It won"t turn on...',
+        'cardId': 'previewLink',
+        'card': {
+          'header': {
+            'title': 'Example Customer Service Case',
+            'subtitle': 'Case basics',
+          },
+          'sections': [
+            {
+              'widgets': [
+                {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
+                {'keyValue': {'topLabel': 'Assignee', 'content': assignee}},
+                {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
+                {
+                  'keyValue': {
+                    'topLabel': 'Subject', 'content': 'It won"t turn on...',
+                  },
                 },
-              },
-            ],
-          },
-          {
-            'widgets': [
-              {
-                'buttons': [
-                  {
-                    'textButton': {
-                      'text': 'OPEN CASE',
-                      'onClick': {
-                        'openLink': {
-                          'url': 'https://support.example.com/orders/case123',
+              ],
+            },
+            {
+              'widgets': [
+                {
+                  'buttons': [
+                    {
+                      'textButton': {
+                        'text': 'OPEN CASE',
+                        'onClick': {
+                          'openLink': {
+                            'url': 'https://support.example.com/orders/case123',
+                          },
                         },
                       },
                     },
-                  },
-                  {
-                    'textButton': {
-                      'text': 'RESOLVE CASE',
-                      'onClick': {
-                        'openLink': {
-                          'url': 'https://support.example.com/orders/case123?resolved=y',
+                    {
+                      'textButton': {
+                        'text': 'RESOLVE CASE',
+                        'onClick': {
+                          'openLink': {
+                            'url': 'https://support.example.com/orders/case123?resolved=y',
+                          },
                         },
                       },
                     },
-                  },
-                  {
-                    'textButton': {
-                      'text': 'ASSIGN TO ME',
-                      'onClick': {
-                        'action': {
-                          'actionMethodName': 'assign',
+                    {
+                      'textButton': {
+                        'text': 'ASSIGN TO ME',
+                        'onClick': {
+                          'action': {
+                            'actionMethodName': 'assign',
+                          },
                         },
                       },
                     },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
+                  ],
+                },
+              ],
+            },
+          ],
+        }
       },
     ],
   };
