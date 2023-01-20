@@ -21,10 +21,10 @@
  * @param {Object} event the event object from Google Chat
  */
 function onMessage(event) {
-    const displayName = event.message.sender.displayName;
-    const avatarUrl = event.message.sender.avatarUrl;
+  const displayName = event.message.sender.displayName;
+  const avatarUrl = event.message.sender.avatarUrl;
 
-    return createMessage(displayName, avatarUrl);
+  return createMessage(displayName, avatarUrl);
 }
 
 /**
@@ -34,31 +34,34 @@ function onMessage(event) {
  * @return {Object} a card with the sender's avatar.
  */
 function createMessage(displayName, avatarUrl) {
-    const cardHeader = {
-        title: `Hello ${displayName}!`
-    };
+  const cardHeader = {
+    title: `Hello ${displayName}!`
+  };
 
-    const avatarWidget = {
-        textParagraph: { text: 'Your avatar picture: ' }
-    };
+  const avatarWidget = {
+    textParagraph: {text: 'Your avatar picture: '}
+  };
 
-    const avatarImageWidget = {
-        image: { imageUrl: avatarUrl }
-    };
+  const avatarImageWidget = {
+    image: {imageUrl: avatarUrl}
+  };
 
-    const avatarSection = {
-        widgets: [
-            avatarWidget,
-            avatarImageWidget
-        ],
-    };
+  const avatarSection = {
+    widgets: [
+      avatarWidget,
+      avatarImageWidget
+    ],
+  };
 
-    return {
-        cards: [{
-            name: 'Avatar Card',
-            header: cardHeader,
-            sections: [avatarSection]
-        }]
-    };
+  return {
+    cardsV2: [{
+      cardId: 'avatarCard',
+      card: {
+        name: 'Avatar Card',
+        header: cardHeader,
+        sections: [avatarSection],
+      }
+    }],
+  };
 }
 // [END hangouts_chat_avatar_bot]
