@@ -23,7 +23,7 @@
  * @param {Object} req Request sent from Hangouts Chat room
  * @param {Object} res Response to send back
  */
-exports.helloHangoutsChat = function helloHangoutsChat(req, res) {
+exports.helloChat = function helloChat(req, res) {
   if (req.method === 'GET' || !req.body.message) {
     res.send('Hello! This function is meant to be used in a Hangouts Chat ' +
       'Room.');
