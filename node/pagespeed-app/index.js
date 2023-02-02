@@ -48,9 +48,9 @@ exports.checkSpeed = async (req, res) => {
 
   if (response.ok) {
     const data = await response.json();
-    res.send(createMessage(data));
+    res.send(createMessage(url, data));
   } else {
-    res.json({text: 'Something went wrong. Please make sure the URL is in the correct format. Example https://example.com or https://www.example.com.'});
+    res.json({text: 'Something went wrong. Please make sure that the URL is of the format of https://example.com or https://www.example.com.'});
   }
 };
 
@@ -66,10 +66,11 @@ function validURL(url) {
 
 /**
  * Creates a card with PageSpeed data.
+ * @param {string} url the URL.
  * @param {!Object} data the PageSpeed data.
  * @return {!Object} a card with the PageSpeed data.
  */
-function createMessage(data) {
+function createMessage(url, data) {
   const header = {
     title: 'PageSpeed Insights',
     subtitle: 'Powered by PageSpeed App',
@@ -82,7 +83,7 @@ function createMessage(data) {
     widgets: [
       {
         textParagraph: {
-          text: `Page tested: ${data.id}`,
+          text: `Page tested: ${url}`,
         },
       },
     ],
