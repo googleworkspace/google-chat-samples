@@ -4,7 +4,7 @@ module.exports = {
     "node": true,
   },
   "parserOptions": {
-    "ecmaVersion": 2016,
+    "ecmaVersion": 2020,
   },
   "rules": {
     "no-console": "off",

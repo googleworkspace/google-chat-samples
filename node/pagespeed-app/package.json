@@ -1,0 +1,22 @@
+{
+  "name": "pagespeed-app",
+  "version": "1.0.0",
+  "description": "PageSpeed Insights Chat App",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/googleworkspace/hangouts-chat-samples.git"
+  },
+  "author": "https://github.com/vinay-google",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/googleworkspace/hangouts-chat-samples/issues"
+  },
+  "homepage": "https://github.com/googleworkspace/hangouts-chat-samples#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.0"
+  }
+}
