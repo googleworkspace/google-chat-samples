@@ -17,6 +17,6 @@
   },
   "homepage": "https://github.com/googleworkspace/hangouts-chat-samples#readme",
   "dependencies": {
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^2.6.9"
   }
 }
