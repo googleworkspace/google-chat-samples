@@ -34,7 +34,7 @@ exports.checkSpeed = async (req, res) => {
     });
   }
 
-  const url = req.body.message.text;
+  const url = req.body.message.argumentText.replace(/\s/g, '');
 
   if (!validURL(url)) {
     if (req.body.message.space.type === 'DM') {
