@@ -4,7 +4,7 @@ const ACCOUNTS_SHEET_ID = '1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU';
 const ACCOUNTS_SHEET_URL = 'https://docs.google.com/spreadsheets/d/1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU/edit#gid=0';
 const ACCOUNT_IMAGE_URL = 'https://www.gstatic.com/images/icons/material/system_gm/1x/account_circle_black_18dp.png';
 
-/**
+/*
  * Looks up the account owner for the company requested.
  *
  * @param {!express:Request} req HTTP request context.
