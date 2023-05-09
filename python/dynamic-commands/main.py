@@ -28,3 +28,16 @@ def dynamic(req: Union[Mapping[str, Any], flask.Request]):
     request_json = req.get_json(silent=True)
 
   return DynamicCommandHandler().process(req=request_json)
+
+
+def main(unused_argv):
+  """Used for testing.
+
+  Args:
+      unused_argv (List[Any]): unused
+  """
+  DynamicCommandHandler().execute_dynamic_command(command='hello', attributes={})
+
+
+if __name__ == '__main__':
+  main([])

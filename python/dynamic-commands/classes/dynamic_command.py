@@ -22,24 +22,38 @@ from card_framework.v2.message import Message
 from card_framework.v2.section import Section
 from card_framework.v2.widgets.decorated_text import DecoratedText
 from card_framework.v2.widgets.icon import Icon
-from classes.dynamic import DynamicClass
+from classes.dynamic import DynamicClass, CloudStorage, SecretManager
 from stringcase import snakecase
 
 from . import DictObj, error_to_trace
 from classes import decorators
 
-
 class DynamicCommandHandler(object):
   @property
   def request(self) -> DictObj:
+    """The request, stored as a `DictObj`.
+
+    Returns:
+        DictObj: the request
+    """
     return self._request
 
   @request.setter
   def request(self, request: Mapping[str, Any]) -> None:
+    """Set the request value.
+
+    Args:
+        request (Mapping[str, Any]): the request in json
+    """
     self._request = DictObj(request)
 
   @property
   def project(self) -> str:
+    """The Cloud Project in which the App is running from the environment.
+
+    Returns:
+        str: GCP name
+    """
     return os.environ.get('GOOGLE_CLOUD_PROJECT')
 
   @decorators.timeit
@@ -57,7 +71,8 @@ class DynamicCommandHandler(object):
     """
     try:
       processor = DynamicClass.install(module_name=command,
-                                       class_name='HelloWorld')
+                                       class_name='HelloWorld',
+                                       storage=CloudStorage)
       output = processor().run(attributes=attributes)
     except Exception as e:
       print(f'Exception in command processor: {error_to_trace(e)}')
@@ -66,6 +81,14 @@ class DynamicCommandHandler(object):
     return output
 
   def process(self, req: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Processes the input from the Chat App
+
+    Args:
+        req (Mapping[str, Any]): the request in json
+
+    Returns:
+        Mapping[str, Any]: json output to return to the Chat
+    """
     self.request = req
     print(f'Message received: {self.request}')
 
@@ -108,6 +131,8 @@ class DynamicCommandHandler(object):
                 print(f'Loading and running {text}')
                 output = self.execute_dynamic_command(
                     command, {"request_json": req})
+                output = self.execute_dynamic_command(
+                    command, {"request_json": req})
 
           elif self.request.message.space.type == 'DM':
             # This is just random text in a DM with the bot. Anything that's
@@ -118,6 +143,8 @@ class DynamicCommandHandler(object):
                 else self.request.message.text
             command = snakecase(text).lower()
             print(f'Loading and running {text}')
+            output = self.execute_dynamic_command(
+                command, {"request_json": req})
             output = self.execute_dynamic_command(
                 command, {"request_json": req})
 
