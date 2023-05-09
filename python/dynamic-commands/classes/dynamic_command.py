@@ -23,7 +23,6 @@ from card_framework.v2.section import Section
 from card_framework.v2.widgets.decorated_text import DecoratedText
 from card_framework.v2.widgets.icon import Icon
 from classes.dynamic import DynamicClass, CloudStorage, SecretManager
-from classes.dynamic import DynamicClass, CloudStorage, SecretManager
 from stringcase import snakecase
 
 from . import DictObj, error_to_trace
@@ -62,7 +61,6 @@ class DynamicCommandHandler(object):
     """
     return os.environ.get('GOOGLE_CLOUD_PROJECT')
 
-  @decorators.timeit
   def execute_dynamic_command(self,
                               command: str,
                               attributes: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -76,6 +74,9 @@ class DynamicCommandHandler(object):
         Mapping[str, Any]: the resulting output json
     """
     try:
+      # To use secret manager instead, simply change 'storage=CloudStorage'
+      # to read 'storage=SecretManager'. All the imports have been left in place
+      # above to make this as easy as possible.
       processor = DynamicClass.install(module_name=command,
                                        class_name='HelloWorld',
                                        storage=CloudStorage)
