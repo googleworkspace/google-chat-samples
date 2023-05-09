@@ -91,20 +91,19 @@ APIS_USED=(
   "storage"
   "storage-api"
 )
-ACTIVE_SERVICES="$(gcloud --project=${PROJECT} services list | cut -f 1 -d' ' | grep -v NAME)"
 
-for api in ${APIS_USED[@]}; do
-  if [[ "${ACTIVE_SERVICES}" =~ ${api} ]]; then
-    echo "${api} already active"
-  else
-    if [ ${ACTIVATE_APIS} -eq 1 ]; then
+if [ ${ACTIVATE_APIS} -eq 1 ]; then
+  ACTIVE_SERVICES="$(gcloud --project=${PROJECT} services list | cut -f 1 -d' ' | grep -v NAME)"
+
+  for api in ${APIS_USED[@]}; do
+    if [[ "${ACTIVE_SERVICES}" =~ ${api} ]]; then
+      echo "${api} already active"
+    else
       echo "Activating ${api}"
       ${DRY_RUN} gcloud --project=${PROJECT} services enable ${api}.googleapis.com
-    else
-      echo "WARNING: ${api} is not active; this sample will fail unless you activate this manually."
     fi
-  fi
-done
+  done
+fi
 
 if [ ${DEPLOY_STORAGE} -eq 1 ]; then
   BUCKET=${PROJECT}-dynamic-commands
