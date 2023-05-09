@@ -52,7 +52,7 @@ buildName:
 dockerRegistry: CONTAINER_REGISTRY
 entryPoint: dynamic
 environmentVariables:
-  GCP_PROJECT: <PROJECT>
+  GOOGLE_CLOUD_PROJECT: <PROJECT>
 httpsTrigger:
   securityLevel: SECURE_OPTIONAL
   url: <CHAT APP ENDPOINT URL>

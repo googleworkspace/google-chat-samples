@@ -39,7 +39,7 @@ class DynamicCommandHandler(object):
 
   @property
   def project(self) -> str:
-    return os.environ.get('GCP_PROJECT')
+    return os.environ.get('GOOGLE_CLOUD_PROJECT')
 
   def execute_dynamic_command(self,
                               command: str,

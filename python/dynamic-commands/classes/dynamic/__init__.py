@@ -74,7 +74,7 @@ class DynamicClassLoader(abc.Loader):
       # GCS? BQ? Firestore? All good options
       filename = module.__name__.split('.')[-1]
       code = Cloud_Storage.fetch_file(
-          bucket=(f'{os.environ.get("GCP_PROJECT")}-dynamic-commands'),
+          bucket=(f'{os.environ.get("GOOGLE_CLOUD_PROJECT")}-dynamic-commands'),
           file=f'{filename}.py'
       )
       exec(code, vars(module))
