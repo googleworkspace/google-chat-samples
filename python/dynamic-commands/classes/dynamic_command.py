@@ -23,6 +23,7 @@ from card_framework.v2.section import Section
 from card_framework.v2.widgets.decorated_text import DecoratedText
 from card_framework.v2.widgets.icon import Icon
 from classes.dynamic import DynamicClass, CloudStorage, SecretManager
+from classes.dynamic import DynamicClass, CloudStorage, SecretManager
 from stringcase import snakecase
 
 from . import DictObj, error_to_trace
@@ -31,6 +32,11 @@ from classes import decorators
 class DynamicCommandHandler(object):
   @property
   def request(self) -> DictObj:
+    """The request, stored as a `DictObj`.
+
+    Returns:
+        DictObj: the request
+    """
     """The request, stored as a `DictObj`.
 
     Returns:
@@ -95,7 +101,7 @@ class DynamicCommandHandler(object):
     try:
       output = dict()
 
-      match req.get('type'):
+      match self.request.type:
         case 'MESSAGE':
           if req.get('message').get('slashCommand'):
             # A recognized slash command. These must be defined in the UI
@@ -103,22 +109,13 @@ class DynamicCommandHandler(object):
             # Unknown slash commands ("/hello" for example) would be treated
             # as random text, and passed as a mesage annotation to be handled by
             # one of the below cases.
-            # We have not defined any slash commands in the UI, so this it left
+            # We have not defined any slash commands in the UI, so this is left
             # as an example only.
-
-            # match self.request.message.annotations[0].slashCommand.commandName:
-            #   case '/list':
-            #     output = self.execute_dynamic_command(command='list',
-            #                                           request_json=req)
-
-            #   case '/create':
-            #     output = self.fetch_new_job_details()
-
-            #   case '/edit':
-            #     output = self.edit_job()
-
             output = self.error(
-                message='Unsupported action {self.request.message.annotations[0].slashCommand.commandName}', type=unknown)
+                message=(
+                    f'Unsupported action '
+                    f'{self.request.message.annotations[0].slashCommand.commandName}'),
+                type=unknown)
 
           elif self.request.message.annotations \
                   and self.request.message.annotations[0].userMention:
@@ -128,9 +125,6 @@ class DynamicCommandHandler(object):
             match ' '.join(self.request.message.text.split(' ')[1:]):
               case _ as text:
                 command = snakecase(text).lower()
-                print(f'Loading and running {text}')
-                output = self.execute_dynamic_command(
-                    command, {"request_json": req})
                 output = self.execute_dynamic_command(
                     command, {"request_json": req})
 
@@ -142,11 +136,8 @@ class DynamicCommandHandler(object):
                 if self.request.message.text[0] == '/' \
                 else self.request.message.text
             command = snakecase(text).lower()
-            print(f'Loading and running {text}')
-            output = self.execute_dynamic_command(
-                command, {"request_json": req})
-            output = self.execute_dynamic_command(
-                command, {"request_json": req})
+            output = self.execute_dynamic_command(command,
+                                                  {"request_json": req})
 
           else:
             # Anything else? IDK, raise an error.
@@ -164,7 +155,7 @@ class DynamicCommandHandler(object):
             output = self.error(self.request.action.actionMethodName)
 
         case 'ADDED_TO_SPACE':
-          return 'Thanks!'
+          return {'text': 'Thanks for adding me!'}
 
         case _ as unknown:
           output = self.error(message='Unsupported action {type}', type=unknown)
