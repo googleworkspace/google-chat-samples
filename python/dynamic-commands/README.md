@@ -19,12 +19,6 @@ and development experience.
    - If you'd rather perform these steps manually, [information](#manual-installation-and-gcp-setup) is at the bottom
      of this README
 2. Copy the contents of the `command_files` to the newly created bucket in
-1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
-   - If you'd rather perform these steps manually, [information](#1-manual-installation-and-gcp-setup) is at the bottom
-     of this README
-2. Copy the contents of the `command_files` to the newly created bucket in
-   Google Cloud Storage.
-3. Setup your Chat App (you will need information from step 3 to complete
 3. Setup your Chat App (you will need information from step 3 to complete
    this.).
 
@@ -35,9 +29,6 @@ This is a simple shell command file to assist with the installation process.
 At a minimum, it should be run specifing the project into which the App is to
 be installed, along with the service account as which it will run.
 
-```
-./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>
-```
 ```
 ./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>
 ```
@@ -94,17 +85,11 @@ be a bucket with the following cloud storage URL:
 ```
 gs://<PROJECT>-dynamic-commands
 ```
-```
-gs://<PROJECT>-dynamic-commands
-```
 
 You should now copy the contents of the `command_files` folder into this bucket.
 These are the dynamic commands that the Chat App will recognize and load.
 This can be done from the command line with the following command:
 
-```
-gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
-```
 ```
 gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
 ```
@@ -146,11 +131,7 @@ which the bot responds.
 
 All you need to to is create a new class extending `classes.dynamic.DynamicClass`,
 as you can see in `hello.py`. The new class **MUST** implement a method
-as you can see in `hello.py`. The new class **MUST** implement a method
 
-```python
-def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
-```
 ```python
 def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
 ```
