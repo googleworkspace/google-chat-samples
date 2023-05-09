@@ -26,6 +26,7 @@ from classes.dynamic import DynamicClass
 from stringcase import snakecase
 
 from . import DictObj, error_to_trace
+from classes import decorators
 
 
 class DynamicCommandHandler(object):
@@ -41,6 +42,7 @@ class DynamicCommandHandler(object):
   def project(self) -> str:
     return os.environ.get('GOOGLE_CLOUD_PROJECT')
 
+  @decorators.timeit
   def execute_dynamic_command(self,
                               command: str,
                               attributes: Mapping[str, Any]) -> Mapping[str, Any]:
@@ -55,7 +57,7 @@ class DynamicCommandHandler(object):
     """
     try:
       processor = DynamicClass.install(module_name=command,
-                                           class_name='HelloWorld')
+                                       class_name='HelloWorld')
       output = processor().run(attributes=attributes)
     except Exception as e:
       print(f'Exception in command processor: {error_to_trace(e)}')
@@ -104,7 +106,8 @@ class DynamicCommandHandler(object):
               case _ as text:
                 command = snakecase(text).lower()
                 print(f'Loading and running {text}')
-                output = self.execute_dynamic_command(command, {"request_json": req})
+                output = self.execute_dynamic_command(
+                    command, {"request_json": req})
 
           elif self.request.message.space.type == 'DM':
             # This is just random text in a DM with the bot. Anything that's
@@ -115,7 +118,8 @@ class DynamicCommandHandler(object):
                 else self.request.message.text
             command = snakecase(text).lower()
             print(f'Loading and running {text}')
-            output = self.execute_dynamic_command(command, {"request_json": req})
+            output = self.execute_dynamic_command(
+                command, {"request_json": req})
 
           else:
             # Anything else? IDK, raise an error.

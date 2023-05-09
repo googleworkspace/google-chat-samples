@@ -13,20 +13,21 @@
 # limitations under the License.
 from __future__ import annotations
 
+import logging
 import os
 import sys
 import types
 from importlib import abc, import_module, machinery, reload
 from typing import Any, Dict, Mapping, Optional
 
-from .cloud_storage import Cloud_Storage
+from google.cloud import storage
 
 
 class DynamicClassFinder(abc.MetaPathFinder):
   """Check class type
 
   This class checks to see if the class being loaded is a subclass of
-  'DynamicClass'. If it isn't, it won't be loaded.
+  'DynamicClass' and in the correct package. If it isn't, it won't be loaded.
   """
 
   def find_spec(self,
@@ -44,9 +45,11 @@ class DynamicClassFinder(abc.MetaPathFinder):
     Returns:
         machinery.ModuleSpec: a module spec
     """
-    print(f'in find_spec: full_name = "{fullname}"')
+    logging.debug(f'in find_spec: full_name = "{fullname}"')
     if 'dynamic' not in fullname:
-      return None                     # we don't handle this this
+      # Ignore anything requested that is not a part of the dynamic loader
+      # package.
+      return None
 
     else:
       return machinery.ModuleSpec(fullname, DynamicClassLoader())
@@ -59,7 +62,6 @@ class DynamicClassLoader(abc.Loader):
   dynamically. The location to check is hardwired here for security
   reasons.
   """
-
   def exec_module(self, module: types.ModuleType):
     """Read the code from GCS and execute (load) it.
 
@@ -70,14 +72,19 @@ class DynamicClassLoader(abc.Loader):
         ModuleNotFoundError: raised if the module does not exist.
     """
     try:
-      # Fetch the code here as string:
-      # GCS? BQ? Firestore? All good options
+      # Split the package to get the base class name - it's the last element
+      # of the fully qualified name.
       filename = module.__name__.split('.')[-1]
-      code = Cloud_Storage.fetch_file(
-          bucket=(f'{os.environ.get("GOOGLE_CLOUD_PROJECT")}-dynamic-commands'),
-          file=f'{filename}.py'
-      )
-      exec(code, vars(module))
+
+      # Fetch the code here as string.
+      # GCS? BQ? Firestore? Secret Manager? All good options - but for this
+      # purpose we're hardcoding a specific GCS bucket. More, we're not passing
+      # any credentials so it will be accessed as the service account.
+      bucket=f'{os.environ.get("GOOGLE_CLOUD_PROJECT")}-dynamic-commands'
+      source=f'{filename}.py'
+      client = storage.Client()
+      code = client.get_bucket(bucket).blob(source).download_as_string()
+
     except:
       raise ModuleNotFoundError()
 
@@ -117,8 +124,8 @@ class DynamicClass(object):
     """Run the user's slash command code
 
     Args:
-        context ([type], optional): Cloud Function context. Defaults to None.
         **attributes: list of attributes passed to the Class.
+                      These are optional.
 
     Returns:
         Dict[str, Any]: return value

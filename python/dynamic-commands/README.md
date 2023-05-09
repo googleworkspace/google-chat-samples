@@ -9,7 +9,7 @@ and development experience.
 > injections. As a result, care should be taken when
 > considering whether or not to promote this solution to production.
 
-## Deploy the sample
+## Deploying the sample
 
 1. [Install the Google Cloud SDK](https://cloud.google.com/sdk/downloads)
    if you haven't already and ensure the `gcloud` command works.
