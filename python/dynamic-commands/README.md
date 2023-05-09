@@ -15,11 +15,13 @@ and development experience.
    if you haven't already and ensure the `gcloud` command works.
 1. [Create a new Google Cloud Platform project](https://console.cloud.google.com)
    or select an existing project.
-1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
-   - If you'd rather perform these steps manually, [information](#manual-installation-and-gcp-setup) is at the bottom
+1. [Install the Chat App](#installsh) using the provided installer (`install.sh`).
+   - If you'd rather perform these steps manually,
+     [information](#manual-installation-and-gcp-setup) is at the bottom
      of this README
-2. Copy the contents of the `command_files` to the newly created bucket in
-3. Setup your Chat App (you will need information from step 3 to complete
+1. [Copy the contents of the `command_files`](#copy-the-dynamic-commands-to-cloud-storage) to the bucket in
+   Google Cloud Storage.
+2. [Setup your Chat App](#set-up-the-chat-app-in-cloud-console) (you will need information from step 3 to complete
    this.).
 
 ## `install.sh`
