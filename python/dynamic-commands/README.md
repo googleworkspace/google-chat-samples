@@ -19,7 +19,12 @@ and development experience.
    - If you'd rather perform these steps manually, [information](#1-manual-installation-and-gcp-setup) is at the bottom
      of this README
 2. Copy the contents of the `command_files` to the newly created bucket in
+1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
+   - If you'd rather perform these steps manually, [information](#1-manual-installation-and-gcp-setup) is at the bottom
+     of this README
+2. Copy the contents of the `command_files` to the newly created bucket in
    Google Cloud Storage.
+3. Setup your Chat App (you will need information from step 3 to complete
 3. Setup your Chat App (you will need information from step 3 to complete
    this.).
 
@@ -30,6 +35,9 @@ This is a simple shell command file to assist with the installation process.
 At a minimum, it should be run specifing the project into which the App is to
 be installed, along with the service account as which it will run.
 
+```
+./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>
+```
 ```
 ./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>
 ```
@@ -49,6 +57,7 @@ complete list of usage instructions.
 
 The installer will also deploy the Cloud Function and all it's necessary files
 from the current directory, printing out the result of the deployment like so:
+
 
 ```
 availableMemoryMb: 4096
@@ -85,11 +94,17 @@ be a bucket with the following cloud storage URL:
 ```
 gs://<PROJECT>-dynamic-commands
 ```
+```
+gs://<PROJECT>-dynamic-commands
+```
 
 You should now copy the contents of the `command_files` folder into this bucket.
 These are the dynamic commands that the Chat App will recognize and load.
 This can be done from the command line with the following command:
 
+```
+gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
+```
 ```
 gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
 ```
@@ -102,7 +117,7 @@ gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
   - **App status**: LIVE - Available to users
   - **App name**: "Dynamic Bot"
   - **Bot name**: "Dynamic Bot"
-  - **Avatar URL**: `https://www.gstatic.com/images/icons/material/system/2x/app_shortcut_48dp.png`
+  - **Avatar URL**: `https://developers.google.com/chat/images/chat-product-icon.png`
   - **Description**: "Dynamically loaded chat functionality."
   - **Functionality**: Enable 'Receive 1:1 messages', leave 'Join spaces' unchecked.
   - **Connection settings**: Select 'App URL' and enter the `<CHAT APP ENDPOINT URL>` from above.
@@ -131,7 +146,11 @@ which the bot responds.
 
 All you need to to is create a new class extending `classes.dynamic.DynamicClass`,
 as you can see in `hello.py`. The new class **MUST** implement a method
+as you can see in `hello.py`. The new class **MUST** implement a method
 
+```python
+def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
+```
 ```python
 def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
 ```
@@ -139,6 +158,14 @@ def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
 which is called when loaded. You can see this in the main class of this sample,
 `dynamic_command.py`, in the method `execute_dynamic_command`. The return
 value is the Chat response in JSON.
+
+> **IMPORTANT NOTE** \
+> Dynamic functions can only access libraries already mentioned in the
+> `requirements.txt` file. If you are planning on using any other Cloud APIs
+> (Big Query, or Secret Manager for example) or other third party libraries,
+> you will have to ensure that those APIs are included in the `requirements.txt`
+> file and the entire Cloud Function will need to be redeployed to include them
+> prior to trying to use them in a dynamic class.
 
 ---
 
