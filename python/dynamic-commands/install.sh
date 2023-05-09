@@ -84,7 +84,10 @@ done
 # Check for active APIs
 APIS_USED=(
   "chat"
+  "cloudbuild"
+  "cloudfunctions"
   "logging"
+  "pubsub"
   "storage"
   "storage-api"
 )

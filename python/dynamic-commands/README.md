@@ -15,10 +15,12 @@ and development experience.
    if you haven't already and ensure the `gcloud` command works.
 1. [Create a new Google Cloud Platform project](https://console.cloud.google.com)
    or select an existing project.
-1. Install the Chat App using the provided installer (`install.sh`).
-1. Copy the contents of the `command_files` to the newly created bucket in
+1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
+   - If you'd rather perform these steps manually, [information](#1-manual-installation-and-gcp-setup) is at the bottom
+     of this README
+2. Copy the contents of the `command_files` to the newly created bucket in
    Google Cloud Storage.
-1. Setup your Chat App (you will need information from step 3 to complete
+3. Setup your Chat App (you will need information from step 3 to complete
    this.).
 
 ## `install.sh`
@@ -28,7 +30,9 @@ This is a simple shell command file to assist with the installation process.
 At a minimum, it should be run specifing the project into which the App is to
 be installed, along with the service account as which it will run.
 
-> `./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>`
+```
+./install.sh --project <PROJECT> --service-account <SERVICE ACCOUNT>
+```
 
 If this is the first time, there are 2 other switches that can be added:
 
@@ -45,6 +49,7 @@ complete list of usage instructions.
 
 The installer will also deploy the Cloud Function and all it's necessary files
 from the current directory, printing out the result of the deployment like so:
+
 ```
 availableMemoryMb: 4096
 buildId:
@@ -77,13 +82,17 @@ complete the final step of the deployment in the Cloud Console UI.
 After the install has completed (if you used `--deploy-storage`), there will
 be a bucket with the following cloud storage URL:
 
-> `gs://<PROJECT>-dynamic-commands`
+```
+gs://<PROJECT>-dynamic-commands
+```
 
 You should now copy the contents of the `command_files` folder into this bucket.
 These are the dynamic commands that the Chat App will recognize and load.
 This can be done from the command line with the following command:
 
-> `gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands`
+```
+gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
+```
 
 ## Set up the Chat App in Cloud Console
 
@@ -121,9 +130,81 @@ which the bot responds.
 ## Creating your own dynamic classes
 
 All you need to to is create a new class extending `classes.dynamic.DynamicClass`,
-as you can see in `hello.py`. The new class **MUST** have a method
+as you can see in `hello.py`. The new class **MUST** implement a method
 
-> `def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
+```python
+def run(self, **attributes: Mapping[str, str]) -> Dict[str, Any]:`
+```
 
 which is called when loaded. You can see this in the main class of this sample,
-`dynamic_command.py`, in the method `execute_dynamic_command`.
+`dynamic_command.py`, in the method `execute_dynamic_command`. The return
+value is the Chat response in JSON.
+
+---
+
+## Manual installation and GCP setup
+
+### Activate APIs
+
+Several Cloud APIs need to be active for this sample to run. They are:
+- `chat`
+- `cloudbuild`
+- `cloudfunctions`
+- `logging`
+- `pubsub`
+- `storage`
+- `storage-api`
+
+You can check if they are active by execulting the following `gcloud` CLI
+command:
+
+```
+gcloud --project=<PROJECT> services list
+```
+
+**NOTE**: they all end with `googleapis.com`, so `chat.googlapis.com` etc.
+
+If any are missing, you can activate them using the UI (in
+[Cloud Console](https://console.cloud.google.com/apis/library)) or from the
+`gcloud` CLI like so:
+
+```
+gcloud --project=<PROJECT> services enable <API NAME>.googleapis.com
+```
+
+### Setup Google Cloud Storage
+
+The system expects to find a bucket named `<PROJECT>-dynamic-commands`. This
+should be secured so that only the service account as which the cloud function
+runs has access to stop just anyone adding commands to your chat app!
+
+The bucket can be created in the
+[Cloud Console UI](https://console.cloud.google.com/storage/browser), or from
+the `gsutil` CLI as follows:
+
+```
+gsutil mb -p <PROJECT> gs://<PROJECT>-dynamic-commands
+```
+
+
+### Deploy the Cloud Function
+
+The Cloud Function can be deployed easily from the `gcloud` CLI using the
+following command:
+
+```bash
+gcloud functions deploy "dynamic_commands"      \
+  --entry-point=dynamic                         \
+  --service-account=<SERVICE ACCOUNT>           \
+  --runtime=python310                           \
+  --source=`pwd`                                \
+  --set-env-vars=GOOGLE_CLOUD_PROJECT=<PROJECT> \
+  --memory=4096MB                               \
+  --timeout=240s                                \
+  --trigger-http                                \
+  --allow-unauthenticated                       \
+  --quiet                                       \
+  --project=<PROJECT>
+```
+
+or from the [Cloud Console UI](https://console.cloud.google.com/functions).
