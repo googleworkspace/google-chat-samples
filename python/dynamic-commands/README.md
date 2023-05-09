@@ -16,7 +16,7 @@ and development experience.
 1. [Create a new Google Cloud Platform project](https://console.cloud.google.com)
    or select an existing project.
 1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
-   - If you'd rather perform these steps manually, [information](#1-manual-installation-and-gcp-setup) is at the bottom
+   - If you'd rather perform these steps manually, [information](#manual-installation-and-gcp-setup) is at the bottom
      of this README
 2. Copy the contents of the `command_files` to the newly created bucket in
 1. Install the Chat App using the provided installer ([`install.sh`](#installsh)).
@@ -48,7 +48,7 @@ If this is the first time, there are 2 other switches that can be added:
   This will ensure that all neccessary APIs have been activated in the selected
   project, and attempt to activate any missing ones for you.
 - `--deploy-storage` \
-  This will attemprt to create the bucket needed to store the dynamic command
+  This will attempt to create the bucket needed to store the dynamic command
   files. The bucket has a standard name of `<PROJECT>-dynamic-commands`
   ensuring it's uniqueness, and is hardwired in the code for security reasons.
 
@@ -61,8 +61,8 @@ from the current directory, printing out the result of the deployment like so:
 
 ```
 availableMemoryMb: 4096
-buildId:
-buildName:
+buildId: ...
+buildName: ...
 dockerRegistry: CONTAINER_REGISTRY
 entryPoint: dynamic
 environmentVariables:
@@ -80,7 +80,7 @@ sourceUploadUrl: <SOURCE URL>
 status: ACTIVE
 timeout: 240s
 updateTime: '2023-05-03T21:56:37.501Z'
-versionId: '27'
+versionId: '1'
 ```
 
 Take a note of the `<CHAT APP ENDPOINT URL>`. This is what you will need to
