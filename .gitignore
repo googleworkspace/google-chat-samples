@@ -11,3 +11,4 @@ service-account.json
 **/*.iml
 **/python3*/
 **/.history/
+.vscode/
