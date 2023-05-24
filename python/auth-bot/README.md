@@ -1,6 +1,6 @@
-# Hangouts Chat authorization bot
+# Google Chat authorization bot
 
-This code sample creates a Hangouts Chat bot that requests additional
+This code sample creates a Google Chat bot that requests additional
 authorizations from the user. This bot retrieves the user's Google profile
 information from [People API](https://developers.google.com/people/), and
 is performing authorization against
@@ -21,8 +21,9 @@ The sample is built using Python on Google App Engine, Standard Environment.
   1. Enable the Cloud Datastore API for your project using
      [this wizard](https://console.cloud.google.com/flows/enableapi?apiid=datastore.googleapis.com).
   1. Follow [instructions](https://support.google.com/googleapi/answer/6158849?hl=en) for creating
-     an oauth client ID for your project. USe the ype "Web application" and a redirect
-     URI of `https://<project ID>.appspot.com/auth/callback`.
+     an oauth client ID for your project. Use the type "Web application" and a redirect
+     URI of \
+     `https://<project ID>.appspot.com/auth/callback`.
   1. Download the associated JSON file, move it to this directory, and name it
      `client_secret.json`.
 
@@ -31,13 +32,13 @@ The sample is built using Python on Google App Engine, Standard Environment.
      gcloud app deploy
      ```
 
-## Configure the bot for Hangouts Chat
+## Configure the bot for Google Chat
 
-  1. To configure the bot to respond to @mentions in Hangouts Chat, follow
+  1. To configure the bot to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
+     [Publishing bots](https://developers.google.com/chat/how-tos/apps-publish).
   1. When configuring the bot on the **Configuration** tab on the
-     **Hangouts Chat API** page, enter the URL for the deployed version
+     **Google Chat API** page, enter the URL for the deployed version
      of the bot into the **Bot URL** text box.
 
 ## Interact with the bot
@@ -52,11 +53,11 @@ To deauthorize the bot, message "logout" to the bot.
 
 ## Run the sample locally
 
-Note: Follow the steps for deployment and configuring the bot for Hangouts Chat
+Note: Follow the steps for deployment and configuring the bot for Google Chat
 before running locally.
 
   1. Create a service account for the bot, as documented
-     [here](https://developers.google.com/hangouts/chat/how-tos/service-accounts).
+     [here](https://developers.google.com/chat/api/guides/auth/service-accounts).
      Save the private key in a `service-acct.json` file in the working directory.
   1. Start a virtual environment
   ```
@@ -72,7 +73,8 @@ To verify that the sample is running and responds with the correct data
 to incoming requests, run the following command from the terminal:
 
 ```
-curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "configCompleteRedirectUrl": "https://www.example.com", "message": { "text": "header keyvalue", "thread": null }, "user": { "name": "users/123", "displayName": "me"}, "space": { "displayName": "space", "name": "spaces/-oMssgAAAAE"}}' http://127.0.0.1:8080/```
+curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "configCompleteRedirectUrl": "https://www.example.com", "message": { "text": "header keyvalue", "thread": null }, "user": { "name": "users/123", "displayName": "me"}, "space": { "displayName": "space", "name": "spaces/-oMssgAAAAE"}}' http://127.0.0.1:8080/
+```
 
 ## Shut down the local environment
 
