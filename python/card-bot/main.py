@@ -14,13 +14,14 @@
 #
 # pylint: disable=invalid-name
 """
-Hangouts Chat bot that responds to events and messages from a room
+Google Chat bot that responds to events and messages from a room
 synchronously. The bot formats the response using cards,
 inserting widgets based upon the user's original input.
 """
 import logging
-from typing import Any, Dict, List
-from flask import Flask, render_template, request, json
+from typing import Any, Dict, List, Mapping
+
+from flask import Flask, json, render_template, request
 
 app = Flask(__name__)
 
@@ -31,10 +32,10 @@ BOT_HEADER = 'Card Bot Python'
 
 
 @app.route('/', methods=['POST'])
-def home_post() -> str:
+def home_post() -> Mapping[str, Any]:
   """Respond to POST requests to this endpoint.
 
-  All requests sent to this endpoint from Hangouts Chat are POST
+  All requests sent to this endpoint from Google Chat are POST
   requests.
   """
 
@@ -57,8 +58,8 @@ def home_post() -> str:
               f'Thanks for adding me to {event_data["space"]["name"]}!'}
 
     case ('ADDED_TO_SPACE', 'DM'):
-      resp = {'text':
-              f'Thanks for adding me to a DM, {event_data["user"]["displayName"]}!'}
+      resp = {'text': (f'Thanks for adding me to a DM, '
+                       f'{event_data["user"]["displayName"]}!')}
 
     case ('MESSAGE', _):
       resp = create_card_response(event_data['message']['text'])
@@ -87,10 +88,10 @@ def home_get() -> str:
 
 
 def create_card_response(event_message: str) -> Dict[str, Any]:
-  """Creates a card response based on the message sent in Hangouts Chat.
+  """Creates a card response based on the message sent in Google Chat.
 
   See the reference for JSON keys and format for cards:
-  https://developers.google.com/hangouts/chat/reference/message-formats/cards
+  https://developers.google.com/chat/api/guides/message-formats/cards
 
   Args:
       eventMessage: the user's message to the bot
@@ -231,7 +232,7 @@ def respond_to_interactive_card_click(
   """Creates a response for when the user clicks on an interactive card.
 
   See the guide for creating interactive cards
-  https://developers.google.com/hangouts/chat/how-tos/cards-onclick
+  https://developers.google.com/chat/api/guides/message-formats/cards
 
   Args:
       action_name: the name of the custom action defined in the original bot response
