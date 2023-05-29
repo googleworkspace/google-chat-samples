@@ -40,16 +40,19 @@ def handle_inbound_message(message_text, user_id, space_name, email):
     )[0]
 
     message = message_text.lower().split()
+
     if message[0] == 'start':
         if (len(message) != 1 or get_active_loop(user)):
             return COMMAND_ERROR
 
         return start_active_loop(user)
+
     if message[0] == 'stop':
         if len(message) != 1 or not get_active_loop(user):
             return COMMAND_ERROR
 
         return end_active_loop(user)
+
     if not get_active_loop(user):
         return COMMAND_ERROR
 

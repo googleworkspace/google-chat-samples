@@ -16,37 +16,37 @@ from google.cloud import language
 
 
 class NLPHelper:
-    ENTITY_TYPE = ('UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION',
-                   'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
-    POS_TAG = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM',
-               'PRON', 'PRT', 'PUNCT', 'VERB', 'X', 'AFFIX')
+  ENTITY_TYPE = ('UNKNOWN', 'PERSON', 'LOCATION', 'ORGANIZATION',
+                 'EVENT', 'WORK_OF_ART', 'CONSUMER_GOOD', 'OTHER')
+  POS_TAG = ('UNKNOWN', 'ADJ', 'ADP', 'ADV', 'CONJ', 'DET', 'NOUN', 'NUM',
+             'PRON', 'PRT', 'PUNCT', 'VERB', 'X', 'AFFIX')
 
-    def __init__(self):
-        self.client = language.LanguageServiceClient()
+  def __init__(self):
+    self.client = language.LanguageServiceClient()
 
-    def analyze_text(self, text, analysis_type):
-        """Analyzes text using GCP's NLP API
+  def analyze_text(self, text, analysis_type):
+    """Analyzes text using GCP's NLP API
 
-            Args:
-                text (str): text to be analyzed
-                analysis_type(str): determines which api method will be called
+        Args:
+            text (str): text to be analyzed
+            analysis_type(str): determines which api method will be called
 
-            Returns:
-                if analysis_type == 'entities'
-                    entities (list): a list of entity objects as returned by
-                        NLP API (see here:
-                        https://cloud.google.com/natural-language/docs/reference/rest/v1/Entity)
-                if analysis_type == 'syntax'
-                    tokens (list): a list of syntax token objects as returned by NLP API
-                        (see here:
-                        https://cloud.google.com/natural-language/docs/reference/rest/v1/Entity)
-        """
-        document = {"content": text, "type_": language.Document.Type.PLAIN_TEXT}
+        Returns:
+            if analysis_type == 'entities'
+                entities (list): a list of entity objects as returned by
+                    NLP API (see here:
+                    https://cloud.google.com/natural-language/docs/reference/rest/v1/Entity)
+            if analysis_type == 'syntax'
+                tokens (list): a list of syntax token objects as returned by NLP API
+                    (see here:
+                    https://cloud.google.com/natural-language/docs/reference/rest/v1/Entity)
+    """
+    document = {"content": text, "type_": language.Document.Type.PLAIN_TEXT}
 
-        if analysis_type == "entities":
-            return self.client.analyze_entities(
-                document=document, encoding_type=language.EncodingType.UTF8
-            ).entities
-        return self.client.analyze_syntax(
-            document=document, encoding_type=language.EncodingType.UTF8
-        ).tokens
+    if analysis_type == "entities":
+      return self.client.analyze_entities(
+          document=document, encoding_type=language.EncodingType.UTF8
+      ).entities
+    return self.client.analyze_syntax(
+        document=document, encoding_type=language.EncodingType.UTF8
+    ).tokens
