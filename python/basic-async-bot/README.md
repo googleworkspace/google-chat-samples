@@ -1,6 +1,6 @@
-# Hangouts Chat basic asynchronous bot
+# Google Chat basic asynchronous bot
 
-This code sample creates a simple Hangouts Chat bot that responds to events and
+This code sample creates a simple Google Chat bot that responds to events and
 messages from a room asynchronously. The sample is built using Python on
 Google App Engine, Standard Environment.
 
@@ -14,22 +14,22 @@ Google App Engine, Standard Environment.
      to create a project and enable App Engine.
 
   1. Create a service account for the bot, as documented
-     [here](https://developers.google.com/hangouts/chat/how-tos/service-accounts).
+     [here](https://developers.google.com/chat/api/guides/auth/service-accounts).
      Replace the contents of the `service-acct.json` file with the service
      account secrets that you download.
 
   1. Run the following command to deploy the app:
-     ```
-     gcloud app deploy
-     ```
+     > ```
+     > gcloud app deploy
+     > ```
 
-## Configure the bot for Hangouts Chat
+## Configure the bot for Google Chat
 
-  1. To configure the bot to respond to @mentions in Hangouts Chat, follow
+  1. To configure the bot to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
+     [Publishing bots](https://developers.google.com/chat/api/guides/auth/service-accounts).
   1. When configuring the bot on the **Configuration** tab on the
-     **Hangouts Chat API** page, enter the URL for the deployed version
+     **Google Chat API** page, enter the URL for the deployed version
      of the bot into the **Bot URL** text box.
 
 
@@ -41,24 +41,26 @@ When added to a room or messaged, the bot will respond with a simple reply.
 
 ## Run the sample locally
 
-Note: Follow the steps for deployment and configuring the bot for Hangouts Chat
+Note: Follow the steps for deployment and configuring the bot for Google Chat
 before running locally.
 
   1. Start a virtual environment
-  ```
-  virtualenv env
-  source env/bin/activate
-  ```
+     > ```
+     > virtualenv env
+     > source env/bin/activate
+     > ```
   1. Install libraries using `pip`.
-     `pip install -r requirements.txt`
+     > ```
+     > pip install -r requirements.txt -U
+     > ```
   1. Run the sample.
-    `GOOGLE_APPLICATION_CREDENTIALS=service-acct.json python main.py`
+     > ```
+     > GOOGLE_APPLICATION_CREDENTIALS=service-acct.json python main.py
+     > ```
 
 To verify that the sample is running and responds with the correct data
 to incoming requests, run the following command from the terminal. Note that this will result
 in an error by default. Replacing the `space.name` property with a valid resource name for the bot will allow local requests to be processed correctly.
-
-property :
 
 ```
 curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "message": { "text": "header keyvalue", "thread": null }, "user": { "displayName": "me"}, "space": { "displayName": "space", "name": "spaces/..."}}' http://127.0.0.1:8080/
@@ -66,9 +68,7 @@ curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "message": 
 
 ## Shut down the local environment
 
-```
-virtualenv deactivate
-```
+> `virtualenv deactivate`
 
 ## Troubleshooting
 
@@ -77,12 +77,8 @@ SpooledTemporaryFile class missing from the werkzeug module. To fix this, after
 you've downloaded all of the support libraries to lib/ open up
 lib/werkzeug/formparser.py and change the following line
 
-```
-from tempfile import SpooledTemporaryFile
-```
+> `from tempfile import SpooledTemporaryFile`
 
 to
 
-```
-from tempfile import TemporaryFile
-```
+> `from tempfile import TemporaryFile`

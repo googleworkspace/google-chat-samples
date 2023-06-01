@@ -14,16 +14,17 @@
 #
 # pylint: disable=invalid-name
 """
-Hangouts Chat bot that responds to events and messages from a room asynchronously.
+Google Chat bot that responds to events and messages from a room asynchronously.
 """
 
 # [START async-bot]
 
-
 import logging
-from googleapiclient.discovery import build
-from flask import Flask, render_template, request, json
+from typing import Any, Mapping
+
 import google.auth
+from flask import Flask, json, render_template, request
+from googleapiclient.discovery import build
 
 app = Flask(__name__)
 
@@ -34,10 +35,10 @@ chat = build('chat', 'v1', credentials=credentials)
 
 
 @app.route('/', methods=['POST'])
-def home_post():
+def home_post() -> Mapping[str, Any]:
     """Respond to POST requests to this endpoint.
 
-    All requests sent to this endpoint from Hangouts Chat are POST
+    All requests sent to this endpoint from Google Chat are POST
     requests.
     """
 
@@ -55,17 +56,17 @@ def home_post():
     space_name = event_data['space']['name']
     send_async_response(resp, space_name)
 
-    # Return empty jsom respomse simce message already sent via REST API
+    # Return empty jsom response simce message already sent via REST API
     return json.jsonify({})
 
 # [START async-response]
 
-def send_async_response(response, space_name):
-    """Sends a response back to the Hangouts Chat room asynchronously.
+def send_async_response(response: Mapping[str, str], space_name: str) -> None:
+    """Sends a response back to the Google Chat room asynchronously.
 
     Args:
       response: the response payload
-      space_name: The URL of the Hangouts Chat room
+      space_name: The URL of the Google Chat room
 
     """
     chat.spaces().messages().create(
@@ -74,7 +75,7 @@ def send_async_response(response, space_name):
 
 # [END async-response]
 
-def format_response(event):
+def format_response(event: Mapping[str, Any]) -> Mapping[str, Any]:
     """Determine what response to provide based upon event data.
 
     Args:
@@ -89,14 +90,14 @@ def format_response(event):
 
     # Case 1: The bot was added to a room
     if event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
-        text = 'Thanks for adding me to {}!'.format(event['space']['displayName'])
+        text = f'Thanks for adding me to {event["space"]["displayName"]}!'
 
     # Case 2: The bot was added to a DM
     elif event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
-        text = 'Thanks for adding me to a DM, {}!'.format(sender_name)
+        text = f'Thanks for adding me to a DM, {sender_name}!'
 
     elif event_type == 'MESSAGE':
-        text = 'Your message, {}: "{}"'.format(sender_name, event['message']['text'])
+        text = f'Your message, {sender_name}: "{event["message"]["text"]}"'
 
     response = {'text': text}
 
