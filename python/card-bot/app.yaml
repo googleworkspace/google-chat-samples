@@ -16,4 +16,4 @@
 # See https://cloud.google.com/appengine/docs/managed-vms/python/runtime
 #
 
-runtime: python37
+runtime: python310

@@ -1,6 +1,6 @@
-# Hangouts Chat card bot
+# Google Chat card bot
 
-This code sample creates a simple Hangouts Chat bot that responds to events and
+This code sample creates a simple Google Chat bot that responds to events and
 messages from a room synchronously. The bot formats the response using cards,
 inserting widgets based upon the user's original input
 
@@ -16,17 +16,17 @@ The sample is built using Python on Google App Engine, Standard Environment.
      to create a project and enable App Engine.
 
   1. Run the following command to deploy the app:
-     ```
-     gcloud app deploy
-     ```
+     > ```
+     > gcloud app deploy
+     > ```
 
-## Configure the bot for Hangouts Chat
+## Configure the bot for Google Chat
 
-  1. To configure the bot to respond to @mentions in Hangouts Chat, follow
+  1. To configure the bot to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
+     [Publishing bots](https://developers.google.com/chat/how-tos/apps-publish).
   1. When configuring the bot on the **Configuration** tab on the
-     **Hangouts Chat API** page, enter the URL for the deployed version
+     **Google Chat API** page, enter the URL for the deployed version
      of the bot into the **Bot URL** text box.
 
 ## Interact with the bot
@@ -51,27 +51,27 @@ The bot responds to the following user input:
 ## Run the sample locally
 
   1. Start a virtual environment
-  ```
-  virtualenv env
-  source env/bin/activate
-  ```
+  > ```
+  > pip -m venv env
+  > source env/bin/activate
+  > ```
   1. Install libraries using `pip`.
-     `pip install -r requirements.txt`
+     > `pip install -r requirements.txt -U`
   1. Run the sample.
-    `python main.py`
+     > `python main.py`
 
 To verify that the sample is running and responds with the correct data
 to incoming requests, run the following command from the terminal:
 
-```
-curl -X POST -H 'Content-Type: application/json' 'http://localhost:8080' -d '{ "type": "MESSAGE", "message": { "text": "keyvalue", "sender": { "displayName": "me"}}, "space": { "displayName": "some room"}}'
-```
+> ```
+> curl -X POST -H 'Content-Type: application/json' 'http://localhost:8080' -d '{ "type": "MESSAGE", "message": { "text": "keyvalue", "sender": { "displayName": > "me"}}, "space": { "displayName": "some room"}}'
+> ```
 
 ## Shut down the local environment
 
-```
-virtualenv deactivate
-```
+> ```
+> virtualenv deactivate
+> ```
 
 ## Troubleshooting
 
@@ -80,12 +80,12 @@ SpooledTemporaryFile class missing from the werkzeug module. To fix this, after
 you've downloaded all of the support libraries to lib/ open up
 lib/werkzeug/formparser.py and change the following line
 
-```
-from tempfile import SpooledTemporaryFile
-```
+> ```
+> from tempfile import SpooledTemporaryFile
+> ```
 
 to
 
-```
-from tempfile import TemporaryFile
-```
+> ```
+> from tempfile import TemporaryFile
+> ```
