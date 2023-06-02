@@ -16,5 +16,5 @@ from django.apps import AppConfig
 
 
 class ProductivityBotConfig(AppConfig):
-    default_auto_field = 'django.db.models.AutoField'
-    name = 'productivity_bot'
+  default_auto_field = 'django.db.models.AutoField'
+  name = 'productivity_bot'

@@ -18,18 +18,20 @@ from google.oauth2 import service_account
 
 # Adapted from
 # https://github.com/googleworkspace/hangouts-chat-samples/blob/main/python/basic-async-bot/bot.py
-def send_reminder(space_name):
-    """Sends a response back to the Hangouts Chat room asynchronously.
-    Args:
-      spaceName: The URL of the Hangouts Chat room
-    """
-    response = {'text': 'What have you completed since I last checked in?'}
 
-    scopes = ['https://www.googleapis.com/auth/chat.bot']
-    credentials, _ = google.auth.default()
-    credentials = credentials.with_scopes(scopes=scopes)
-    chat = build('chat', 'v1', credentials=credentials)
-    chat.spaces().messages().create(
-        parent=space_name,
-        body=response).execute()
-    return True
+
+def send_reminder(space_name):
+  """Sends a response back to the Hangouts Chat room asynchronously.
+  Args:
+    spaceName: The URL of the Hangouts Chat room
+  """
+  response = {'text': 'What have you completed since I last checked in?'}
+
+  scopes = ['https://www.googleapis.com/auth/chat.bot']
+  credentials, _ = google.auth.default()
+  credentials = credentials.with_scopes(scopes=scopes)
+  chat = build('chat', 'v1', credentials=credentials)
+  chat.spaces().messages().create(
+      parent=space_name,
+      body=response).execute()
+  return True

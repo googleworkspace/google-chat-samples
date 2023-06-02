@@ -16,7 +16,9 @@
 .git
 .gitignore
 
-# Python pycache:
+# Python
 __pycache__/
+python3*/
+
 # Ignored by the build system
 /setup.cfg

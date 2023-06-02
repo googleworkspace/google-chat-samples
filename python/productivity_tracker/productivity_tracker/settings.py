@@ -20,12 +20,12 @@ import environ
 env = environ.Env(DEBUG=(bool, False))
 
 if os.environ.get("GOOGLE_CLOUD_PROJECT", None):
-    client = secretmanager.SecretManagerServiceClient()
-    name = f"projects/{os.environ.get('GOOGLE_CLOUD_PROJECT')}/secrets/django_settings/versions/latest"
-    payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
-    env.read_env(io.StringIO(payload))
+  client = secretmanager.SecretManagerServiceClient()
+  name = f"projects/{os.environ.get('GOOGLE_CLOUD_PROJECT')}/secrets/django_settings/versions/latest"
+  payload = client.access_secret_version(name=name).payload.data.decode("UTF-8")
+  env.read_env(io.StringIO(payload))
 else:
-    raise Exception("No GOOGLE_CLOUD_PROJECT detected. No secrets found.")
+  raise Exception("No GOOGLE_CLOUD_PROJECT detected. No secrets found.")
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -94,10 +94,10 @@ WSGI_APPLICATION = 'productivity_tracker.wsgi.application'
 # MySQLdb locally; when running in production on Google App Engine Standard
 # Environment, MySQLdb will be used.
 try:
-    import MySQLdb  # noqa: F401
+  import MySQLdb  # noqa: F401
 except ImportError:
-    import pymysql
-    pymysql.install_as_MySQLdb()
+  import pymysql
+  pymysql.install_as_MySQLdb()
 
 # [START db_setup]
 DATABASES = {
@@ -116,13 +116,13 @@ DATABASES = {
 }
 
 if os.getenv('USE_CLOUD_SQL_AUTH_PROXY'):
-    # Running locally so connect to either a local MySQL instance or connect to
-    # Cloud SQL via the proxy. To start the proxy via command line:
-    #
-    #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
-    #
-    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
-    DATABASES["default"]["HOST"] = "127.0.0.1"
+  # Running locally so connect to either a local MySQL instance or connect to
+  # Cloud SQL via the proxy. To start the proxy via command line:
+  #
+  #     $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306
+  #
+  # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+  DATABASES["default"]["HOST"] = "127.0.0.1"
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
