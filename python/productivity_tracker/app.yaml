@@ -1,0 +1,5 @@
+runtime: python37
+entrypoint: gunicorn -b :$PORT productivity_tracker.wsgi
+
+env_variables:
+  ENABLE_NLP: True

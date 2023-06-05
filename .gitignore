@@ -1,0 +1,14 @@
+*.pyc
+.DS_Store
+**/env/
+**/help/
+**/lib/
+**/target/
+**/deactivate
+**/client_secret.json
+service-account.json
+**/.idea/
+**/*.iml
+**/python3*/
+**/.history/
+.vscode/

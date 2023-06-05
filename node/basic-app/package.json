@@ -1,0 +1,26 @@
+{
+  "name": "basic-bot",
+  "version": "1.0.0",
+  "description": "This is a basic bot to interact with Chat",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "contributors": [
+    {
+      "name": "Barathwaja S",
+      "email": "sbarathwaj4@gmail.com",
+      "url": "https://github.com/Barathwaja"
+    },
+    {
+      "name": "Ashok V",
+      "email": "ash.srinivasan94@gmail.com",
+      "url": "https://github.com/ashoksrinivas"
+    }
+  ],
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "license": "Apache-2.0"
+}
