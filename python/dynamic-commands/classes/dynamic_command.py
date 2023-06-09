@@ -26,7 +26,6 @@ from classes.dynamic import DynamicClass, CloudStorage, SecretManager
 from stringcase import snakecase
 
 from . import DictObj, error_to_trace
-from classes import decorators
 
 class DynamicCommandHandler(object):
   @property
@@ -120,14 +119,14 @@ class DynamicCommandHandler(object):
 
           elif self.request.message.annotations \
                   and self.request.message.annotations[0].userMention:
-              # This is a user mention ("@[Bot name] [something something]), where
-              # [something something] will be converted to snakeCase and used as
-              # the command and hence the filename to load and execute.
-            match ' '.join(self.request.message.text.split(' ')[1:]):
-              case _ as text:
-                command = snakecase(text).lower()
-                output = self.execute_dynamic_command(
-                    command, {"request_json": req})
+            # This is a user mention ("@[Bot name] [something something]), where
+            # [something something] will be converted to snakeCase and used as
+            # the command and hence the filename to load and execute.
+            app_name = f'@{self.request.message.annotations[0].userMention.user.displayName}'
+            command_text = str(self.request.message.text).replace(app_name, '')
+            command = snakecase(command_text.strip()).lower()
+            output = self.execute_dynamic_command(
+                command, {"request_json": req})
 
           elif self.request.message.space.type == 'DM':
             # This is just random text in a DM with the bot. Anything that's
