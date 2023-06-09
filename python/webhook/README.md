@@ -1,7 +1,14 @@
 # Set up instructions
 
-Please install the dependencies:
+  1. Install and activate a virtual environment
+     > ```
+     > virtualenv env
+     > source env/bin/activate
+     > ```
 
-`# pip install requirements.txt`
+  1. Install the dependencies
+     > ```
+     > pip install -r requirements.txt -U
+     > ```
+     then see the full [guide](https://developers.google.com/chat/how-tos/webhooks)
 
-then see the full [guide](https://developers.google.com/hangouts/chat/quickstart/incoming-bot-python)

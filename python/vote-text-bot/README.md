@@ -1,6 +1,6 @@
-# Hangouts Chat Vote bot sample (text-only)
+# Google Chat Vote bot sample (text-only)
 
-This code sample creates a Hangouts Chat simple text-only Vote bot that
+This code sample creates a Google Chat simple text-only Vote bot that
 allows a user to vote (+1 or -1) on a message. This implementation is
 written in Python and hosted on Google App Engine.
 
@@ -8,9 +8,9 @@ written in Python and hosted on Google App Engine.
 
 ## Run the sample
 
-To run this sample, you must follow these directions to create an App
-Engine project, create the bot and publish it for yourself in your G
-Suite domain, pointing Hangouts Chat to your App Engine-based bot.
+To run this sample, you must follow these directions to create an App Engine
+project, create the bot and publish it for yourself in your G
+Suite domain, pointing Google Chat to your App Engine-based bot.
 Once it's published, you can find the bot and add it to a chat room or
 direct message.
 
@@ -23,8 +23,8 @@ direct message.
 1. Create a new folder and drop the files for this bot in it. From there,
   [deploy your App Engine app](https://cloud.google.com/appengine/docs/standard/python/tools/uploadinganapp#deploying_an_app).
 1. Now follow the instructions to
-  [publish your bot to Hangouts Chat](https://developers.google.com/hangouts/chat/how-tos/bots-publish)
-1. On the [Hangouts Chat Configuration
+  [publish your bot to Google Chat](https://developers.google.com/chat/how-tos/apps-publish)
+1. On the [Google Chat Configuration
   tab](https://console.developers.google.com/apis/api/chat.googleapis.com/hangouts-chat),
   customize your bot by setting the following values:
   - **Project name**: "Vote bot"
@@ -40,9 +40,9 @@ direct message.
 
 ## Reference
 
-- [Creating Hangouts Chat interactive cards](https://developers.google.com/hangouts/chat/how-tos/cards-onclick) featuring the same vote bot that supports images and hosted on [Google Cloud Functions](https://cloud.google.com/functions)
-- [Hangouts Chat bot concept page](https://developers.google.com/hangouts/chat/concepts/bots)
-- [Creating new bots in Hangouts Chat](https://developers.google.com/hangouts/chat/how-tos/bots-develop)
-- [Hangouts Chat developer documentation](https://developers.google.com/hangouts/chat)
+- [Creating Google Chat interactive cards](https://developers.google.com/chat/api/guides/message-formats/cards) featuring the same vote bot that supports images and hosted on [Google Cloud Functions](https://cloud.google.com/functions)
+- [Google Chat bot concept page](https://developers.google.com/chat/how-tos/apps-develop)
+- [Creating new bots in Google Chat](https://developers.google.com/chat/how-tos/apps-develop)
+- [Google Chat developer documentation](https://developers.google.com/chat)
 - [Google App Engine product documentation](https://cloud.google.com/products/appengine)
 - [Python App Engine (standard) documentation](https://cloud.google.com/appengine/docs/standard/python/)

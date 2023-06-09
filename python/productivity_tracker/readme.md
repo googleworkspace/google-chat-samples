@@ -1,16 +1,16 @@
-# Hangouts Productivity Tracker Chatbot Sample App
+# Google Chat Productivity Tracker Chatbot Sample App
 
-Use the Hangouts Productivity Tracker Chatbot (HPTC) to work smarter, not harder.
+Use the Google Chat Productivity Tracker App (GCPT) to work smarter, not harder.
 
-- **Quickly record tasks.** HPTC will automatically compile the tasks you enter into a Google Sheet.
-- **Measure your productivity.** HPTC will record the time you spend in between tasks, so you can evaluate and improve your productivity.
+- **Quickly record tasks.** GCPT will automatically compile the tasks you enter into a Google Sheet.
+- **Measure your productivity.** GCPT will record the time you spend in between tasks, so you can evaluate and improve your productivity.
 
 ![example](https://user-images.githubusercontent.com/6697240/42903254-1eb8d378-8a86-11e8-8909-d47a39a24ccc.gif)
 
 
 This bot uses the following Google APIs:
 
-- [Hangouts Chat API](https://developers.google.com/hangouts/chat/)
+- [Google Chat API](https://developers.google.com/chat/)
 - [Google Drive API](https://developers.google.com/drive/)
 - [Google Sheets API](https://developers.google.com/sheets/)
 - [Cloud SQL API](https://cloud.google.com/sql/)
@@ -31,7 +31,7 @@ This bot uses the following Google APIs:
 ### Requirements
 
 - A [Google Cloud Platform](https://cloud.google.com/) account where you can create a project and enable billing.
-- A local terminal with Python 3.7+ and pip installed.
+- A local terminal with Python 3.10+ and pip installed.
 
 > Go [here](https://www.python.org/downloads/) to install the latest version of Python. Pip comes installed with most Python distributions.
 
@@ -42,32 +42,30 @@ This bot uses the following Google APIs:
 1. Open a terminal.
 1. Open the root directory:
     `cd hangouts-chat-samples/python/productivity_tracker`
-1. Install [virtualenv](https://virtualenv.pypa.io/en/stable/):
-    `pip install virtualenv`
 1. Create a virtual environment:
-    `virtualenv env`
+    `python -m venv env`
 1. Activate your virtual environment:
     `source env/bin/activate`
 1. Install project dependencies:
-    `pip install -r requirements.txt`
+    `pip install -r requirements.txt -U`
     Note: you may need to `sudo apt-get install libmysqlclient-dev -y`
 
 ### 2. Set up on Cloud Console
 
 1. [Create a project on the Google Cloud Platform Console](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project)
 1. [Enable Billing on that Project](https://cloud.google.com/billing/docs/how-to/modify-project)
-1. [Enable the Cloud SQL, Compute Engine, Google Drive, Google Sheets, Secret Manager, Cloud Natural Language and Hangouts Chat APIs](https://console.cloud.google.com/flows/enableapi?apiid=compute.googleapis.com,drive.googleapis.com,sqladmin.googleapis.com,sheets.googleapis.com,secretmanager.googleapis.com,language.googleapis.com,chat.googleapis.com).
+1. [Enable the Cloud SQL, Compute Engine, Google Drive, Google Sheets, Secret Manager, Cloud Natural Language and Google Chat APIs](https://console.cloud.google.com/flows/enableapi?apiid=compute.googleapis.com,drive.googleapis.com,sqladmin.googleapis.com,sheets.googleapis.com,secretmanager.googleapis.com,language.googleapis.com,chat.googleapis.com).
 1. [Create a service account and download the service account key](https://cloud.google.com/iam/docs/creating-managing-service-accounts#creating_a_service_account).
     -  When creating the service account, select **Project** > **Owner** under **Project Role**
 1. [Create a Cloud SQL MySQL instance](https://cloud.google.com/sql/docs/mysql/create-instance).
 1. Update `settings.txt` to set the databse connection settings and secret keys.
-1. Secure the settings file in Secret Manager: 
+1. Secure the settings file in Secret Manager:
     `gcloud secrets create django_settings --data-file settings.txt`
 
 ### 3. Deployment
 
-1. Run the application on your local machine and [run the database and static migration commands](https://cloud.google.com/python/django/app-engine#run-locally). 
+1. Run the application on your local machine and [run the database and static migration commands](https://cloud.google.com/python/django/app-engine#run-locally).
     Note: you will have to use `tcp=3306` for MySQL
-1. Deploy the application with the service account: 
+1. Deploy the application with the service account:
     `gcloud beta app deploy --service-account SERVICEACCOUNT@PROJECT_ID.iam.gserviceaccount.com`
 1. [Configure the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish) in the [console](https://console.cloud.google.com/apis/api/chat.googleapis.com/hangouts-chat). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
