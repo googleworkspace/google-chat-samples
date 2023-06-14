@@ -36,7 +36,8 @@ def main(unused_argv):
   Args:
       unused_argv (List[Any]): unused
   """
-  DynamicCommandHandler().execute_dynamic_command(command='hello', attributes={})
+  print(DynamicCommandHandler().execute_dynamic_command(command='hello',
+      attributes={}))
 
 
 if __name__ == '__main__':

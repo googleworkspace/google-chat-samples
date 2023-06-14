@@ -13,8 +13,6 @@
 # limitations under the License.
 from __future__ import annotations
 
-import json
-import inspect
 import logging
 import os
 import sys
