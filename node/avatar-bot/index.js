@@ -70,7 +70,7 @@ function createMessage(displayName, imageUrl) {
         name: 'Avatar Card',
         header: cardHeader,
         sections: [avatarSection],
-      }
+      },
     }],
   };
 }

@@ -25,7 +25,7 @@
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res.send(
-      'Hello! This function is meant to be used in a Google Chat Space.');
+        'Hello! This function is meant to be used in a Google Chat Space.');
   }
 
   // Checks for the presence of event.message.matchedUrl and attaches a card
@@ -50,7 +50,7 @@ exports.onMessage = (req, res) => {
                   {
                     'keyValue': {
                       'topLabel': 'Subject', 'content': 'It won"t turn on...',
-                    }
+                    },
                   },
                 ],
               },
