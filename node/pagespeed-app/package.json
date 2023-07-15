@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/googleworkspace/hangouts-chat-samples.git"
+    "url": "git+https://github.com/googleworkspace/google-chat-samples.git"
   },
   "author": "https://github.com/vinay-google",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/googleworkspace/hangouts-chat-samples/issues"
+    "url": "https://github.com/googleworkspace/google-chat-samples/issues"
   },
-  "homepage": "https://github.com/googleworkspace/hangouts-chat-samples#readme",
+  "homepage": "https://github.com/googleworkspace/google-chat-samples#readme",
   "dependencies": {
     "node-fetch": "^2.6.9"
   }

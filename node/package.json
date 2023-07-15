@@ -1,10 +1,10 @@
 {
-  "name": "hangouts-chat-node-samples",
+  "name": "google-chat-node-samples",
   "version": "1.0.0",
-  "description": "Node samples for the Hangouts Chat API.",
+  "description": "Node samples for the Google Chat API.",
   "private": true,
   "keywords": [
-    "Hangouts Chat"
+    "Google Chat"
   ],
   "author": "Eric Koleda",
   "license": "Apache-2.0",

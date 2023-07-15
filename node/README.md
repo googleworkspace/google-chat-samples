@@ -1,4 +1,4 @@
-# Hangouts Chat Node Samples
+# Google Chat Node Samples
 
 This directory contains various code samples written using Node.js.
 
