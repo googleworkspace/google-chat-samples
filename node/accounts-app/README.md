@@ -1,12 +1,12 @@
-# Accounts Bot
+# Accounts App
 
-This demo bot serves account owner information for a fictional sales team. This code sample 
-shows how create a bot that looks up information from a [Google Sheet][data_sheet] and served by a
-[Google Cloud Function][gcf]. With this bot, a user who requests an account owner's information will
+This demo app serves account owner information for a fictional sales team. This code sample 
+shows how create a app that looks up information from a [Google Sheet][data_sheet] and served by a
+[Google Cloud Function][gcf]. With this app, a user who requests an account owner's information will
 either receive a card with contact info or an option ensure the data is up-to-date if the requested
 account could not be found. 
 
-![Acme-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/main/node/accounts-bot/assets/AcmeLookup.png)
+![Acme-Lookup](https://github.com/googleworkspace/google-chat-samples/blob/main/node/accounts-app/assets/AcmeLookup.png)
 
 [gcf]: https://cloud.google.com/functions
 [data_sheet]: https://docs.google.com/spreadsheets/d/1kxW15ZI48mh4KkvgsMpg7gInmEQmyKYRnZdbUOSMRnU/copy
@@ -14,11 +14,11 @@ account could not be found.
 ## Prerequisites
 
 1. The [Google Cloud SDK][cloud_sdk] and `gcloud` set up on your machine.
-1. Please be sure to have completed or understood the concepts in the Hangouts Chat 
-Google Cloud Functions [quickstart guide][gcf_bot] first.
+1. Please be sure to have completed or understood the concepts in the Google Chat 
+Google Cloud Functions [quickstart guide][gcf_app] first.
 
 [cloud_sdk]: https://cloud.google.com/deployment-manager/docs/step-by-step-guide/installation-and-setup
-[gcf_bot]: https://developers.google.com/hangouts/chat/quickstart/gcf-bot
+[gcf_app]: https://developers.google.com/google/chat/quickstart/gcf-app
 
 ## Set up instructions
 
@@ -35,15 +35,15 @@ Google Cloud Functions [quickstart guide][gcf_bot] first.
 ### Set up a Google Cloud Project (if needed)
 
 1. [Create a new project][new_project] in the Google Cloud Developer Console.
-Name it "AccountsBot", select a **Billing Account** if prompted, and
+Name it "AccountsApp", select a **Billing Account** if prompted, and
 click **CREATE**. More information on how to setup billing [here][billing].
 1. When the project creation is complete a notification appears in the
-upper-right of the page. Click on the **Create Project: AccountsBot** entry
+upper-right of the page. Click on the **Create Project: AccountsApp** entry
 to open the project.
 1. Open the [**OAuth consent screen**][consent_screen] settings page for the
 project.
-1. In the field **Application name** enter "AccountsBot" and click the
-**Save** button at the bottom.
+1. In the field **Application name** enter "AccountsApp" and click the
+**Save** button at the apptom.
 1. Open the [**Sheets API**][library_sheets] page in the API library and click
 the **ENABLE** button.
 1. Open the [**Project settings**][project_settings] page for the project.
@@ -58,7 +58,7 @@ the **ENABLE** button.
 ### Deploying the Cloud Function
 
 1. In your working directory, deploy the Cloud function with the following command:
-`gcloud functions deploy accountsBot --runtime nodejs8 --trigger-http`
+`gcloud functions deploy accountsApp --runtime nodejs8 --trigger-http`
 
 ### Set the permissions on the data
 
@@ -77,35 +77,35 @@ Service Account address which should be in this format:
 [service_accounts]: https://console.cloud.google.com/iam-admin/serviceaccounts
 [functions_iam]: https://cloud.google.com/functions/docs/concepts/iam
 
-### Publish the bot to Hangouts Chat
+### Publish the app to Google Chat
 
 1.  Back in the Cloud Console, open the
-    [**Hangouts Chat API**][library_chat] page in the API library and click the
+    [**Google Chat API**][library_chat] page in the API library and click the
     **ENABLE** button.
 1.  Once the API is enabled, on click the **Configuration** tab.
 1.  In the Configuration tab, do the following:
-    1.  In the **Bot name** box, enter "AccountsBot".
+    1.  In the **App name** box, enter "AccountsApp".
     1.  In the **Avatar URL box**, enter `https://www.gstatic.com/images/icons/material/system_gm/1x/badge_black_18dp.png`.
     1.  In the **Description box**, enter "Easy account owners look up".
     1.  Under **Functionality**, select all options.
-    1.  Under **Connection settings**, select **Bot Url** and paste
+    1.  Under **Connection settings**, select **App Url** and paste
         your the URL for the Cloud Function trigger into the box.
     1.  Under **Permissions**, select **Specific people and group in your
         domain**. In the text box under the drop-down menu, enter your email
         address.
     1.  Click Save changes.
-1.  After you save your changes, verify that the status on the Hangouts Chat API
-    page shows the Bot Status to be **LIVE – available to users**.
+1.  After you save your changes, verify that the status on the Google Chat API
+    page shows the App Status to be **LIVE – available to users**.
 
 [library_chat]: https://console.cloud.google.com/apis/library/chat.googleapis.com
 
-## Test the bot
+## Test the app
 
-1.  Open [Hangouts Chat][hangouts_chat].
-1.  Click **Find people, rooms, bots > Message a bot**.
-1.  From the list, select the **AccountsBot** that you created.
-1.  Send the message "Acme" to the bot, you should receive a card shown above.
+1.  Open [Google Chat][google_chat].
+1.  Click **Find people, rooms, apps > Message a app**.
+1.  From the list, select the **AccountsApp** that you created.
+1.  Send the message "Acme" to the app, you should receive a card shown above.
 1.  Send the message "foo", you should receive the default card:
-![Foo-Lookup](https://github.com/googleworkspace/hangouts-chat-samples/blob/main/node/accounts-bot/assets/FooLookup.png)
+![Foo-Lookup](https://github.com/googleworkspace/google-chat-samples/blob/main/node/accounts-app/assets/FooLookup.png)
 
-[hangouts_chat]: https://chat.google.com
+[google_chat]: https://chat.google.com

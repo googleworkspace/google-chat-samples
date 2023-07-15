@@ -10,7 +10,7 @@ const ACCOUNT_IMAGE_URL = 'https://www.gstatic.com/images/icons/material/system_
  * @param {!express:Request} req HTTP request context.
  * @param {!express:Response} res HTTP response context.
 */
-exports.accountsBot = async (req, res) => {
+exports.accountsApp = async (req, res) => {
   const message = req.body.message;
   if (!message || !message.text) {
     console.log('invalid request');
@@ -63,7 +63,7 @@ async function getSheetsClient() {
 }
 
 /**
- * Creates JSON response for a simple text message for Hangouts.
+ * Creates JSON response for a simple text message for Google Chat.
  *
  * @param {String} message the text of message response
  * @return {JSON} the reponse data
