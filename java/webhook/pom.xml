@@ -20,12 +20,12 @@ limitations under the License.
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.hangouts.chat.webhook</groupId>
+  <groupId>com.google.chat.webhook</groupId>
   <artifactId>java-webhook-app</artifactId>
   <version>0.1.0</version>
 
   <name>java-webhook-app</name>
-  <url>https://github.com/googleworkspace/hangouts-chat-samples/tree/main/java/webhook</url>
+  <url>https://github.com/googleworkspace/google-chat-samples/tree/main/java/webhook</url>
 
   <properties>
     <maven.compiler.target>11</maven.compiler.target>
