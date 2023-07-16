@@ -36,7 +36,7 @@ The sample is built using Python on Google App Engine, Standard Environment.
 
   1. To configure the app to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/chat/how-tos/apps-publish).
+     [Publishing apps](https://developers.google.com/chat/how-tos/apps-publish).
   1. When configuring the app on the **Configuration** tab on the
      **Google Chat API** page, enter the URL for the deployed version
      of the app into the **Bot URL** text box.

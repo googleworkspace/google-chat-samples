@@ -27,7 +27,7 @@ Google App Engine, Standard Environment.
 
   1. To configure the app to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/chat/api/guides/auth/service-accounts).
+     [Publishing apps](https://developers.google.com/chat/api/guides/auth/service-accounts).
   1. When configuring the app on the **Configuration** tab on the
      **Google Chat API** page, enter the URL for the deployed version
      of the app into the **Bot URL** text box.

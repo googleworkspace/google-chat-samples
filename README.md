@@ -1,7 +1,7 @@
 # Google Chat code samples
 
 This repository contains the code samples for
-[Google Chat bots](https://developers.google.com/hangouts/chat/).
+[Google Chat apps](https://developers.google.com/hangouts/chat/).
 There are folders of samples dependent on language and platform. Generally
 the Java and Python samples live in each respective directory, but JavaScript
 has multiple form factors (client-side, server-side/Node.js, Google Apps
