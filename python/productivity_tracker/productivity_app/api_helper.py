@@ -16,7 +16,7 @@ import google.auth
 from os import environ
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
-from productivity_bot.nlp_helper import NLPHelper
+from productivity_app.nlp_helper import NLPHelper
 
 
 class APIHelper:

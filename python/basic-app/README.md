@@ -1,6 +1,6 @@
-# Hangouts Chat basic bot
+# Google Chat basic app
 
-This code sample creates a simple Hangouts Chat bot that responds to events and
+This code sample creates a simple Google Chat app that responds to events and
 messages from a room. The sample is built using Python 3 on Google App Engine,
 Standard Environment.
 
@@ -17,21 +17,21 @@ Standard Environment.
      gcloud app deploy
      ```
 
-## Configure the bot for Hangouts Chat
+## Configure the app for Google Chat
 
-  1. To configure the bot to respond to @mentions in Hangouts Chat, follow
+  1. To configure the app to respond to @mentions in Google Chat, follow
      the steps to enable the API in
-     [Publishing bots](https://developers.google.com/hangouts/chat/how-tos/bots-publish).
-  1. When configuring the bot on the **Configuration** tab on the
-     **Hangouts Chat API** page, enter the URL for the deployed version
-     of the bot into the **Bot URL** text box.
+     [Publishing apps](https://developers.google.com/chat/how-tos/apps-publish).
+  1. When configuring the app on the **Configuration** tab on the
+     **Google Chat API** page, enter the URL for the deployed version
+     of the app into the **App URL** text box.
 
 
-## Interact with the bot
+## Interact with the app
 
-Either add and @mention the bot in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the app.
 
-When added to a room or messaged, the bot will respond with a simple reply.
+When added to a room or messaged, the app will respond with a simple reply.
 
 ## Run the sample locally
 

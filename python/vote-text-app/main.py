@@ -10,7 +10,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Hangouts Chat simple text-only vote bot in Python App Engine
+Google Chat simple text-only vote app in Python App Engine
 """
 
 from typing import Any, Mapping
@@ -21,7 +21,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['POST'])
 def post() -> Mapping[str, Any]:
-  """Handle requests from Hangouts Chat
+  """Handle requests from Google Chat
 
   Create new vote for ADDED_TO_SPACE and MESSAGE events
   Update existing card for 'upvote' or 'downvote' clicks

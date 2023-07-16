@@ -14,7 +14,7 @@
 #
 # pylint: disable=invalid-name
 """
-Simple Hangouts Chat bot that responds to events and
+Simple Google Chat app that responds to events and
 messages from a room.
 """
 # [START basic-bot]
@@ -27,7 +27,7 @@ app = Flask(__name__)
 def home_post():
     """Respond to POST requests to this endpoint.
 
-    All requests sent to this endpoint from Hangouts Chat are POST
+    All requests sent to this endpoint from Google Chat are POST
     requests.
     """
 
@@ -36,7 +36,7 @@ def home_post():
     resp = None
 
     if data['type'] == 'REMOVED_FROM_SPACE':
-        logging.info('Bot removed from a space')
+        logging.info('App removed from a space')
 
     else:
         resp_dict = format_response(data)
@@ -54,11 +54,11 @@ def format_response(event):
 
     text = ""
 
-    # Case 1: The bot was added to a room
+    # Case 1: The app was added to a room
     if event['type'] == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
         text = 'Thanks for adding me to "%s"!' % event['space']['displayName']
 
-    # Case 2: The bot was added to a DM
+    # Case 2: The app was added to a DM
     elif event['type'] == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
         text = 'Thanks for adding me to a DM, %s!' % event['user']['displayName']
 

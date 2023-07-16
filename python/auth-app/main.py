@@ -49,7 +49,7 @@ def home():
 
 @app.route('/', methods=['POST'])
 def on_event() -> (Any | dict):
-    """Handler for events from Hangouts Chat."""
+    """Handler for events from Google Chat."""
     if event := flask.request.get_json():
       if message := event.get('message'):
         if 'logout' in message.get('text', '').lower():
@@ -69,7 +69,7 @@ def on_event() -> (Any | dict):
 
 
 def on_mention(event: dict) -> dict:
-    """Handles a mention from Hangouts Chat."""
+    """Handles a mention from Google Chat."""
     user_name = event['user']['name']
     user_credentials = auth.get_user_credentials(user_name)
     if not user_credentials:
