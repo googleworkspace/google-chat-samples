@@ -8,7 +8,7 @@ Use the Google Chat Productivity Tracker App (GCPT) to work smarter, not harder.
 ![example](https://user-images.githubusercontent.com/6697240/42903254-1eb8d378-8a86-11e8-8909-d47a39a24ccc.gif)
 
 
-This bot uses the following Google APIs:
+This app uses the following Google APIs:
 
 - [Google Chat API](https://developers.google.com/chat/)
 - [Google Drive API](https://developers.google.com/drive/)
@@ -69,4 +69,4 @@ This bot uses the following Google APIs:
 1. Deploy the application with the service account:
     `gcloud beta app deploy --service-account SERVICEACCOUNT@PROJECT_ID.iam.gserviceaccount.com`
 1. [Configure the app](https://developers.google.com/chat/how-tos/apps-publish) in the [console](https://console.cloud.google.com/apis/library/chat.googleapis.com).
-    Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
+    Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the app url.

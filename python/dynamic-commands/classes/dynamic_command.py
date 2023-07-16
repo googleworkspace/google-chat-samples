@@ -129,7 +129,7 @@ class DynamicCommandHandler(object):
                 command, {"request_json": req})
 
           elif self.request.message.space.type == 'DM':
-            # This is just random text in a DM with the bot. Anything that's
+            # This is just random text in a DM with the app. Anything that's
             # a 'new' slash command (like '/hello', for example) will have the
             # '/' stripped and then be treated as just random text.
             text = ''.join(self.request.message.text.split('/')[1:]) \

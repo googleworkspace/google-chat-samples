@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""Simple bot that exercises Google OAuth and Google People API.
+"""Simple app that exercises Google OAuth and Google People API.
 
-This bot runs on the App Engine Flexible Environment, and uses Google Cloud
+This app runs on the App Engine Flexible Environment, and uses Google Cloud
 Datastore for storing user credentials.
 """
 from __future__ import annotations

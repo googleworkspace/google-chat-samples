@@ -154,12 +154,12 @@ class APIHelper:
     Example input structure before method call:
         [
             ['id', 'active_loop', 'raw_text'],
-            ['29', 'ActiveLoops object', 'Work with Joe on Bot']
+            ['29', 'ActiveLoops object', 'Work with Joe on app']
         ]
     Example input structure after method call (this method modifies the original structure)
         [
             ['id', 'active_loop', 'raw_text', 'action(s)', 'other persons', 'external parties'],
-            ['29', 'ActiveLoops object', 'Work with Joe on Bot', 'work', 'joe', 'bot']
+            ['29', 'ActiveLoops object', 'Work with Joe on app, 'work', 'joe', 'app']
         ]
 
     Raises:

@@ -14,7 +14,7 @@
 #
 # pylint: disable=invalid-name
 """
-Google Chat bot that responds to events and messages from a room asynchronously.
+Google Chat app that responds to events and messages from a room asynchronously.
 """
 
 # [START async-bot]
@@ -46,8 +46,8 @@ def home_post() -> Mapping[str, Any]:
 
     resp = None
 
-    # If the bot is removed from the space, it doesn't post a message
-    # to the space. Instead, log a message showing that the bot was removed.
+    # If the app is removed from the space, it doesn't post a message
+    # to the space. Instead, log a message showing that the app was removed.
     if event_data['type'] == 'REMOVED_FROM_SPACE':
         logging.info('Bot removed from  %s', event_data['space']['name'])
         return json.jsonify({})
@@ -88,11 +88,11 @@ def format_response(event: Mapping[str, Any]) -> Mapping[str, Any]:
     text = ""
     sender_name = event['user']['displayName']
 
-    # Case 1: The bot was added to a room
+    # Case 1: The app was added to a room
     if event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'ROOM':
         text = f'Thanks for adding me to {event["space"]["displayName"]}!'
 
-    # Case 2: The bot was added to a DM
+    # Case 2: The app was added to a DM
     elif event_type == 'ADDED_TO_SPACE' and event['space']['type'] == 'DM':
         text = f'Thanks for adding me to a DM, {sender_name}!'
 
