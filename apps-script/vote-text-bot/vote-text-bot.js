@@ -13,8 +13,8 @@
  */
 
 /**
- * Google Chat simple text-only vote app in Google Apps Script
- * @see https://developers.google.com/chat/api/guides/message-formats/cards
+ * Hangouts Chat simple text-only vote bot in Google Apps Script
+ * @see developers.google.com/hangouts/chat/how-tos/cards-onclick
  */
 
 /**
@@ -22,8 +22,8 @@
  * @param {string} voter Google user name
  * @param {number} voteCount Current vote count
  * @param {boolean} shouldUpdate Update existing or create new card?
- * @return {object} actual JSON payload to return to Google Chat
- * @see https://developers.google.com/chat/concepts
+ * @return {object} actual JSON payload to return to Hangouts Chat
+ * @see developers.google.com/hangouts/chat/concepts/cards
  */
 function createMessage(voter, voteCount, shouldUpdate) {
   var parameters = [{key: 'count', value: voteCount.toString()}];
@@ -78,12 +78,12 @@ function createMessage(voter, voteCount, shouldUpdate) {
 }
 
 /**
- * Handler for app-added-to-room and message events. Create new
- * vote when any MESSAGE events are received in Google Chat.
- * @param {Event} e The Google Chat event
+ * Handler for bot-added-to-room and message events. Create new
+ * vote when any MESSAGE events are received in Hangouts Chat.
+ * @param {Event} e The Hangouts Chat event
  * @return {object} JSON payload for new vote card
- * @see https://developers.google.com/chat/how-tos/apps-script#app_concepts
- * @see https://developers.google.com/chat/api/guides/message-formats/events#event_types
+ * @see developers.google.com/hangouts/chat/how-tos/bots-apps-script#apps_script_bot_concepts
+ * @see developers.google.com/hangouts/chat/reference/message-formats/events#event_types
  */
 function onMessage(e) {
   return createMessage(e.user.displayName, 0);
@@ -91,9 +91,9 @@ function onMessage(e) {
 
 /**
  * Card click event handler
- * @param {Event} e The Google Chat event
+ * @param {Event} e The Hangouts Chat event
  * @return {object} payload for appropriate vote card, depending on user input
- * @see https://developers.google.com/chat/api/guides/message-formats/cards
+ * @see developers.google.com/hangouts/chat/how-tos/cards-onclick
  */
 function onCardClick(e) {
   // Create a new vote card when 'NEW' button is clicked.
