@@ -1,7 +1,7 @@
 # Google Chat code samples
 
 This repository contains the code samples for
-[Google Chat apps](https://developers.google.com/hangouts/chat/).
+[Google Chat apps](https://developers.google.com/chat).
 There are folders of samples dependent on language and platform. Generally
 the Java and Python samples live in each respective directory, but JavaScript
 has multiple form factors (client-side, server-side/Node.js, Google Apps
@@ -32,7 +32,7 @@ one or more of the following code samples:
     from Google Chat. The app responds back to Google Chat asynchronously.
   - **Card app**: This app receives event notices and messages from Google
     Chat and responds synchronously with a
-    [card-formatted](https://developers.google.com/hangouts/chat/concepts/cards)
+    [card-formatted](https://developers.google.com/chat/concepts)
     response. This sample is an HTTP endpoint app built upon
     [Google App Engine](https://cloud.google.com/appengine/).
   - **Vote app**: This app demonstrates updating interactive cards by providing

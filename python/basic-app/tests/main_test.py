@@ -17,18 +17,18 @@ import json
 import sys
 
 # Import the module under test
-import bot
+import app
 
-class BotTest(unittest.TestCase):
-    ROOM_DISPLAY_NAME = 'Bot Testing'
-    USER_DISPLAY_NAME = 'Bot Tester'
+class AppTest(unittest.TestCase):
+    ROOM_DISPLAY_NAME = 'App Testing'
+    USER_DISPLAY_NAME = 'App Tester'
     TEST_MESSAGE = "Test message"
 
     def setUp(self):
-        self.app = bot.app.test_client()
+        self.app = app.app.test_client()
 
     # Test the response when the app is added to the room
-    def testBotAddedToRoom(self):
+    def testAppAddedToRoom(self):
 
         message = {
             'type': 'ADDED_TO_SPACE',
@@ -52,7 +52,7 @@ class BotTest(unittest.TestCase):
         self.assertEqual(response.content_type, 'application/json')
 
     # Test the response when the app is added to the room
-    def testBotAddedToDM(self):
+    def testAppAddedToDM(self):
 
         message = {
             'type': 'ADDED_TO_SPACE',
@@ -76,7 +76,7 @@ class BotTest(unittest.TestCase):
             % self.USER_DISPLAY_NAME)
         self.assertEqual(response.content_type, 'application/json')
 
-    def testBotSentMessage(self):
+    def testAppSentMessage(self):
         message_text = 'Hello app test!'
 
         message = {

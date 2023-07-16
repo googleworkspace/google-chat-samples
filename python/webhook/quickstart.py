@@ -30,7 +30,7 @@ def main():
         uri=url,
         method='POST',
         headers=message_headers,
-        body=dumps(bot_message),
+        body=dumps(app_message),
     )
     print(response)
 

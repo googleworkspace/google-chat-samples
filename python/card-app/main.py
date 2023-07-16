@@ -28,7 +28,7 @@ app = Flask(__name__)
 INTERACTIVE_TEXT_BUTTON_ACTION = 'doTextButtonAction'
 INTERACTIVE_IMAGE_BUTTON_ACTION = 'doImageButtonAction'
 INTERACTIVE_BUTTON_PARAMETER_KEY = "param_key"
-BOT_HEADER = 'Card app Python'
+APP_HEADER = 'Card app Python'
 
 
 @app.route('/', methods=['POST'])
@@ -50,7 +50,7 @@ def home_post() -> Mapping[str, Any]:
 
   match (type, space):
     case ('REMOVED_FROM_SPACE', _):
-      logging.info('Bot removed from  %s', event_data['space']['name'])
+      logging.info('App removed from  %s', event_data['space']['name'])
       return 'OK'
 
     case ('ADDED_TO_SPACE', 'ROOM'):
@@ -94,7 +94,7 @@ def create_card_response(event_message: str) -> Dict[str, Any]:
   https://developers.google.com/chat/api/guides/message-formats/cards
 
   Args:
-      eventMessage: the user's message to the bot
+      eventMessage: the user's message to the app
 
   """
 
@@ -110,7 +110,7 @@ def create_card_response(event_message: str) -> Dict[str, Any]:
       case 'header':
         header = {
             'header': {
-                'title': BOT_HEADER,
+                'title': APP_HEADER,
                 'subtitle': 'Card header',
                 'imageUrl': 'https://goo.gl/5obRKj',
                 'imageStyle': 'IMAGE'
@@ -261,7 +261,7 @@ def respond_to_interactive_card_click(
       'cards': [
           {
               'header': {
-                  'title': BOT_HEADER,
+                  'title': APP_HEADER,
                   'subtitle': 'Interactive card clicked',
                   'imageUrl': 'https://goo.gl/5obRKj',
                   'imageStyle': 'IMAGE'
