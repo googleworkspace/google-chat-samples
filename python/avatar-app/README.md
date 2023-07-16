@@ -1,4 +1,4 @@
-# Cloud Functions avatar bot
+# Cloud Functions avatar app
 
 This code sample creates a simple Google Chat app that responds to
 a simple message with the user's avatar.

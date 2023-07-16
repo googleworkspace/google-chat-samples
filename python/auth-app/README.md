@@ -1,4 +1,4 @@
-# Google Chat authorization bot
+# Google Chat authorization app
 
 This code sample creates a Google Chat app that requests additional
 authorizations from the user. This app retrieves the user's Google profile
@@ -41,22 +41,22 @@ The sample is built using Python on Google App Engine, Standard Environment.
      **Google Chat API** page, enter the URL for the deployed version
      of the app into the **Bot URL** text box.
 
-## Interact with the bot
+## Interact with the app
 
-Either add and @mention the app in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the app.
 
 When first messaged or added to a space, the app will respond with a private rqeuest
-to configure the bot. Follow the link to authorize access to your profile data. Subsequent
+to configure the app. Follow the link to authorize access to your profile data. Subsequent
 messages will display a card with your profile.
 
-To deauthorize the bot, message "logout" to the bot.
+To deauthorize the app, message "logout" to the app.
 
 ## Run the sample locally
 
 Note: Follow the steps for deployment and configuring the app for Google Chat
 before running locally.
 
-  1. Create a service account for the bot, as documented
+  1. Create a service account for the app, as documented
      [here](https://developers.google.com/chat/api/guides/auth/service-accounts).
      Save the private key in a `service-acct.json` file in the working directory.
   1. Start a virtual environment

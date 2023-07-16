@@ -60,7 +60,7 @@ class Store:
             user_name (str): The identifier for the user.
 
         Returns:
-            A Credentials object, or None if the user has not authorized the bot.
+            A Credentials object, or None if the user has not authorized the app.
         """
         key = self.datastore_client.key('RefreshToken', user_name)
         entity = self.datastore_client.get(key)

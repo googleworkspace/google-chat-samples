@@ -1,4 +1,4 @@
-# Google Chat basic asynchronous bot
+# Google Chat basic asynchronous app
 
 This code sample creates a simple Google Chat app that responds to events and
 messages from a room asynchronously. The sample is built using Python on
@@ -13,7 +13,7 @@ Google App Engine, Standard Environment.
   1. Follow the steps in [Setting Up Your GCP Resources](https://cloud.google.com/appengine/docs/standard/python3/console/#create)
      to create a project and enable App Engine.
 
-  1. Create a service account for the bot, as documented
+  1. Create a service account for the app, as documented
      [here](https://developers.google.com/chat/api/guides/auth/service-accounts).
      Replace the contents of the `service-acct.json` file with the service
      account secrets that you download.
@@ -33,9 +33,9 @@ Google App Engine, Standard Environment.
      of the app into the **Bot URL** text box.
 
 
-## Interact with the bot
+## Interact with the app
 
-Either add and @mention the app in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the app.
 
 When added to a room or messaged, the app will respond with a simple reply.
 

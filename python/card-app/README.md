@@ -1,4 +1,4 @@
-# Google Chat card bot
+# Google Chat card app
 
 This code sample creates a simple Google Chat app that responds to events and
 messages from a room synchronously. The app formats the response using cards,
@@ -29,11 +29,11 @@ The sample is built using Python on Google App Engine, Standard Environment.
      **Google Chat API** page, enter the URL for the deployed version
      of the app into the **Bot URL** text box.
 
-## Interact with the bot
+## Interact with the app
 
-Either add and @mention the app in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the app.
 
-In the message to the bot, send a list of the widgets for the app to send back.
+In the message to the app, send a list of the widgets for the app to send back.
 For example, if you want the app to send a header and a text paragraph widget,
 type 'header textparagraph'.
 
