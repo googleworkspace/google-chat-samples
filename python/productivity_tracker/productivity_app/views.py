@@ -20,19 +20,19 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
-from productivity_bot.inbound_message_handlers import handle_inbound_message
-from productivity_bot.message_users_helpers import send_reminder
+from productivity_app.inbound_message_handlers import handle_inbound_message
+from productivity_app.message_users_helpers import send_reminder
 
-from productivity_bot.models import ActiveLoops
+from productivity_app.models import ActiveLoops
 
 
-class ChatbotEvent(View):
-  """This is the View that will handle chatbot events
+class ChatAppEvent(View):
+  """This is the View that will handle App events
   (i.e. ADDED_TO_SPACE, MESSAGE, etc.)
 
-  Corresponds to '/chatbot_event'
+  Corresponds to '/chatapp_event'
 
-  This endpoint is to be invoked by Hangouts Chat Server
+  This endpoint is to be invoked by Google Chat Server
 
   Methods:
       dispatch:
@@ -45,14 +45,14 @@ class ChatbotEvent(View):
 
   @method_decorator(csrf_exempt)
   def dispatch(self, request, *args, **kwargs):
-    return super(ChatbotEvent, self).dispatch(request, *args, **kwargs)
+    return super(ChatAppEvent, self).dispatch(request, *args, **kwargs)
 
   def post(self, request):
     event = json.loads(request.body)
 
     match event['type']:
       case 'ADDED_TO_SPACE':
-        response = ('Hi, my name is Productivity Bot! I\'m going to help ' +
+        response = ('Hi, my name is Productivity App! I\'m going to help ' +
                     'you keep track of your productivity. To start your ' +
                     'first working session, say "start"')
         return JsonResponse({'text': response})

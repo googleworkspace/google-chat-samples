@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 """
-Hangouts Chat bot that listens for messages via Cloud Pub/Sub.
+Google Chat App that listens for messages via Cloud Pub/Sub.
 """
 
 # [START pub-sub-bot]
@@ -30,7 +30,7 @@ import google.auth
 def receive_messages():
   """Receives messages from a pull subscription."""
 
-  scopes = ['https://www.googleapis.com/auth/chat.bot']
+  scopes = ['https://www.googleapis.com/auth/chat.app']
   credentials, project_id = google.auth.default()
   credentials = credentials.with_scopes(scopes=scopes)
   chat = build('chat', 'v1', credentials=credentials)
@@ -46,14 +46,14 @@ def receive_messages():
     event = json.loads(message.data)
     space_name = event['space']['name']
 
-    # If the bot was removed, we don't need to return a response.
+    # If the app was removed, we don't need to return a response.
     if event['type'] == 'REMOVED_FROM_SPACE':
-      logging.info('Bot removed rom space %s', space_name)
+      logging.info('App removed rom space %s', space_name)
       return
 
     response = format_response(event)
 
-    # Send the asynchronous response back to Hangouts Chat
+    # Send the asynchronous response back to Google Chat
     chat.spaces().messages().create(
         parent=space_name,
         body=response).execute()

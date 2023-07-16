@@ -12,26 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from productivity_bot.models import User, ActiveLoops, UserResponses
-from productivity_bot.api_helper import APIHelper
+from productivity_app.models import User, ActiveLoops, UserResponses
+from productivity_app.api_helper import APIHelper
 
 COMMAND_ERROR = 'Sorry, that was an invalid command.'
 SESSION_BEGIN = 'Working session has begun! To end the session, say "stop"'
 SESSION_END = 'Working session has ended! See a summary of your work here: %s'
 
 def handle_inbound_message(message_text, user_id, space_name, email):
-    """Handles inbound messages sent to the bot.
+    """Handles inbound messages sent to the app.
 
     Args:
-        message_text (str): The raw text sent to this bot from the user
+        message_text (str): The raw text sent to this app from the user
         user_id (str): The user's user_name field (
-            https://developers.google.com/hangouts/chat/reference/rest/v1/User)
+            https://developers.google.com/chat/api/reference/rest/v1/User)
         space_name (str): The space's space_name field (
-            https://developers.google.com/hangouts/chat/reference/rest/v1/spaces)
+            https://developers.google.com/chat/api/reference/rest/v1/spaces)
         email (str): The user's email
 
     Returns:
-        str: The bot's response (str)
+        str: The app's response (str)
     """
     user = User.objects.get_or_create(
         space_name=space_name,
@@ -66,7 +66,7 @@ def start_active_loop(user):
         user: The User object for the user who's starting an active loop
 
     Returns:
-        The bot's response (str)
+        The app's response (str)
     """
 
     # Check if this user is in an active loop
@@ -87,7 +87,7 @@ def end_active_loop(user):
         user (User obj): The User object for the user who's starting an active loop
 
     Returns:
-        str: The bot's response
+        str: The app's response
     """
     active_loop = get_active_loop(user)
     if not active_loop:
@@ -141,7 +141,7 @@ def log_user_response(user, text):
         text (list): The text sent by the user.
 
     Returns:
-        str: The bot's response
+        str: The app's response
     """
     active_loop = ActiveLoops.objects.get(user=user)
     raw_text = " ".join(text)
