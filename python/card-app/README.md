@@ -1,7 +1,7 @@
 # Google Chat card bot
 
-This code sample creates a simple Google Chat bot that responds to events and
-messages from a room synchronously. The bot formats the response using cards,
+This code sample creates a simple Google Chat app that responds to events and
+messages from a room synchronously. The app formats the response using cards,
 inserting widgets based upon the user's original input
 
 The sample is built using Python on Google App Engine, Standard Environment.
@@ -20,24 +20,24 @@ The sample is built using Python on Google App Engine, Standard Environment.
      > gcloud app deploy
      > ```
 
-## Configure the bot for Google Chat
+## Configure the app for Google Chat
 
-  1. To configure the bot to respond to @mentions in Google Chat, follow
+  1. To configure the app to respond to @mentions in Google Chat, follow
      the steps to enable the API in
      [Publishing bots](https://developers.google.com/chat/how-tos/apps-publish).
-  1. When configuring the bot on the **Configuration** tab on the
+  1. When configuring the app on the **Configuration** tab on the
      **Google Chat API** page, enter the URL for the deployed version
-     of the bot into the **Bot URL** text box.
+     of the app into the **Bot URL** text box.
 
 ## Interact with the bot
 
-Either add and @mention the bot in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the bot.
 
-In the message to the bot, send a list of the widgets for the bot to send back.
-For example, if you want the bot to send a header and a text paragraph widget,
+In the message to the bot, send a list of the widgets for the app to send back.
+For example, if you want the app to send a header and a text paragraph widget,
 type 'header textparagraph'.
 
-The bot responds to the following user input:
+The app responds to the following user input:
 
   - header
   - textparagraph

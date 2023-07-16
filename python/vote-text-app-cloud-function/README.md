@@ -1,6 +1,6 @@
 # Cloud Functions Basic Chat bot
 
-This code sample creates a Google Chat simple text-only Vote bot that
+This code sample creates a Google Chat simple text-only Vote app that
 allows a user to vote (+1 or -1) on a message. The sample is built using
 Python 3.10 and is hosted on Google Cloud Functions.
 
@@ -11,5 +11,5 @@ Python 3.10 and is hosted on Google Cloud Functions.
 1. [Enable the Google Chat API, configure and publish the bot](https://developers.google.com/chat/how-tos/apps-publish).
     Make sure to register the URL for the App Engine instance as the
     **HTTP endpoint** of the bot.
-1. Add the Vote bot to a chat room and see a new message from the bot with
+1. Add the Vote app to a chat room and see a new message from the app with
   the vote card ready to accept its first vote!

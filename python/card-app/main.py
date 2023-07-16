@@ -14,8 +14,8 @@
 #
 # pylint: disable=invalid-name
 """
-Google Chat bot that responds to events and messages from a room
-synchronously. The bot formats the response using cards,
+Google Chat app that responds to events and messages from a room
+synchronously. The app formats the response using cards,
 inserting widgets based upon the user's original input.
 """
 import logging
@@ -28,7 +28,7 @@ app = Flask(__name__)
 INTERACTIVE_TEXT_BUTTON_ACTION = 'doTextButtonAction'
 INTERACTIVE_IMAGE_BUTTON_ACTION = 'doImageButtonAction'
 INTERACTIVE_BUTTON_PARAMETER_KEY = "param_key"
-BOT_HEADER = 'Card Bot Python'
+BOT_HEADER = 'Card app Python'
 
 
 @app.route('/', methods=['POST'])
@@ -43,8 +43,8 @@ def home_post() -> Mapping[str, Any]:
 
   resp = None
 
-  # If the bot is removed from the space, it doesn't post a message
-  # to the space. Instead, log a message showing that the bot was removed.
+  # If the app is removed from the space, it doesn't post a message
+  # to the space. Instead, log a message showing that the app was removed.
   type = event_data['type']
   space = event_data.get('space', dict()).get('type')
 
@@ -235,8 +235,8 @@ def respond_to_interactive_card_click(
   https://developers.google.com/chat/api/guides/message-formats/cards
 
   Args:
-      action_name: the name of the custom action defined in the original bot response
-      custom_params: the parameters defined in the original bot response
+      action_name: the name of the custom action defined in the original app response
+      custom_params: the parameters defined in the original app response
 
   """
   message = 'You clicked {}'.format(

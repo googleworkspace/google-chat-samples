@@ -1,6 +1,6 @@
-# Google Chat Cloud Pub/Sub bot sample
+# Google Chat Cloud Pub/Sub app sample
 
-This code sample creates a simple Google Chat bot that listens for
+This code sample creates a simple Google Chat app that listens for
 messages via Cloud Pub/Sub.
 
 ## Run the sample locally
@@ -26,7 +26,7 @@ Before you can run the sample, do the following:
 
 ## Interact with the bot
 
-Either add and @mention the bot in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the bot.
 
-When added to a room or messaged, the bot will respond with a simple reply.
+When added to a room or messaged, the app will respond with a simple reply.
 

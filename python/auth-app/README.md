@@ -1,7 +1,7 @@
 # Google Chat authorization bot
 
-This code sample creates a Google Chat bot that requests additional
-authorizations from the user. This bot retrieves the user's Google profile
+This code sample creates a Google Chat app that requests additional
+authorizations from the user. This app retrieves the user's Google profile
 information from [People API](https://developers.google.com/people/), and
 is performing authorization against
 [Google's OAuth2](https://developers.google.com/identity/protocols/OAuth2WebServer)
@@ -32,20 +32,20 @@ The sample is built using Python on Google App Engine, Standard Environment.
      gcloud app deploy
      ```
 
-## Configure the bot for Google Chat
+## Configure the app for Google Chat
 
-  1. To configure the bot to respond to @mentions in Google Chat, follow
+  1. To configure the app to respond to @mentions in Google Chat, follow
      the steps to enable the API in
      [Publishing bots](https://developers.google.com/chat/how-tos/apps-publish).
-  1. When configuring the bot on the **Configuration** tab on the
+  1. When configuring the app on the **Configuration** tab on the
      **Google Chat API** page, enter the URL for the deployed version
-     of the bot into the **Bot URL** text box.
+     of the app into the **Bot URL** text box.
 
 ## Interact with the bot
 
-Either add and @mention the bot in a room or in a direct mention to engage with the bot.
+Either add and @mention the app in a room or in a direct mention to engage with the bot.
 
-When first messaged or added to a space, the bot will respond with a private rqeuest
+When first messaged or added to a space, the app will respond with a private rqeuest
 to configure the bot. Follow the link to authorize access to your profile data. Subsequent
 messages will display a card with your profile.
 
@@ -53,7 +53,7 @@ To deauthorize the bot, message "logout" to the bot.
 
 ## Run the sample locally
 
-Note: Follow the steps for deployment and configuring the bot for Google Chat
+Note: Follow the steps for deployment and configuring the app for Google Chat
 before running locally.
 
   1. Create a service account for the bot, as documented

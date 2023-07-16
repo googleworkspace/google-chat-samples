@@ -27,7 +27,7 @@ class BotTest(unittest.TestCase):
     def setUp(self):
         self.app = bot.app.test_client()
 
-    # Test the response when the bot is added to the room
+    # Test the response when the app is added to the room
     def testBotAddedToRoom(self):
 
         message = {
@@ -51,7 +51,7 @@ class BotTest(unittest.TestCase):
         self.assertEqual(data['text'], 'Thanks for adding me to "%s"!' % self.ROOM_DISPLAY_NAME)
         self.assertEqual(response.content_type, 'application/json')
 
-    # Test the response when the bot is added to the room
+    # Test the response when the app is added to the room
     def testBotAddedToDM(self):
 
         message = {
@@ -77,7 +77,7 @@ class BotTest(unittest.TestCase):
         self.assertEqual(response.content_type, 'application/json')
 
     def testBotSentMessage(self):
-        message_text = 'Hello bot test!'
+        message_text = 'Hello app test!'
 
         message = {
             'type': 'MESSAGE',
