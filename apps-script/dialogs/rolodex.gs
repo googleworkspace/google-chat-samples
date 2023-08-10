@@ -20,7 +20,7 @@
 *
 * @param {Object} event the event object from Chat API.
 *
-* @return {object} open a Dialog in response to a slash command
+* @return {Object} open a Dialog in response to a slash command
 * or a card"s button click.
 */
 function onMessage(event) {
@@ -90,11 +90,30 @@ function onCardClick(event) {
   }
 
   if (event.common.invokedFunction === "openSequentialDialog") {
-    return openSequentialDialog(event);
+    const contactName = fetchFormValue(event, "contactName");
+    const address = fetchFormValue(event, "address");
+    return openSequentialDialog(contactName, address);
   }
 
   if (event.common.invokedFunction === "receiveDialog") {
-    return receiveDialog(event);
+    const parameters = event.common.parameters;
+    parameters["contactType"] = fetchFormValue(event, "contactType");
+    parameters["notes"] = fetchFormValue(event, "notes");
+    return receiveDialog(parameters);
+  }
+}
+
+/**
+ * Extracts form input value for a given widget
+ * 
+ * @param {Object} event the event object from Google Chat
+ * @param {String} widgetName the widget name
+ * @returns the form input value for the widget
+ */
+function fetchFormValue(event, widgetName) {
+  const widget = event.common.formInputs[widgetName];
+  if (widget) {
+    return widget[""]["stringInputs"]["value"][0];
   }
 }
 
@@ -102,7 +121,7 @@ function onCardClick(event) {
 * Opens and starts a dialog that lets users add details about a contact.
 *
 *
-* @return {object} open a dialog.
+* @return {Object} open a dialog.
 */
 function openDialog(event) {
   return {
@@ -175,11 +194,12 @@ function openDialog(event) {
 /**
 * Opens a second dialog that lets users add more contact details.
 *
-* @param {object} event the event object from Google Chat.
+* @param {String} contactName the contact name from the previous dialog.
+* @param {String} address the address from the previous dialog.
 *
-* @return {object} open a dialog.
+* @return {Object} open a dialog.
 */
-function openSequentialDialog(event) {
+function openSequentialDialog(contactName, address) {
   return {
     "action_response": {
       "type": "DIALOG",
@@ -226,8 +246,12 @@ function openSequentialDialog(event) {
                               "function": "receiveDialog",
                               "parameters": [
                                 {
-                                  "key": "receiveDialog",
-                                  "value": "receiveDialog"
+                                  "key": "contactName",
+                                  "value": contactName
+                                },
+                                {
+                                  "key": "address",
+                                  "value": address
                                 }
                               ]
                             }
@@ -254,16 +278,16 @@ function openSequentialDialog(event) {
 *
 * Confirms successful receipt of a dialog.
 *
-* @param {Object} event the event object from Chat API.
+* @param {Object} parameters the form input values.
 *
-* @return {object} open a Dialog in Google Chat.
+* @return {Object} open a Dialog in Google Chat.
 */
-function receiveDialog(event) {
+function receiveDialog(parameters) {
 
   // Checks to make sure the user entered a name
   // in a dialog. If no name value detected, returns
   // an error message.
-  if (event.common.formInputs.contactName.stringInputs.value[0] === "") {
+  if (!parameters.contactName) {
     return {
       "actionResponse": {
         "type": "DIALOG",
@@ -287,7 +311,7 @@ function receiveDialog(event) {
         "dialogAction": {
           "actionStatus": {
             "statusCode": "OK",
-            "userFacingMessage": "Success"
+            "userFacingMessage": "Success " + JSON.stringify(parameters)
           }
         }
       }
