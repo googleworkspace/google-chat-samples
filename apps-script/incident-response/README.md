@@ -67,9 +67,9 @@ projects](https://cloud.google.com/resource-manager/docs/creating-managing-proje
    for more information.</font>
 1. Click **Set account**.
 1. (Optional) After you link a project to a billing account, you can [lock
-the link](https://cloud.google.com/billing/docs/how-to/secure-project-billing-account-link)
-to prevent the project from unintentionally being moved (linked) to a different
-billing account or the project link being deleted from the billing account.
+   the link](https://cloud.google.com/billing/docs/how-to/secure-project-billing-account-link)
+   to prevent the project from unintentionally being moved (linked) to a different
+   billing account or the project link being deleted from the billing account.
 
 ### 3. Enable the APIs
 
@@ -168,7 +168,7 @@ you're ready to copy the code into your project and run the sample.
 1. Rename the file `Code.gs` to `ChatApp.gs`.
 1. Replace the template code in the editor with the contents of the files in this sample,
    including the file `appsscript.json`. Create new files as needed.
-1. In the file `Consts.js``, replace the value of the `PROJECT_ID`` with the ID
+1. In the file `Consts.js`, replace the value of the `PROJECT_ID` with the ID
    (not the number) of your GCP Project, which you can copy from the
    [Google Cloud Console](https://console.cloud.google.com/).
 1. Click **Deploy** > **New deployment**.
