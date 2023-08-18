@@ -28,19 +28,20 @@ limitations under the License.
         <form id="incidentForm" onsubmit="handleFormSubmit(this)">
           <div id="form">
             <p>
-              <strong>Incident title</strong><br/>
+              <label for="title">Incident title</label><br/>
               <input type="text" name="title" id="title" />
             </p>
             <p>
-              <strong>Incident responders</strong><br/>
+              <label for="title">Incident responders</label><br/>
               <small>
-                Please enter a comma-separated list of email addresses of the users that should be added to the space.
+                Please enter a comma-separated list of email addresses of the users
+                that should be added to the space.
                 Do not include <?= getUserEmail() ?> as it will be added automatically.
               </small><br/>
               <input type="text" name="users" id="users" />
             </p>
             <p>
-              <strong>Initial message</strong></br>
+              <label for="title">Initial message</label></br>
               <small>This message will be posted after the space is created.</small><br/>
               <textarea name="description" id="description"></textarea>
             </p>
@@ -50,7 +51,7 @@ limitations under the License.
           </div>
           <div id="output" class="hidden"></div>
           <div id="clear" class="hidden">
-            <button type="reset" onclick="clearForm()">CREATE ANOTHER INCIDENT</button>
+            <input type="reset" value="CREATE ANOTHER INCIDENT" onclick="onReset()" />
           </div>
         </form>
       </div>
