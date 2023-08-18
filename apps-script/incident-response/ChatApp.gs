@@ -101,7 +101,7 @@ function processSlashCommand_(event) {
       dialogAction: {
         dialog: {
           body: {
-            sections: sections
+            sections,
           }
         }
       }

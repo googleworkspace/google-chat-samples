@@ -25,14 +25,14 @@ limitations under the License.
     <div class="container">
       <div class="content">
         <h1>Incident Manager</h1>
-        <form id="incidentForm" onsubmit="handleFormSubmit(this)">
+        <form id="incident-form" onsubmit="handleFormSubmit(this)">
           <div id="form">
             <p>
               <label for="title">Incident title</label><br/>
               <input type="text" name="title" id="title" />
             </p>
             <p>
-              <label for="title">Incident responders</label><br/>
+              <label for="users">Incident responders</label><br/>
               <small>
                 Please enter a comma-separated list of email addresses of the users
                 that should be added to the space.
@@ -41,7 +41,7 @@ limitations under the License.
               <input type="text" name="users" id="users" />
             </p>
             <p>
-              <label for="title">Initial message</label></br>
+              <label for="description">Initial message</label></br>
               <small>This message will be posted after the space is created.</small><br/>
               <textarea name="description" id="description"></textarea>
             </p>
