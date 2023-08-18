@@ -13,20 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_api]
 
 /**
  * Executes a Chat API SetUp Space request using user authentication.
  *
  * @param {Object} payload The request body, as described in https://developers.google.com/chat/api/reference/rest/v1/spaces/setup
- * @return {Object} the payload from the Chat API response.
+ * @return {Object} the space from the Chat API response.
  */
 function callSetUpSpace_(payload) {
-  return callChatApi_({
-    uri: SETUP_SPACE_ENDPOINT,
-    method: 'POST',
-    payload: payload
-  });
+  const response = UrlFetchApp.fetch(
+    "https://chat.googleapis.com/v1/spaces:setup",
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(payload)
+    });
+  const space = JSON.parse(response.getContentText());
+  return space;
 }
 
 /**
@@ -34,14 +39,19 @@ function callSetUpSpace_(payload) {
  *
  * @param {String} spaceName The resource name of the space in which to create the message.
  * @param {Object} payload The request body, as described in https://developers.google.com/chat/api/reference/rest/v1/spaces.members/create
- * @return {Object} the payload from the Chat API response.
+ * @return {Object} the membership from the Chat API response.
  */
 function callCreateMembership_(spaceName, payload) {
-  return callChatApi_({
-    uri: MEMBERSHIPS_ENDPOINT(spaceName),
-    method: 'POST',
-    payload: payload
-  });
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/members`,
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(payload)
+    });
+  const membership = JSON.parse(response.getContentText());
+  return membership;
 }
 
 /**
@@ -49,14 +59,19 @@ function callCreateMembership_(spaceName, payload) {
  *
  * @param {String} spaceName The resource name of the space in which to create the message.
  * @param {Object} payload The request body, as described in https://developers.google.com/chat/api/reference/rest/v1/spaces.messages/create
- * @return {Object} the payload from the Chat API response.
+ * @return {Object} the message from the Chat API response.
  */
 function callCreateMessage_(spaceName, payload) {
-  return callChatApi_({
-    uri: MESSAGES_ENDPOINT(spaceName),
-    method: 'POST',
-    payload: payload
-  });
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/messages`,
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(payload)
+    });
+  const message = JSON.parse(response.getContentText());
+  return message;
 }
 
 /**
@@ -68,33 +83,14 @@ function callCreateMessage_(spaceName, payload) {
  * @return {Array} a list of Messages from the Chat API response.
  */
 function callListMessages_(spaceName) {
-  const response = callChatApi_({
-    uri: MESSAGES_ENDPOINT(spaceName) + '?pageSize=100',
-    method: 'GET'
-  });
-  return response.messages;
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/messages?pageSize=100`,
+    {
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    });
+  const parsedResponse = JSON.parse(response.getContentText());
+  return parsedResponse.messages;
 }
 
-/**
- * Executes a Chat API request using user authentication.
- *
- * @param {Object} options an object containing the uri to call and optionally the HTTP method and the request payload.
- *                 If an HTTP method is not specified, GET is used.
- * @return {Object} the payload from the Chat API response.
- */
-function callChatApi_(options) {
-  const uri = encodeURI(options.uri);
-  let fetchOptions = {
-    method: options.method ? options.method : 'GET',
-    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }
-  }
-  if (options.payload) {
-    fetchOptions.contentType = 'application/json';
-    fetchOptions.payload = JSON.stringify(options.payload);
-  }
-  const response = UrlFetchApp.fetch(uri, fetchOptions);
-  const payload = JSON.parse(response.getContentText());
-  return payload;
-}
-
-// [END google_chat_incident_response]
+// [END chat_incident_response_api]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_web]
 
 /**
  * Serves the web page from Index.html.
@@ -40,4 +40,4 @@ function getUserEmail() {
   return Session.getActiveUser().getEmail();
 }
 
-// [END google_chat_incident_response]
+// [END chat_incident_response_web]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_vertex]
 
 /**
  * Summarizes a Chat conversation using the Vertex AI text prediction API.
@@ -22,16 +22,10 @@
  * @return {string} The content from the text prediction response.
  */
 function summarizeChatHistory_(chatHistory) {
-  return callVertexTextAI_(`${SUMMARIZE_CHAT_HISTORY_PROMPT}\n\n${chatHistory}`);
-}
-
-/**
- * Executes a Vertex AI API request for text prediction.
- *
- * @param {string} prompt The prompt to send to the text prediction model.
- * @return {string} The content from the text prediction response.
- */
-function callVertexTextAI_(prompt) {
+  const prompt =
+    "Summarize the following conversation between Engineers resolving an incident"
+      + " in a few sentences. Use only the information from the conversation.\n\n"
+      + chatHistory;
   const request = {
     instances: [
       { prompt: prompt }
@@ -49,9 +43,13 @@ function callVertexTextAI_(prompt) {
     contentType: 'application/json',
     payload: JSON.stringify(request)
   }
-  const response = UrlFetchApp.fetch(VERTEX_TEXT_AI_ENDPOINT, fetchOptions);
+  const response = UrlFetchApp.fetch(
+    "https://us-central1-aiplatform.googleapis.com/v1/projects/"
+      + PROJECT_ID
+      + "/locations/us-central1/publishers/google/models/text-bison:predict",
+    fetchOptions);
   const payload = JSON.parse(response.getContentText());
   return payload.predictions[0].content;
 }
 
-// [END google_chat_incident_response]
+// [END chat_incident_response_vertex]

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_docs]
 
 /**
  * Creates a Doc in the user's Google Drive and writes a summary of the incident information to it.
@@ -37,4 +37,4 @@ function createDoc_(title, resolution, chatHistory, chatSummary) {
   return doc.getUrl();
 }
 
-// [END google_chat_incident_response]
+// [END chat_incident_response_docs]

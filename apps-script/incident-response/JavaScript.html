@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- [START google_chat_incident_response] -->
+<!-- [START chat_incident_response_javascript] -->
 <script>
   var formDiv = document.getElementById('form');
   var outputDiv = document.getElementById('output');
@@ -21,9 +21,9 @@ limitations under the License.
 
   function handleFormSubmit(formObject) {
     event.preventDefault();
-    formDiv.style.display = 'none';
     outputDiv.innerHTML = 'Please wait while we create the space...';
-    outputDiv.style.display = 'block';
+    hide(formDiv);
+    show(outputDiv);
     google.script.run
       .withSuccessHandler(updateOutput)
       .withFailureHandler(onFailure)
@@ -31,30 +31,36 @@ limitations under the License.
   }
 
   function updateOutput(response) {
-    if (response.startsWith('ERROR')) {
-      outputDiv.innerHTML = '<font color="red">' + response + '</font>';
-    } else {
-      var spaceId = response.replace('spaces/', '');
-      outputDiv.innerHTML = '<p>Space created!</p><p><a href="https://mail.google.com/chat/#chat/space/' + spaceId + '" target="_blank">Open space</a></p>';
-    }
-    outputDiv.style.display = 'block';
-    clearDiv.style.display = 'block';
+    var spaceId = response.replace('spaces/', '');
+    outputDiv.innerHTML =
+      '<p>Space created!</p><p><a href="https://mail.google.com/chat/#chat/space/'
+        + spaceId
+        + '" target="_blank">Open space</a></p>';
+    show(outputDiv);
+    show(clearDiv);
   }
 
   function onFailure(error) {
-    outputDiv.innerHTML = '<font color="red">ERROR: ' + error.message + '</font>';
-    outputDiv.style.display = 'block';
-    clearDiv.style.display = 'block';
+    outputDiv.innerHTML = 'ERROR: ' + error.message;
+    outputDiv.classList.add('error');
+    show(outputDiv);
+    show(clearDiv);
   }
 
   function clearForm() {
-    document.getElementById('title').value = '';
-    document.getElementById('users').value = '';
-    document.getElementById('description').value = '';
-    formDiv.style.display = 'block';
     outputDiv.innerHTML = '';
-    outputDiv.style.display = 'none';
-    clearDiv.style.display = 'none';
+    outputDiv.classList.remove('error');
+    show(formDiv);
+    hide(outputDiv);
+    hide(clearDiv);
+  }
+
+  function hide(element) {
+    element.classList.add('hidden');
+  }
+
+  function show(element) {
+    element.classList.remove('hidden');
   }
 </script>
-<!-- [END google_chat_incident_response] -->
+<!-- [END chat_incident_response_javascript] -->

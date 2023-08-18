@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
-<!-- [START google_chat_incident_response] -->
+<!-- [START chat_incident_response_index] -->
 <!DOCTYPE html>
 <html>
   <head>
@@ -24,38 +24,38 @@ limitations under the License.
   <body>
     <div class="container">
       <div class="content">
-    <h1>Incident Manager</h1>
-    <div id="form">
-      <form id="incidentForm" onsubmit="handleFormSubmit(this)">
-        <p>
-          <strong>Incident title</strong><br/>
-          <input type="text" name="title" id="title" />
-        </p>
-        <p>
-          <strong>Incident responders</strong><br/>
-          <small>
-            Please enter a comma-separated list of email addresses of the users that should be added to the space.
-            Do not include <?= getUserEmail() ?> as it will be added automatically.
-          </small><br/>
-          <input type="text" name="users" id="users" />
-        </p>
-        <p>
-          <strong>Initial message</strong></br>
-          <small>This message will be posted after the space is created.</small><br/>
-          <textarea name="description" id="description"></textarea>
-        </p>
-        <p style="text-align:center;">
-          <input type="submit" value="CREATE CHAT SPACE" />
-        </p>
-      </form>
-    </div>
-    <div id="output" style="display:none;"></div>
-    <div id="clear" style="display:none;">
-      <button onclick="clearForm()">CREATE ANOTHER INCIDENT</button>
-    </div>
-    </div>
+        <h1>Incident Manager</h1>
+        <form id="incidentForm" onsubmit="handleFormSubmit(this)">
+          <div id="form">
+            <p>
+              <strong>Incident title</strong><br/>
+              <input type="text" name="title" id="title" />
+            </p>
+            <p>
+              <strong>Incident responders</strong><br/>
+              <small>
+                Please enter a comma-separated list of email addresses of the users that should be added to the space.
+                Do not include <?= getUserEmail() ?> as it will be added automatically.
+              </small><br/>
+              <input type="text" name="users" id="users" />
+            </p>
+            <p>
+              <strong>Initial message</strong></br>
+              <small>This message will be posted after the space is created.</small><br/>
+              <textarea name="description" id="description"></textarea>
+            </p>
+            <p class="text-center">
+              <input type="submit" value="CREATE CHAT SPACE" />
+            </p>
+          </div>
+          <div id="output" class="hidden"></div>
+          <div id="clear" class="hidden">
+            <button type="reset" onclick="clearForm()">CREATE ANOTHER INCIDENT</button>
+          </div>
+        </form>
+      </div>
     </div>
     <?!= include('JavaScript'); ?>
   </body>
 </html>
-<!-- [END google_chat_incident_response] -->
+<!-- [END chat_incident_response_index] -->

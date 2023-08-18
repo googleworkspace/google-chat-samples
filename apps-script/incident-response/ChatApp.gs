@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_app]
 
 /**
  * Responds to a MESSAGE event in Google Chat.
@@ -166,4 +166,4 @@ function getUserDisplayName_(userMap, userName) {
   return displayName;
 }
 
-// [END google_chat_incident_response]
+// [END chat_incident_response_app]

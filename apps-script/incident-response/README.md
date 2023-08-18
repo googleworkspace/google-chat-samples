@@ -118,6 +118,10 @@ Chat apps and Google Chat API requests](https://developers.devsite.corp.google.c
    1. `https://www.googleapis.com/auth/chat.memberships.app`
    1. `https://www.googleapis.com/auth/chat.messages`
    1. `https://www.googleapis.com/auth/documents`
+   1. `https://www.googleapis.com/auth/admin.directory.user.readonly`
+   1. `https://www.googleapis.com/auth/script.external_request`
+   1. `https://www.googleapis.com/auth/userinfo.email`
+   1. `https://www.googleapis.com/auth/cloud-platform`
 1. If you add these scopes manually, click **Add to Table**.
 1. Click **Update**.
 1. Click **Save and Continue**.

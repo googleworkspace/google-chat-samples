@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START google_chat_incident_response]
+// [START chat_incident_response_space_creator]
 
 /**
  * Creates a space in Google Chat with the provided title and members, and posts an
@@ -24,15 +24,11 @@
  * @return {string} the resource name of the new space.
  */
 function createChatSpace(formData) {
-  try {
-    const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-    const spaceName = setUpSpace_(formData.title, users);
-    addAppToSpace_(spaceName);
-    createMessage_(spaceName, formData.description);
-    return spaceName;
-  } catch (e) {
-    return `ERROR: ${e}`;
-  }
+  const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
+  const spaceName = setUpSpace_(formData.title, users);
+  addAppToSpace_(spaceName);
+  createMessage_(spaceName, formData.description);
+  return spaceName;
 }
 
 /**
@@ -85,4 +81,4 @@ function createMessage_(spaceName, text) {
   return message.name;
 }
 
-// [END google_chat_incident_response]
+// [END chat_incident_response_space_creator]
