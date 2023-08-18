@@ -43,14 +43,24 @@ function setUpSpace_(displayName, users) {
       type: "HUMAN"
     }
   }));
-  const space = callSetUpSpace_({
+  const request = {
     space: {
       displayName: displayName,
       spaceType: "SPACE",
       externalUserAllowed: true
     },
     memberships: memberships
-  });
+  };
+  // Call Chat API method spaces.setup
+  const response = UrlFetchApp.fetch(
+    "https://chat.googleapis.com/v1/spaces:setup",
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(request)
+    });
+  const space = JSON.parse(response.getContentText());
   return space.name;
 }
 
@@ -60,12 +70,22 @@ function setUpSpace_(displayName, users) {
  * @return {string} the resource name of the new membership.
  */
 function addAppToSpace_(spaceName) {
-  const membership = callCreateMembership_(spaceName, {
+  const request = {
     member: {
       name: "users/app",
       type: "BOT"
     }
-  });
+  };
+  // Call Chat API method spaces.members.create
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/members`,
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(request)
+    });
+  const membership = JSON.parse(response.getContentText());
   return membership.name;
 }
 
@@ -75,9 +95,19 @@ function addAppToSpace_(spaceName) {
  * @return {string} the resource name of the new message.
  */
 function createMessage_(spaceName, text) {
-  const message = callCreateMessage_(spaceName, {
+  const request = {
     text: text
-  });
+  };
+  // Call Chat API method spaces.messages.create
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/messages`,
+    {
+      method: 'POST',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+      contentType: 'application/json',
+      payload: JSON.stringify(request)
+    });
+  const message = JSON.parse(response.getContentText());
   return message.name;
 }
 

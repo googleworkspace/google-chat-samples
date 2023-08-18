@@ -16,6 +16,7 @@
 // [START chat_incident_response_consts]
 
 const PROJECT_ID = 'replace-with-your-project-id';
+const VERTEX_AI_LOCATION_ID = 'us-central1';
 const CLOSE_INCIDENT_COMMAND_ID = 1;
 
 // [END chat_incident_response_consts]

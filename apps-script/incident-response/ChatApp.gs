@@ -63,42 +63,45 @@ function onCardClick(event) {
  */
 function processSlashCommand_(event) {
   if (event.message.slashCommand.commandId != CLOSE_INCIDENT_COMMAND_ID) {
-    return { "text": "Command not recognized. Use the command `/closeIncident` to close the incident managed by this space." };
+    return {
+      "text": "Command not recognized. Use the command `/closeIncident` to close the incident managed by this space."
+    };
   }
+  const sections = [
+    {
+      header: "Close Incident",
+      widgets: [
+        {
+          textInput: {
+            label: "Please describe the incident resolution",
+            type: "MULTIPLE_LINE",
+            name: "description"
+          }
+        },
+        {
+          buttonList: {
+            buttons: [
+              {
+                text: "Close Incident",
+                onClick: {
+                  action: {
+                    function: "closeIncident"
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ];
   return {
     actionResponse: {
       type: "DIALOG",
       dialogAction: {
         dialog: {
           body: {
-            sections: [
-              {
-                header: "Close Incident",
-                widgets: [
-                  {
-                    textInput: {
-                      label: "Please describe the incident resolution",
-                      type: "MULTIPLE_LINE",
-                      name: "description"
-                    }
-                  },
-                  {
-                    buttonList: {
-                      buttons: [
-                        {
-                          text: "Close Incident",
-                          onClick: {
-                            action: {
-                              function: "closeIncident"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            ]
+            sections: sections
           }
         }
       }
@@ -117,7 +120,7 @@ function processSlashCommand_(event) {
  */
 function processSubmitDialog_(event) {
   const resolution = event.common.formInputs.description[""].stringInputs.value[0];
-  const chatHistory = getChatHistory_(event.space.name);
+  const chatHistory = concatenateAllSpaceMessages_(event.space.name);
   const chatSummary = summarizeChatHistory_(chatHistory);
   const docUrl = createDoc_(event.space.displayName, resolution, chatHistory, chatSummary);
   return {
@@ -129,13 +132,26 @@ function processSubmitDialog_(event) {
 }
 
 /**
- * Lists all the messages in the Chat space.
+ * Lists all the messages in the Chat space, then concatenate all of them into
+ * a single text containing the full Chat history.
+ *
+ * For simplicity for this demo, it only fetches the first 100 messages.
  *
  * @return {string} a text containing all the messages in the space in the format:
  *          Sender's name: Message
  */
-function getChatHistory_(spaceName) {
-  const messages = callListMessages_(spaceName);
+function concatenateAllSpaceMessages_(spaceName) {
+  // Call Chat API method spaces.messages.list
+  const response = UrlFetchApp.fetch(
+    `https://chat.googleapis.com/v1/${spaceName}/messages?pageSize=100`,
+    {
+      method: 'GET',
+      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    });
+  const parsedResponse = JSON.parse(response.getContentText());
+  const messages = parsedResponse.messages;
+  // Fetch the display names of the message senders and returns a text
+  // concatenating all the messages.
   let userMap = new Map();
   return messages
     .map(message => `${getUserDisplayName_(userMap, message.sender.name)}: ${message.text}`)

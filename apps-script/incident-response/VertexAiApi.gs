@@ -44,9 +44,9 @@ function summarizeChatHistory_(chatHistory) {
     payload: JSON.stringify(request)
   }
   const response = UrlFetchApp.fetch(
-    "https://us-central1-aiplatform.googleapis.com/v1/projects/"
-      + PROJECT_ID
-      + "/locations/us-central1/publishers/google/models/text-bison:predict",
+    `https://${VERTEX_AI_LOCATION_ID}-aiplatform.googleapis.com/v1`
+      + `/projects/${PROJECT_ID}/locations/${VERTEX_AI_LOCATION_ID}`
+      + "/publishers/google/models/text-bison:predict",
     fetchOptions);
   const payload = JSON.parse(response.getContentText());
   return payload.predictions[0].content;
