@@ -174,10 +174,16 @@ function getUserDisplayName_(userMap, userName) {
   if (userMap.has(userName)) {
     return userMap.get(userName);
   }
-  const user = AdminDirectory.Users.get(
-    userName.replace("users/", ""),
-    { projection: 'BASIC', viewType: 'domain_public' });
-  const displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
+  let displayName = 'Unknown User';
+  try {
+    // Try to retrieve user's display name from Admin Directory API
+    const user = AdminDirectory.Users.get(
+      userName.replace("users/", ""),
+      { projection: 'BASIC', viewType: 'domain_public' });
+    displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
+  } catch (e) {
+    // Ignore error if the API call fails and just use 'Unknown User'
+  }
   userMap.set(userName, displayName);
   return displayName;
 }
