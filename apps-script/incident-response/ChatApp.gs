@@ -157,7 +157,7 @@ function concatenateAllSpaceMessages_(spaceName) {
   // concatenating all the messages.
   let userMap = new Map();
   return messages
-    .filter(message => !message.slashCommand)
+    .filter(message => message.slashCommand !== undefined)
     .map(message => `${getUserDisplayName_(userMap, message.sender.name)}: ${message.text}`)
     .join('\n');
 }
@@ -180,13 +180,13 @@ function getUserDisplayName_(userMap, userName) {
   }
   let displayName = 'Unknown User';
   try {
-    // Try to retrieve user's display name from Admin Directory API
     const user = AdminDirectory.Users.get(
       userName.replace("users/", ""),
       { projection: 'BASIC', viewType: 'domain_public' });
     displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
   } catch (e) {
-    // Ignore error if the API call fails and just use 'Unknown User'
+    // Ignore error if the API call fails (for example, because it's an
+    // out-of-domain user or Chat app)) and just use 'Unknown User'.
   }
   userMap.set(userName, displayName);
   return displayName;
