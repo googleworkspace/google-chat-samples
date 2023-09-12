@@ -137,6 +137,9 @@ function processSubmitDialog_(event) {
  *
  * For simplicity for this demo, it only fetches the first 100 messages.
  *
+ * Messages with slash commands are filtered out, so the returned history will
+ * contain only the conversations between users and not app command invocations.
+ *
  * @return {string} a text containing all the messages in the space in the format:
  *          Sender's name: Message
  */
@@ -154,6 +157,7 @@ function concatenateAllSpaceMessages_(spaceName) {
   // concatenating all the messages.
   let userMap = new Map();
   return messages
+    .filter(message => message.slashCommand !== undefined)
     .map(message => `${getUserDisplayName_(userMap, message.sender.name)}: ${message.text}`)
     .join('\n');
 }
@@ -174,10 +178,16 @@ function getUserDisplayName_(userMap, userName) {
   if (userMap.has(userName)) {
     return userMap.get(userName);
   }
-  const user = AdminDirectory.Users.get(
-    userName.replace("users/", ""),
-    { projection: 'BASIC', viewType: 'domain_public' });
-  const displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
+  let displayName = 'Unknown User';
+  try {
+    const user = AdminDirectory.Users.get(
+      userName.replace("users/", ""),
+      { projection: 'BASIC', viewType: 'domain_public' });
+    displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
+  } catch (e) {
+    // Ignore error if the API call fails (for example, because it's an
+    // out-of-domain user or Chat app)) and just use 'Unknown User'.
+  }
   userMap.set(userName, displayName);
   return displayName;
 }
