@@ -1,0 +1,66 @@
+<!--
+Copyright 2023 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<!-- [START chat_incident_response_javascript] -->
+<script>
+  var formDiv = document.getElementById('form');
+  var outputDiv = document.getElementById('output');
+  var clearDiv = document.getElementById('clear');
+
+  function handleFormSubmit(formObject) {
+    event.preventDefault();
+    outputDiv.innerHTML = 'Please wait while we create the space...';
+    hide(formDiv);
+    show(outputDiv);
+    google.script.run
+      .withSuccessHandler(updateOutput)
+      .withFailureHandler(onFailure)
+      .createChatSpace(formObject);
+  }
+
+  function updateOutput(response) {
+    var spaceId = response.replace('spaces/', '');
+    outputDiv.innerHTML =
+      '<p>Space created!</p><p><a href="https://mail.google.com/chat/#chat/space/'
+        + spaceId
+        + '" target="_blank">Open space</a></p>';
+    show(outputDiv);
+    show(clearDiv);
+  }
+
+  function onFailure(error) {
+    outputDiv.innerHTML = 'ERROR: ' + error.message;
+    outputDiv.classList.add('error');
+    show(outputDiv);
+    show(clearDiv);
+  }
+
+  function onReset() {
+    outputDiv.innerHTML = '';
+    outputDiv.classList.remove('error');
+    show(formDiv);
+    hide(outputDiv);
+    hide(clearDiv);
+  }
+
+  function hide(element) {
+    element.classList.add('hidden');
+  }
+
+  function show(element) {
+    element.classList.remove('hidden');
+  }
+</script>
+<!-- [END chat_incident_response_javascript] -->

@@ -16,7 +16,7 @@ from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-from productivity_bot.views import ChatbotEvent, MessageUsers
+from productivity_app.views import ChatbotEvent, MessageUsers
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),

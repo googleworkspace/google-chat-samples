@@ -18,9 +18,9 @@ const fetch = require('node-fetch');
 
 /**
  * Google Cloud Function that responds to PageSpeed requests sent from a
- * Hangouts Chat room.
+ * Google Chat room.
  *
- * @param {!Object} req Request sent from Hangouts Chat room
+ * @param {!Object} req Request sent from Google Chat room
  * @param {!Object} res Response to send back
  */
 exports.checkSpeed = async (req, res) => {

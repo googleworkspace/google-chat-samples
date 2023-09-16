@@ -22,7 +22,7 @@ WEBHOOK_URL = "[URL FROM WEBHOOK]"
 def main():
     """Google Chat incoming webhook quickstart."""
     url = WEBHOOK_URL
-    bot_message = {
+    app_message = {
         'text': 'Hello from a Python script!'}
     message_headers = {'Content-Type': 'application/json; charset=UTF-8'}
     http_obj = Http()
@@ -30,7 +30,7 @@ def main():
         uri=url,
         method='POST',
         headers=message_headers,
-        body=dumps(bot_message),
+        body=dumps(app_message),
     )
     print(response)
 

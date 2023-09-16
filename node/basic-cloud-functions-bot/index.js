@@ -15,12 +15,12 @@
  */
 
 /**
- * Description: A basic Chat Bot setup, to be used with Google Cloud Functions.
+ * Description: A basic Google Chat App setup, to be used with Google Cloud Functions.
  */
 
-const BOT_NAME = 'Basicbot';
+const APP_NAME = 'BasicApp';
 
-exports.basicBot = (req, res) => {
+exports.basicApp = (req, res) => {
   switch (req.body.type) {
     case 'ADDED_TO_SPACE':
       res.send(handleAddToSpace(req.body));
@@ -35,7 +35,7 @@ exports.basicBot = (req, res) => {
 };
 
 /**
- * Handles interactions when when the Bot is added to the Room.
+ * Handles interactions when when the App is added to the Room.
  * @param {Object} body
  * @return {Object} returns a Card with widgets containing key value pairs
  */
@@ -73,18 +73,18 @@ function handleCardClick(body) {
 }
 
 /**
- * Removed bot name, extra spaces, and returns back the important part of the
+ * Removed App name, extra spaces, and returns back the important part of the
  * text sent.
  * @param {String} text
  * @return {String}
  */
 function cleanText(text) {
   return text
-      .toLowerCase()
-      .replace(`@${BOT_NAME.toLowerCase()}`, '')
-      .split(' ')
-      .filter((char) => char !== '')
-      .join(' ');
+    .toLowerCase()
+    .replace(`@${APP_NAME.toLowerCase()}`, '')
+    .split(' ')
+    .filter((char) => char !== '')
+    .join(' ');
 }
 
 /**
@@ -103,7 +103,7 @@ function getInteractiveCard() {
         title: 'Which type',
         subtitle: 'Click on to Choose',
         imageUrl:
-            'http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png',
+          'http://www.freepngimg.com/download/dog/9-dog-png-image-picture-download-dogs.png',
         imageStyle: 'IMAGE',
       },
       sections: [{
@@ -172,13 +172,13 @@ function getSingleImage(imageUrl) {
 }
 
 /**
- * Returns a Card List Commands/Usage of the bot.
+ * Returns a Card List Commands/Usage of the App.
  * @return {Object}
  */
 function getHelp({user}) {
   const commands = [
-    ['Your First Command', `@${BOT_NAME} {command name}`],
-    ['Interactive Command', `@${BOT_NAME} i love dogs`],
+    ['Your First Command', `@${APP_NAME} {command name}`],
+    ['Interactive Command', `@${APP_NAME} i love dogs`],
   ];
   return {
     cards: [{
@@ -186,7 +186,7 @@ function getHelp({user}) {
         title: `Need Help ${user.displayName}?`,
         subtitle: 'Examples Below:',
         imageUrl:
-            'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2000px-Google_%22G%22_Logo.svg.png',
+          'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2000px-Google_%22G%22_Logo.svg.png',
         imageStyle: 'IMAGE',
       },
       sections: [{

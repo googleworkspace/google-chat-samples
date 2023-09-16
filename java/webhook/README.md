@@ -5,5 +5,5 @@
 ## Build and Run
 
 ```
-mvn compile exec:java -Dexec.mainClass=com.google.hangouts.chat.webhook.App
+mvn compile exec:java -Dexec.mainClass=com.google.chat.webhook.App
 ```

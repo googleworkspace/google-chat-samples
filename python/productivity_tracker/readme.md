@@ -8,7 +8,7 @@ Use the Google Chat Productivity Tracker App (GCPT) to work smarter, not harder.
 ![example](https://user-images.githubusercontent.com/6697240/42903254-1eb8d378-8a86-11e8-8909-d47a39a24ccc.gif)
 
 
-This bot uses the following Google APIs:
+This app uses the following Google APIs:
 
 - [Google Chat API](https://developers.google.com/chat/)
 - [Google Drive API](https://developers.google.com/drive/)
@@ -38,10 +38,10 @@ This bot uses the following Google APIs:
 ### 1. Environment Setup
 
 1. Clone this repo:
-    `git clone https://github.com/googleworkspace/hangouts-chat-samples`
+    `git clone https://github.com/googleworkspace/google-chat-samples`
 1. Open a terminal.
 1. Open the root directory:
-    `cd hangouts-chat-samples/python/productivity_tracker`
+    `cd google-chat-samples/python/productivity_tracker`
 1. Create a virtual environment:
     `python -m venv env`
 1. Activate your virtual environment:
@@ -68,4 +68,5 @@ This bot uses the following Google APIs:
     Note: you will have to use `tcp=3306` for MySQL
 1. Deploy the application with the service account:
     `gcloud beta app deploy --service-account SERVICEACCOUNT@PROJECT_ID.iam.gserviceaccount.com`
-1. [Configure the bot](https://developers.google.com/hangouts/chat/how-tos/bots-publish) in the [console](https://console.cloud.google.com/apis/api/chat.googleapis.com/hangouts-chat). Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the bot url.
+1. [Configure the app](https://developers.google.com/chat/how-tos/apps-publish) in the [console](https://console.cloud.google.com/apis/library/chat.googleapis.com).
+    Set "https://{PROJECT_NAME}.appspot.com/chatbot_event" as the app url.

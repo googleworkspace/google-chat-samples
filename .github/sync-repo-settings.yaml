@@ -27,7 +27,7 @@ branchProtectionRules:
       - "test"
       # .github/workflows/lint.yml with a job called "lint"
       - "lint"
-      # Google bots below
+      # Google apps below
       - "cla/google"
       - "snippet-bot check"
       - "header-check"

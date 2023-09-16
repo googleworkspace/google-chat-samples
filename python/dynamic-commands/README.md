@@ -98,22 +98,21 @@ gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
 
 ## Set up the Chat App in Cloud Console
 
-1. On the [Hangouts Chat Configuration
-  tab](https://console.developers.google.com/apis/api/chat.googleapis.com/hangouts-chat),
-  customize your bot by setting the following values:
+1. On the [Google Chat Configuration
+  tab](https://console.cloud.google.com/apis/library/chat.googleapis.com),
+  customize your app by setting the following values:
   - **App status**: LIVE - Available to users
-  - **App name**: "Dynamic Bot"
-  - **Bot name**: "Dynamic Bot"
+  - **App name**: "Dynamic App"
   - **Avatar URL**: `https://developers.google.com/chat/images/chat-product-icon.png`
   - **Description**: "Dynamically loaded chat functionality."
   - **Functionality**: Enable 'Receive 1:1 messages', leave 'Join spaces' unchecked.
   - **Connection settings**: Select 'App URL' and enter the `<CHAT APP ENDPOINT URL>` from above.
   - **LOGS**: Enable 'Log errors to Logging'
-1. Click **Save changes** to publish your bot
+1. Click **Save changes** to publish your app
 
 ## Test the Chat App
 
-To check the app, simply start a 1:1 Chat with 'Dynamic Bot'!
+To check the app, simply start a 1:1 Chat with 'Dynamic App'!
 
 If you type `hello` or `/hello`, you will see this:
 
@@ -127,7 +126,7 @@ You can now prove how dynamic the code is by changing the message in the file
 `command_files/hello.py` and re-executing the copy command above. If you rename
 the command to something else (like `list.py`, for example) and delete
 `hello.py` from the folder on Cloud Storage, you will change the command to
-which the bot responds.
+which the app responds.
 
 ## Creating your own dynamic classes
 

@@ -40,7 +40,7 @@ class HelloWorld(DynamicClass):
     widgets = [DecoratedText(text='Hello world!',
                              start_icon=Icon(
                                  known_icon=Icon.KnownIcon.MULTIPLE_PEOPLE))]
-    header = CardHeader(title='GREETING BOT')
+    header = CardHeader(title='GREETING app')
     card = Card(header=header, sections=[Section(widgets=widgets)])
 
     return Message(cards=[card]).render()
