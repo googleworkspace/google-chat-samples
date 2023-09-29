@@ -157,7 +157,7 @@ function concatenateAllSpaceMessages_(spaceName) {
   // concatenating all the messages.
   let userMap = new Map();
   return messages
-    .filter(message => message.slashCommand !== undefined)
+    .filter(message => message.slashCommand === undefined)
     .map(message => `${getUserDisplayName_(userMap, message.sender.name)}: ${message.text}`)
     .join('\n');
 }
