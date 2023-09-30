@@ -79,6 +79,7 @@ public class HelloChat implements HttpFunction {
     cardWithId.setCard(card);
 
     Message message = new Message();
+    message.setText("Here's your avatar");
     message.setCardsV2(List.of(cardWithId));
 
     return message;

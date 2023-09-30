@@ -54,6 +54,7 @@ function createMessage(displayName, avatarUrl) {
   };
 
   return {
+    text: 'Here\'s your avatar',
     cardsV2: [{
       cardId: 'avatarCard',
       card: {

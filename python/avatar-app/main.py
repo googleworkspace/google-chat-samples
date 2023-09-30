@@ -51,6 +51,7 @@ def create_message(name: str, image_url: str) -> Mapping[str, Any]:
   header = {"title": f"Hello {name}!"}
 
   cards = {
+      "text": "Here's your avatar",
       "cardsV2": [
           {
               "cardId": "avatarCard",
@@ -64,6 +65,4 @@ def create_message(name: str, image_url: str) -> Mapping[str, Any]:
   }
 
   return cards
-
-
 # [END hangouts_chat_avatar_bot]
