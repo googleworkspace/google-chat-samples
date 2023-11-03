@@ -15,7 +15,7 @@
  */
 // [START chat_project_management_user_story_assginee_widget]
 
-const { User } = require('../../user');
+const { User } = require('../../model/user');
 
 /**
  * A widget that presents information about the assignee of a user story.

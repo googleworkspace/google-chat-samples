@@ -15,9 +15,9 @@
  */
 // [START chat_project_management_user_service]
 
-const { NotFoundException } = require('./exceptions');
+const { NotFoundException } = require('../model/exceptions');
+const { User } = require('../model/user');
 const { FirestoreService } = require('./firestore-service');
-const { User } = require('./user');
 
 /**
  * Service that executes all the User application logic.

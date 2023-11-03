@@ -16,7 +16,7 @@
 // [START chat_project_management_index]
 
 const functions = require('@google-cloud/functions-framework');
-const App = require('./app');
+const App = require('./controllers/app');
 
 functions.http('projectManagementChatApp', async (req, res) => {
   if (req.method === 'GET' || !req.body.message) {

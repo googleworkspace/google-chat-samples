@@ -15,9 +15,9 @@
  */
 // [START chat_project_management_user_story_service]
 
-const { BadRequestException, NotFoundException } = require('./exceptions');
+const { BadRequestException, NotFoundException } = require('../model/exceptions');
+const { UserStory, Status, Priority, Size } = require('../model/user-story');
 const { FirestoreService } = require('./firestore-service');
-const { UserStory, Status, Priority, Size } = require('./user-story');
 
 const USERS_PREFIX = 'users/';
 

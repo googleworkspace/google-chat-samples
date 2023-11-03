@@ -16,7 +16,7 @@
 // [START chat_project_management_aip_service]
 
 const aiplatform = require('@google-cloud/aiplatform');
-const { env } = require('./env.js');
+const { env } = require('../env.js');
 
 // Imports the Google Cloud Prediction service client.
 const { PredictionServiceClient } = aiplatform.v1;

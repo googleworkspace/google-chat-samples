@@ -15,8 +15,8 @@
  */
 // [START chat_project_management_user_story_buttons_widget]
 
+const { UserStory, Status } = require('../../model/user-story');
 const { UserStoryCardType } = require('./user-story-card-type');
-const { UserStory, Status } = require('../../user-story');
 
 /**
  * A ButtonList widget with the action buttons for a user story.

@@ -15,7 +15,7 @@
  */
 // [START chat_project_management_user_story_row_widget]
 
-const { UserStory, StatusIcon } = require('../../user-story');
+const { UserStory, StatusIcon } = require('../../model/user-story');
 
 /**
  * A widget that presents information about a user story to be displayed in a

@@ -16,9 +16,9 @@
 // [START chat_project_management_firestore]
 
 const { Firestore, FieldPath } = require('@google-cloud/firestore');
-const { NotFoundException } = require('./exceptions');
-const { UserStory } = require('./user-story');
-const { User } = require('./user');
+const { NotFoundException } = require('../model/exceptions');
+const { UserStory } = require('../model/user-story');
+const { User } = require('../model/user');
 
 const SPACES_PREFIX = 'spaces/';
 const SPACES_COLLECTION = 'spaces';

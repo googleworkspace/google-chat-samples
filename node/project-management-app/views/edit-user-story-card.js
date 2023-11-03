@@ -15,8 +15,8 @@
  */
 // [START chat_project_management_edit_user_story_card]
 
-const { UserStory, Status, Priority, Size } = require('../user-story');
-const { User } = require('../user');
+const { UserStory, Status, Priority, Size } = require('../model/user-story');
+const { User } = require('../model/user');
 const { UserStoryAssigneeWidget } = require('./widgets/user-story-assignee-widget');
 const { UserStoryButtonsWidget } = require('./widgets/user-story-buttons-widget');
 const { UserStoryCardType } = require('./widgets/user-story-card-type');

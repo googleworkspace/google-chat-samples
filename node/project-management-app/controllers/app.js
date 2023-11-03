@@ -15,15 +15,15 @@
  */
 // [START chat_project_management_app]
 
+const { Status } = require('../model/user-story');
+const { AIPService } = require('../services/aip-service');
+const { SpaceService } = require('../services/space-service');
+const { UserService } = require('../services/user-service');
+const { UserStoryService } = require('../services/user-story-service');
+const { HelpCard } = require('../views/help-card');
+const { UserStoryCard } = require('../views/user-story-card');
+const { UserStoryListCard } = require('../views/user-story-list-card');
 const AppActionHandler = require('./app-action-handler');
-const { AIPService } = require('./aip-service');
-const { SpaceService } = require('./space-service');
-const { UserService } = require('./user-service');
-const { UserStoryService } = require('./user-story-service');
-const { Status } = require('./user-story');
-const { HelpCard } = require('./views/help-card');
-const { UserStoryCard } = require('./views/user-story-card');
-const { UserStoryListCard } = require('./views/user-story-list-card');
 
 const USERS_PREFIX = 'users/';
 
