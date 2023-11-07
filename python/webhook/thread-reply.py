@@ -12,9 +12,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+
 # [START google_chat_webhook]
 from json import dumps
-
 from httplib2 import Http
 
 # Copy the webhook URL from the Chat space where the webhook is registered.
@@ -33,7 +33,7 @@ def main():
 
     # To start a thread, set threadKey to an arbitratry string.
     # To reply to a thread, specify that thread's threadKey value.
-    'thread': {'threadKey': {{'<var>'}}THREAD_KEY_VALUE{{'</var>'}}}
+    'thread': {'threadKey': '{{'<var>'}}THREAD_KEY_VALUE{{'</var>'}}'}
     }
   message_headers = {'Content-Type': 'application/json; charset=UTF-8'}
   http_obj = Http()
@@ -48,5 +48,4 @@ def main():
 
 if __name__ == '__main__':
   main()
-
 # [END google_chat_webhook]
