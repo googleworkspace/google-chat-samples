@@ -17,7 +17,7 @@ from json import dumps
 
 from httplib2 import Http
 
-WEBHOOK_URL = "[URL FROM WEBHOOK]"
+WEBHOOK_URL = 'https://chat.googleapis.com/v1/spaces/{{'<var>'}}SPACE_ID{{'</var>'}}/messages?key={{'<var>'}}KEY{{'</var>'}}&token={{'<var>'}}TOKEN{{'</var>'}}&messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD'
 
 def main():
     """Google Chat incoming webhook quickstart."""
