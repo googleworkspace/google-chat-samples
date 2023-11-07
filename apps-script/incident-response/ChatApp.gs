@@ -145,14 +145,8 @@ function processSubmitDialog_(event) {
  */
 function concatenateAllSpaceMessages_(spaceName) {
   // Call Chat API method spaces.messages.list
-  const response = UrlFetchApp.fetch(
-    `https://chat.googleapis.com/v1/${spaceName}/messages?pageSize=100`,
-    {
-      method: 'GET',
-      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-    });
-  const parsedResponse = JSON.parse(response.getContentText());
-  const messages = parsedResponse.messages;
+  const response = Chat.Spaces.Messages.list(spaceName, { 'pageSize': 100 });
+  const messages = response.messages;
   // Fetch the display names of the message senders and returns a text
   // concatenating all the messages.
   let userMap = new Map();

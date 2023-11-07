@@ -52,15 +52,7 @@ function setUpSpace_(displayName, users) {
     memberships: memberships
   };
   // Call Chat API method spaces.setup
-  const response = UrlFetchApp.fetch(
-    "https://chat.googleapis.com/v1/spaces:setup",
-    {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-      contentType: 'application/json',
-      payload: JSON.stringify(request)
-    });
-  const space = JSON.parse(response.getContentText());
+  const space = Chat.Spaces.setup(request);
   return space.name;
 }
 
@@ -77,15 +69,7 @@ function addAppToSpace_(spaceName) {
     }
   };
   // Call Chat API method spaces.members.create
-  const response = UrlFetchApp.fetch(
-    `https://chat.googleapis.com/v1/${spaceName}/members`,
-    {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-      contentType: 'application/json',
-      payload: JSON.stringify(request)
-    });
-  const membership = JSON.parse(response.getContentText());
+  const membership = Chat.Spaces.Members.create(request, spaceName);
   return membership.name;
 }
 
@@ -99,15 +83,7 @@ function createMessage_(spaceName, text) {
     text: text
   };
   // Call Chat API method spaces.messages.create
-  const response = UrlFetchApp.fetch(
-    `https://chat.googleapis.com/v1/${spaceName}/messages`,
-    {
-      method: 'POST',
-      headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-      contentType: 'application/json',
-      payload: JSON.stringify(request)
-    });
-  const message = JSON.parse(response.getContentText());
+  const message = Chat.Spaces.Messages.create(request, spaceName);
   return message.name;
 }
 

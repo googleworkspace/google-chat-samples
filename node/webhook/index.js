@@ -40,6 +40,6 @@ function webhook() {
   return resp;
 }
 
-// [END hangouts_chat_node_webhook]
-
 webhook();
+
+// [END hangouts_chat_node_webhook]
