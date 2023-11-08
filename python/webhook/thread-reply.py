@@ -23,7 +23,7 @@ from httplib2 import Http
 #
 # Then, append messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD to the
 # webhook URL.
-WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/{{<var>SPACE_ID</var>}}/messages?key={{<var>KEY</var>}}&token={{<var>TOKEN</var>}}&messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD"
+WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/{{'<var>SPACE_ID</var>'}}/messages?key={{'<var>KEY</var>'}}&token={{'<var>TOKEN</var>'}}&messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD"
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
         "text": "Hello from a Python script!",
         # To start a thread, set threadKey to an arbitratry string.
         # To reply to a thread, specify that thread's threadKey value.
-        "thread": {"threadKey": "{{<var>THREAD_KEY_VALUE</var>}}"},
+        "thread": {"threadKey": "{{'<var>THREAD_KEY_VALUE</var>'}}"},
     }
     message_headers = {"Content-Type": "application/json; charset=UTF-8"}
     http_obj = Http()

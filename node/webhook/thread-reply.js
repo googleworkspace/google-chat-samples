@@ -21,13 +21,13 @@
  * @return {Object} response
  */
 async function webhook() {
-  const url = 'https://chat.googleapis.com/v1/spaces/{{<var>SPACE_ID</var>}}/messages?key={{<var>KEY</var>}}&token={{<var>TOKEN</var>}}&messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD';
+  const url = "https://chat.googleapis.com/v1/spaces/{{'<var>SPACE_ID</var>'}}/messages?key={{'<var>KEY</var>'}}&token={{'<var>TOKEN</var>'}}&messageReplyOption=REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD";
   const res = await fetch(url, {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json; charset=UTF-8'},
+    method: "POST",
+    headers: {"Content-Type": "application/json; charset=UTF-8"},
     body: JSON.stringify({
-      text: 'Hello from a Node script!',
-      thread: {threadKey: '{{<var>THREAD_KEY_VALUE</var>}}'}
+      text: "Hello from a Node script!",
+      thread: {threadKey: "{{'<var>THREAD_KEY_VALUE</var>'}}"}
     })
   });
   return await res.json();

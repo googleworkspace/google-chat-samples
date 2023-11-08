@@ -18,7 +18,7 @@
 from json import dumps
 from httplib2 import Http
 
-WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/{{<var>SPACE_ID</var>}}/messages?key={{<var>KEY</var>}}&token={{<var>TOKEN</var>}}"
+WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/{{'<var>SPACE_ID</var>'}}/messages?key={{'<var>KEY</var>'}}&token={{'<var>TOKEN</var>'}}"
 
 
 def main():
