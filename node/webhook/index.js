@@ -21,7 +21,7 @@
  * @return {Object} response
  */
 async function webhook() {
-  const url = 'https://chat.googleapis.com/v1/spaces/{{'<var>'}}SPACE_ID{{'</var>'}}/messages?key={{'<var>'}}KEY{{'</var>'}}&token={{'<var>'}}TOKEN{{'</var>'}}';
+  const url = 'https://chat.googleapis.com/v1/spaces/{{<var>SPACE_ID</var>}}/messages?key={{<var>KEY</var>}}&token={{<var>TOKEN</var>}}';
   const res = await fetch(url, {
     method: 'POST',
     headers: {'Content-Type': 'application/json; charset=UTF-8'},

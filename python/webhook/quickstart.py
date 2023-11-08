@@ -18,24 +18,24 @@
 from json import dumps
 from httplib2 import Http
 
-WEBHOOK_URL = 'https://chat.googleapis.com/v1/spaces/{{'<var>'}}SPACE_ID{{'</var>'}}/messages?key={{'<var>'}}KEY{{'</var>'}}&token={{'<var>'}}TOKEN{{'</var>'}}'
+WEBHOOK_URL = "https://chat.googleapis.com/v1/spaces/{{<var>SPACE_ID</var>}}/messages?key={{<var>KEY</var>}}&token={{<var>TOKEN</var>}}"
+
 
 def main():
-  """Google Chat incoming webhook quickstart."""
-  url = WEBHOOK_URL
-  app_message = {'text': 'Hello from a Python script!'}
-  message_headers = {'Content-Type': 'application/json; charset=UTF-8'}
-  http_obj = Http()
-  response = http_obj.request(
-    uri=url,
-    method='POST',
-    headers=message_headers,
-    body=dumps(app_message),
-  )
-  print(response)
+    """Google Chat incoming webhook quickstart."""
+    url = WEBHOOK_URL
+    app_message = {"text": "Hello from a Python script!"}
+    message_headers = {"Content-Type": "application/json; charset=UTF-8"}
+    http_obj = Http()
+    response = http_obj.request(
+        uri=url,
+        method="POST",
+        headers=message_headers,
+        body=dumps(app_message),
+    )
+    print(response)
 
 
-if __name__ == '__main__':
-  main()
+if __name__ == "__main__":
+    main()
 # [END hangouts_python_webhook]
-
