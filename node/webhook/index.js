@@ -13,33 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+
 // [START hangouts_chat_node_webhook]
-
 /**
- * Sends asynchronous message into Google Chat
- * @return{obj} response
+ * Sends asynchronous message to Google Chat
+ * @return {Object} response
  */
-function webhook() {
-  const fetch = require('node-fetch');
-  const webhookURL = 'https://chat.googleapis.com/v1/spaces/AAAAGCYeSRY/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=u9IG_MuTBXw-tnqupPrPNinY2spKFcRBDp6dSldGUAw%3D';
-
-  const data = JSON.stringify({
-    'text': 'Hello from a Node script!',
+async function webhook() {
+  const url = "https://chat.googleapis.com/v1/spaces/SPACE_ID/messages"
+  const res = await fetch(url, {
+    method: "POST",
+    headers: {"Content-Type": "application/json; charset=UTF-8"},
+    body: JSON.stringify({text: "Hello from a Node script!"})
   });
-  let resp;
-  fetch(webhookURL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
-    body: data,
-  }).then((response) => {
-    resp = response;
-    console.log(response);
-  });
-  return resp;
+  return await res.json();
 }
 
-webhook();
-
+webhook().then(res => console.log(res));
 // [END hangouts_chat_node_webhook]
