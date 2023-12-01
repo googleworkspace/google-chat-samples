@@ -118,6 +118,8 @@ class ChatAppActionHandler {
         return this.handleCancelEditUserStory();
       case 'saveUserStory':
         return this.handleSaveUserStory();
+      case 'refreshUserStory':
+        return this.handleRefreshUserStory();
       case 'generateUserStoryDescription':
         return this.handleUserStoryAIAction(AIAction.GENERATE);
       case 'expandUserStoryDescription':
@@ -187,8 +189,7 @@ class ChatAppActionHandler {
       const userStory =
         await UserStoryService.assignUserStory(
           this.spaceName, this.userStoryId, this.userName);
-      return this.buildResponse(
-        userStory, user, `User story assigned to <${this.userName}>.`);
+      return this.buildResponse(userStory, user, /* updated= */ true);
     } catch (e) {
       return handleException(e);
     }
@@ -205,8 +206,7 @@ class ChatAppActionHandler {
       const user = userStory.data.assignee
         ? await UserService.getUser(this.spaceName, userStory.data.assignee)
         : undefined;
-      return this.buildResponse(
-        userStory, user, `<${this.userName}> started the user story.`);
+      return this.buildResponse(userStory, user, /* updated= */ true);
     } catch (e) {
       return handleException(e);
     }
@@ -224,8 +224,7 @@ class ChatAppActionHandler {
       const user = userStory.data.assignee
         ? await UserService.getUser(this.spaceName, userStory.data.assignee)
         : undefined;
-      return this.buildResponse(
-        userStory, user, `<${this.userName}> completed the user story.`);
+      return this.buildResponse(userStory, user, /* updated= */ true);
     } catch (e) {
       return handleException(e);
     }
@@ -266,8 +265,33 @@ class ChatAppActionHandler {
       const user = userStory.data.assignee
         ? await UserService.getUser(this.spaceName, userStory.data.assignee)
         : undefined;
-      return this.buildResponse(
-        userStory, user, `<${this.userName}> edited the user story.`);
+      return this.buildResponse(userStory, user, /* updated= */ true);
+    } catch (e) {
+      return handleException(e);
+    }
+  }
+
+  /**
+   * Handles the refresh user story command.
+   * @return {Promise<Object>} A message to post back to the DM or space.
+   */
+  async handleRefreshUserStory() {
+    try {
+      const userStory =
+        await UserStoryService.getUserStory(this.spaceName, this.userStoryId);
+      const user = userStory.data.assignee
+        ? await UserService.getUser(
+          this.spaceName, userStory.data.assignee.replace(USERS_PREFIX, ''))
+        : undefined;
+      return {
+        cardsV2: [{
+          cardId: 'userStoryCard',
+          card: new UserStoryCard(userStory, user)
+        }],
+        actionResponse: {
+          type: 'UPDATE_MESSAGE'
+        }
+      };
     } catch (e) {
       return handleException(e);
     }
@@ -326,7 +350,7 @@ class ChatAppActionHandler {
       const user = assignee
         ? await UserService.getUser(this.spaceName, assignee)
         : undefined;
-      return this.buildResponse(userStory, user, '');
+      return this.buildResponse(userStory, user, /* updated= */ false);
     } catch (e) {
       return handleException(e);
     }
@@ -346,14 +370,14 @@ class ChatAppActionHandler {
    *
    * @param {!UserStory} userStory The updated user story.
    * @param {?User} user The user assigned to the user story.
-   * @param {!string} text Text message describing the executed action.
+   * @param {!boolean} updated Whether the user story was updated in storage.
    * @return {Promise<Object>} A message to post back to the DM or space.
    */
-  async buildResponse(userStory, user, text) {
+  async buildResponse(userStory, user, updated) {
     switch (this.cardType) {
       case UserStoryCardType.SINGLE_MESSAGE:
         return {
-          text: text,
+          text: saved ? 'User story updated.' : null,
           cardsV2: [{
             cardId: 'userStoryCard',
             card: new UserStoryCard(userStory, user)
@@ -373,8 +397,12 @@ class ChatAppActionHandler {
           actionResponse: {
             type: 'DIALOG',
             dialogAction: {
+              actionStatus: {
+                statusCode: 'OK',
+                userFacingMessage: 'Saved.'
+              },
               dialog: {
-                body: new EditUserStoryCard(userStory, user)
+                body: new EditUserStoryCard(userStory, user, updated)
               }
             }
           }

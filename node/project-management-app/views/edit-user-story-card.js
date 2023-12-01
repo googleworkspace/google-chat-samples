@@ -44,8 +44,9 @@ exports.EditUserStoryCard = class {
    * Creates a Card with a standard view of a user story.
    * @param {!UserStory} userStory A user story.
    * @param {?User} user The user assigned to the story.
+   * @param {?boolean} updated Whether the user story was updated in storage.
    */
-  constructor(userStory, user) {
+  constructor(userStory, user, updated) {
     if (userStory === null || userStory === undefined) {
       return;
     }
@@ -70,7 +71,23 @@ exports.EditUserStoryCard = class {
       subtitle: 'ID: ' + userStory.id
     };
 
-    this.sections = [
+    this.sections = [];
+    if (updated) {
+      this.sections.push({
+        widgets: [
+          {
+            decoratedText: {
+              icon: {
+                iconUrl: 'https://raw.githubusercontent.com/google/material-design-icons/master/png/action/info_outline/materialicons/48dp/1x/baseline_info_outline_black_48dp.png'
+              },
+              text: 'Saved.'
+            }
+          }
+        ]
+      });
+    };
+
+    this.sections.push(
       {
         widgets: [
           {
@@ -90,8 +107,7 @@ exports.EditUserStoryCard = class {
             }
           },
           {
-            buttonList:
-            {
+            buttonList: {
               buttons: [
                 {
                   text: 'Regenerate',
@@ -188,8 +204,7 @@ exports.EditUserStoryCard = class {
           },
           new UserStoryAssigneeWidget(userStoryData.assignee, user)
         ]
-      },
-    ];
+      });
 
     // Buttons section.
     const buttonListWidget = new UserStoryButtonsWidget(

@@ -156,6 +156,22 @@ exports.UserStoryButtonsWidget = class {
         }
       });
     }
+    if (cardType === UserStoryCardType.SINGLE_MESSAGE) {
+      buttons.push({
+        text: 'Refresh',
+        icon: {
+          iconUrl: 'https://raw.githubusercontent.com/google/material-design-icons/master/png/navigation/refresh/materialicons/24dp/1x/baseline_refresh_black_24dp.png',
+          altText: 'Refresh',
+          imageType: 'CIRCLE'
+        },
+        onClick: {
+          action: {
+            function: 'refreshUserStory',
+            parameters: parameters
+          }
+        }
+      });
+    }
     if (buttons.length > 0) {
       this.buttonList = { buttons };
     }
