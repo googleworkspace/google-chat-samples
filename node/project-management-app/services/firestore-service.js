@@ -173,7 +173,7 @@ exports.FirestoreService = {
    * @param {!string} spaceName The resource name of the space.
    * @return {Promise<UserStory[]>} An array with the fetched user story data.
    */
-  listAllUserStories: async function (spaceName,) {
+  listAllUserStories: async function (spaceName) {
     let userStories = [];
     const collectionRef = getUserStoriesCollection(spaceName);
     const snapshot = await collectionRef.get();
