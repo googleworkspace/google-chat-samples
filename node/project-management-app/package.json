@@ -4,7 +4,7 @@
   "description": "A sample project management app for Google Chat",
   "main": "index.js",
   "scripts": {
-    "test": "mocha -p -j 2 -t 5s test/**/*.test.js"
+    "test": "mocha -p -j 2 -t 5s \"test/**/*.test.js\""
   },
   "repository": {
     "type": "git",
