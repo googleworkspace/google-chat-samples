@@ -377,7 +377,7 @@ class ChatAppActionHandler {
     switch (this.cardType) {
       case UserStoryCardType.SINGLE_MESSAGE:
         return {
-          text: saved ? 'User story updated.' : null,
+          text: updated ? 'User story updated.' : null,
           cardsV2: [{
             cardId: 'userStoryCard',
             card: new UserStoryCard(userStory, user)
