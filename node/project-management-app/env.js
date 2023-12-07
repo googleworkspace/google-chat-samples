@@ -19,8 +19,9 @@
  * Project environment settings.
  */
 const env = {
-  project: 'developer-productivity-402319', //'YOUR_PROJECT_ID',
+  project: 'project-id', // replace with your GCP project ID
   location: 'us-central1', // replace with your GCP project location
+  logging: true, // whether to log the request & response on each function call
 };
 
 exports.env = env;

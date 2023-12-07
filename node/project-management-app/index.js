@@ -17,19 +17,25 @@
 
 const functions = require('@google-cloud/functions-framework');
 const App = require('./controllers/app');
+const { env } = require('./env.js');
 
 functions.http('projectManagementChatApp', async (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res
       .status(400)
       .send('This function is meant to be used in a Google Chat app.');
+    return;
   }
 
   const event = req.body;
-  console.log(JSON.stringify({ message: 'Request received', event }));
+  if (env.logging) {
+    console.log(JSON.stringify({ message: 'Request received', event }));
+  }
   const responseMessage = await App.execute(event);
   res.json(responseMessage);
-  console.log(JSON.stringify({ message: 'Response sent', responseMessage }));
+  if (env.logging) {
+    console.log(JSON.stringify({ message: 'Response sent', responseMessage }));
+  }
 });
 
 // [END chat_project_management_index]
