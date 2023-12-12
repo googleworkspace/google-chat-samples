@@ -13,12 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_service]
+
+/**
+ * @fileoverview Service with the application logic specific to working with
+ * user stories.
+ */
 
 const { BadRequestException, NotFoundException } = require('../model/exceptions');
 const { UserStory, Status, Priority, Size } = require('../model/user-story');
 const { FirestoreService } = require('./firestore-service');
 
+/** The prefix used by the Google Chat API in the User resource name. */
 const USERS_PREFIX = 'users/';
 
 /**
@@ -42,7 +47,7 @@ exports.UserStoryService = {
    * set to `OPEN`.
    * @param {!string} spaceName The resource name of the space.
    * @param {!string} title The short title of the user story.
-   * @param {string} description The description of the user story.
+   * @param {?string} description The description of the user story.
    * @return {Promise<UserStory>} The created user story data.
    * @throws {BadRequestException} If the `title` is null or empty.
    */
@@ -193,5 +198,3 @@ exports.UserStoryService = {
   },
 
 }
-
-// [END chat_project_management_user_story_service]

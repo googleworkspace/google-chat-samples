@@ -6,10 +6,6 @@
   "scripts": {
     "test": "mocha -p -j 2 -t 5s \"test/**/*.test.js\""
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/googleworkspace/google-chat-samples.git"
-  },
   "keywords": [
     "Google Chat",
     "Project Management"

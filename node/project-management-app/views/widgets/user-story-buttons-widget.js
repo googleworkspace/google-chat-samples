@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_buttons_widget]
+
+/**
+ * @fileoverview Module that exports a
+ * [widget](https://developers.google.com/chat/api/reference/rest/v1/cards#Widget)
+ * object that the Chat app can add to a card to display the actions buttons for
+ * a user story.
+ */
 
 const { UserStory, Status } = require('../../model/user-story');
 const { UserStoryCardType } = require('./user-story-card-type');
@@ -178,5 +184,3 @@ exports.UserStoryButtonsWidget = class {
   }
 
 }
-
-// [END chat_project_management_user_story_buttons_widget]

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_env]
 
 /**
  * Project environment settings.
@@ -25,5 +24,3 @@ const env = {
 };
 
 exports.env = env;
-
-// [END chat_project_management_env]

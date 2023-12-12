@@ -52,10 +52,6 @@ const EVENT = {
   common: {
   }
 }
-const EXCEPTIONS = [
-  new BadRequestException(),
-  new NotFoundException(),
-];
 
 const getTestEnvironment = () => {
   const aipServiceMock = {
@@ -107,20 +103,6 @@ const getTestEnvironment = () => {
   };
 };
 
-const assertExceptionResponseIsValid = (response, e) => {
-  assert.deepStrictEqual(response, {
-    actionResponse: {
-      type: 'DIALOG',
-      dialogAction: {
-        actionStatus: {
-          statusCode: e.statusCode,
-          userFacingMessage: e.message
-        }
-      }
-    }
-  });
-};
-
 const assertResponseIsValid = (test, response, cardType, updated) => {
   switch (cardType) {
     case UserStoryCardType.SINGLE_MESSAGE:
@@ -155,7 +137,11 @@ const assertResponseIsValid = (test, response, cardType, updated) => {
         test.mocks.chatApp.handleManageUserStories.callCount, 1);
       break;
     default:
-      assert.deepStrictEqual(response, {});
+      assert.strictEqual(response.text, updated ? 'User story updated.' : null);
+      assert.strictEqual(response.cardsV2.length, 1);
+      assert.strictEqual(response.cardsV2[0].cardId, 'userStoryCard');
+      assert.ok(response.cardsV2[0].card instanceof UserStoryCard);
+      break;
   }
 };
 
@@ -269,28 +255,6 @@ describe('AppActionHandler', function () {
       assert.ok(test.mocks.userService.getUser.calledOnceWith(
         SPACE_NAME, USER_ID));
     });
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'editUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            }
-          }
-        };
-        test.mocks.userStoryService.getUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('assignUserStory function', function () {
@@ -319,28 +283,6 @@ describe('AppActionHandler', function () {
           assert.ok(test.mocks.userStoryService.assignUserStory.calledOnceWith(
             SPACE_NAME, USER_STORY_ID, USER_NAME));
         });
-      });
-    }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'assignUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            }
-          }
-        };
-        test.mocks.userStoryService.assignUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
       });
     }
   });
@@ -373,28 +315,6 @@ describe('AppActionHandler', function () {
         });
       });
     }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'startUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            }
-          }
-        };
-        test.mocks.userStoryService.startUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('completeUserStory function', function () {
@@ -425,28 +345,6 @@ describe('AppActionHandler', function () {
         });
       });
     }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'completeUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            }
-          }
-        };
-        test.mocks.userStoryService.completeUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('cancelEditUserStory function', function () {
@@ -455,6 +353,7 @@ describe('AppActionHandler', function () {
       const AppActionHandler = test.AppActionHandler;
       const event = {
         ...EVENT,
+        isDialogEvent: true,
         common: {
           invokedFunction: 'cancelEditUserStory'
         }
@@ -477,6 +376,7 @@ describe('AppActionHandler', function () {
           const AppActionHandler = test.AppActionHandler;
           const event = {
             ...EVENT,
+            isDialogEvent: true,
             common: {
               invokedFunction: 'saveUserStory',
               parameters: {
@@ -530,40 +430,6 @@ describe('AppActionHandler', function () {
         });
       });
     }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'saveUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            },
-            formInputs: {
-              title: {
-                stringInputs: {
-                  value: ['New Title']
-                }
-              },
-              description: {
-                stringInputs: {
-                  value: ['New Description']
-                }
-              },
-            }
-          }
-        };
-        test.mocks.userStoryService.updateUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('refreshUserStory function', function () {
@@ -592,28 +458,6 @@ describe('AppActionHandler', function () {
       assert.ok(test.mocks.userService.getUser.calledOnceWith(
         SPACE_NAME, USER_ID));
     });
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'refreshUserStory',
-            parameters: {
-              id: USER_STORY_ID
-            }
-          }
-        };
-        test.mocks.userStoryService.getUserStory.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('generateUserStoryDescription function', function () {
@@ -624,6 +468,7 @@ describe('AppActionHandler', function () {
           const AppActionHandler = test.AppActionHandler;
           const event = {
             ...EVENT,
+            isDialogEvent: true,
             common: {
               invokedFunction: 'generateUserStoryDescription',
               parameters: {
@@ -656,11 +501,12 @@ describe('AppActionHandler', function () {
             SPACE_NAME, USER_NAME));
         });
 
-        it('should not all AIP service if title is empty', async function () {
+        it('should not call AIP service if title is empty', async function () {
           const test = getTestEnvironment();
           const AppActionHandler = test.AppActionHandler;
           const event = {
             ...EVENT,
+            isDialogEvent: true,
             common: {
               invokedFunction: 'generateUserStoryDescription',
               parameters: {
@@ -690,40 +536,6 @@ describe('AppActionHandler', function () {
         });
       });
     }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'generateUserStoryDescription',
-            parameters: {
-              id: USER_STORY_ID
-            },
-            formInputs: {
-              title: {
-                stringInputs: {
-                  value: ['New Title']
-                }
-              },
-              description: {
-                stringInputs: {
-                  value: ['New Description']
-                }
-              },
-            }
-          }
-        };
-        test.mocks.aipService.generateDescription.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('expandUserStoryDescription function', function () {
@@ -734,6 +546,7 @@ describe('AppActionHandler', function () {
           const AppActionHandler = test.AppActionHandler;
           const event = {
             ...EVENT,
+            isDialogEvent: true,
             common: {
               invokedFunction: 'expandUserStoryDescription',
               parameters: {
@@ -766,12 +579,13 @@ describe('AppActionHandler', function () {
             SPACE_NAME, USER_NAME));
         });
 
-        it('should not all AIP service if description is empty',
+        it('should not call AIP service if description is empty',
           async function () {
             const test = getTestEnvironment();
             const AppActionHandler = test.AppActionHandler;
             const event = {
               ...EVENT,
+              isDialogEvent: true,
               common: {
                 invokedFunction: 'expandUserStoryDescription',
                 parameters: {
@@ -801,40 +615,6 @@ describe('AppActionHandler', function () {
           });
       });
     }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'expandUserStoryDescription',
-            parameters: {
-              id: USER_STORY_ID
-            },
-            formInputs: {
-              title: {
-                stringInputs: {
-                  value: ['New Title']
-                }
-              },
-              description: {
-                stringInputs: {
-                  value: ['New Description']
-                }
-              },
-            }
-          }
-        };
-        test.mocks.aipService.expandDescription.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
-      });
-    }
   });
 
   describe('correctUserStoryDescriptionGrammar function', function () {
@@ -845,6 +625,7 @@ describe('AppActionHandler', function () {
           const AppActionHandler = test.AppActionHandler;
           const event = {
             ...EVENT,
+            isDialogEvent: true,
             common: {
               invokedFunction: 'correctUserStoryDescriptionGrammar',
               parameters: {
@@ -877,12 +658,13 @@ describe('AppActionHandler', function () {
             SPACE_NAME, USER_NAME));
         });
 
-        it('should not all AIP service if description is empty',
+        it('should not call AIP service if description is empty',
           async function () {
             const test = getTestEnvironment();
             const AppActionHandler = test.AppActionHandler;
             const event = {
               ...EVENT,
+              isDialogEvent: true,
               common: {
                 invokedFunction: 'correctUserStoryDescriptionGrammar',
                 parameters: {
@@ -910,40 +692,6 @@ describe('AppActionHandler', function () {
             assertResponseIsValid(test, response, cardType, /* updated= */ false);
             assert.ok(test.mocks.aipService.correctDescription.notCalled);
           });
-      });
-    }
-
-    for (const e of EXCEPTIONS) {
-      it(`should handle ${e.name}`, async function () {
-        const test = getTestEnvironment();
-        const AppActionHandler = test.AppActionHandler;
-        const event = {
-          ...EVENT,
-          common: {
-            invokedFunction: 'correctUserStoryDescriptionGrammar',
-            parameters: {
-              id: USER_STORY_ID
-            },
-            formInputs: {
-              title: {
-                stringInputs: {
-                  value: ['New Title']
-                }
-              },
-              description: {
-                stringInputs: {
-                  value: ['New Description']
-                }
-              },
-            }
-          }
-        };
-        test.mocks.aipService.correctDescription.throws(e);
-
-        const response =
-          await AppActionHandler.execute(event, test.mocks.chatApp);
-
-        assertExceptionResponseIsValid(response, e);
       });
     }
   });
@@ -988,5 +736,86 @@ describe('AppActionHandler', function () {
         });
       });
     }
+  });
+
+  describe('Exceptions', function () {
+    const event = {
+      ...EVENT,
+      common: {
+        invokedFunction: 'saveUserStory',
+        parameters: {
+          id: USER_STORY_ID
+        },
+        formInputs: {
+          title: {
+            stringInputs: {
+              value: ['New Title']
+            }
+          },
+          description: {
+            stringInputs: {
+              value: ['New Description']
+            }
+          },
+        }
+      }
+    };
+    const exceptions = [
+      new BadRequestException(),
+      new NotFoundException(),
+    ];
+
+    context('Is Dialog Event', function () {
+      for (const e of exceptions) {
+        it(`should handle ${e.name}`, async function () {
+          const test = getTestEnvironment();
+          const AppActionHandler = test.AppActionHandler;
+          test.mocks.userStoryService.updateUserStory.throws(e);
+          event.isDialogEvent = true;
+
+          const response =
+            await AppActionHandler.execute(event, test.mocks.chatApp);
+
+          assert.deepStrictEqual(response, {
+            actionResponse: {
+              type: 'DIALOG',
+              dialogAction: {
+                actionStatus: {
+                  statusCode: e.statusCode,
+                  userFacingMessage: e.message
+                }
+              }
+            }
+          });
+        });
+      }
+    });
+
+    context('Is Not Dialog Event', function () {
+      for (const e of exceptions) {
+        it(`should handle ${e.name}`, async function () {
+          const test = getTestEnvironment();
+          const AppActionHandler = test.AppActionHandler;
+          test.mocks.userStoryService.updateUserStory.throws(e);
+          event.isDialogEvent = false;
+
+          const response =
+            await AppActionHandler.execute(event, test.mocks.chatApp);
+
+          assert.deepStrictEqual(response, {
+            text: `⚠️ ${e.message}`
+          });
+        });
+      }
+    });
+
+    it('should re-throw unrecognized exception', async function () {
+      const test = getTestEnvironment();
+      const AppActionHandler = test.AppActionHandler;
+      test.mocks.userStoryService.updateUserStory.throws(new Error('test'));
+
+      await assert.rejects(
+        async () => AppActionHandler.execute(event, test.mocks.chatApp), Error);
+    });
   });
 });

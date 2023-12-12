@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_card_type]
 
 /**
  * Types of user interface where user story cards can appear.
@@ -29,5 +28,3 @@ exports.UserStoryCardType = {
   /** Dialog with a list of user stories. */
   LIST_DIALOG: 'list_dialog',
 };
-
-// [END chat_project_management_user_story_card_type]

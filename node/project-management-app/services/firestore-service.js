@@ -13,17 +13,39 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_firestore]
 
+/**
+ * @fileoverview Service that handles database operations.
+ *
+ * The database contains a collection to store the
+ * [Chat spaces](https://developers.google.com/chat/concepts#messages-and-spaces)
+ * that the app is installed in, with subcollections for user stories and
+ * [Chat users](https://developers.google.com/chat/identify-reference-users):
+ *
+ * - `spaces` collection
+ *   - `userStories` subcollection
+ *   - `users` subcollection
+ */
+
+/** [Firestore](https://cloud.google.com/firestore/docs) client library. */
 const { Firestore, FieldPath } = require('@google-cloud/firestore');
 const { NotFoundException } = require('../model/exceptions');
 const { UserStory } = require('../model/user-story');
 const { User } = require('../model/user');
 
+/** The prefix used by the Google Chat API in the Space resource name. */
 const SPACES_PREFIX = 'spaces/';
+
+/** The name of the spaces collection in the database. */
 const SPACES_COLLECTION = 'spaces';
+
+/** The name of the user stories subcollection in the database. */
 const USER_STORIES_COLLECTION = 'userStories';
+
+/** The name of the users subcollection in the database. */
 const USERS_COLLECTION = 'users';
+
+/** The size of the batch for collection clean up operations. */
 const BATCH_SIZE = 50;
 
 // Initialize the Firestore database using Application Default Credentials.
@@ -276,5 +298,3 @@ exports.FirestoreService = {
   },
 
 };
-
-// [END chat_project_management_firestore]

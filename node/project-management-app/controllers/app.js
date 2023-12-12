@@ -13,9 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_app]
+
+/**
+ * @fileoverview The main application logic. Processes the
+ * [Chat event](https://developers.devsite.corp.google.com/chat/api/guides/message-formats/events#card-clicked).
+ * It handles Chat app mentions, slash commands, and calls the
+ * {@code AppActionHandler} to handle card click events.
+ */
 
 const { Status } = require('../model/user-story');
+const { User } = require('../model/user');
 const { AIPService } = require('../services/aip-service');
 const { SpaceService } = require('../services/space-service');
 const { UserService } = require('../services/user-service');
@@ -25,10 +32,12 @@ const { UserStoryCard } = require('../views/user-story-card');
 const { UserStoryListCard } = require('../views/user-story-list-card');
 const AppActionHandler = require('./app-action-handler');
 
+/** The prefix used by the Google Chat API in the User resource name. */
 const USERS_PREFIX = 'users/';
 
 /**
- * Slash commands supported by the Chat app.
+ * [Slash commands](https://developers.google.com/chat/how-tos/slash-commands)
+ * supported by the Chat app.
  * @enum {number}
  */
 const SlashCommand = {
@@ -40,7 +49,8 @@ const SlashCommand = {
 }
 
 /**
- * Google Chat event types.
+ * Google Chat
+ * [event types](https://developers.google.com/chat/api/guides/message-formats/events).
  * @enum {string}
  */
 const EventType = {
@@ -56,7 +66,9 @@ const EventType = {
 class ChatApp {
   /**
    * Instantiates the Chat app.
-   * @param {!Object} event The event received from Google Chat.
+   * @param {!Object} event The
+   * [event](https://developers.google.com/chat/api/guides/message-formats/events)
+   * received from Google Chat.
    */
   constructor(event) {
     this.event = event;
@@ -65,8 +77,10 @@ class ChatApp {
   }
 
   /**
-   * Executes the Chat app and returns a message as a response.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * Executes the Chat app and returns a
+   * [message](https://developers.google.com/chat/messages-overview) as a
+   * response.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async execute() {
     switch (this.event.type) {
@@ -80,6 +94,11 @@ class ChatApp {
         if (this.event.message.slashCommand) {
           return this.handleSlashCommand();
         }
+        // Respond to mentions with the text "user stories" or "userstories"
+        // by executing the command "My User Stories". We trim and lower case
+        // the argument text sent by the user in the message before the
+        // comparison, so we trigger the command regardless of the text's
+        // capitalizatino or whitespace.
         const argumentText =
           (this.event.message.argumentText || '').trim().toLowerCase();
         if (argumentText === 'user stories'
@@ -96,12 +115,12 @@ class ChatApp {
   /**
    * Handles the ADDED_TO_SPACE event by sending back a welcome text message.
    * It also adds the space to storage so it can later receive user stories.
-   * @return {Object} A welcome text message to post back to the DM or space.
+   * @return {Object} A welcome text message to post back to the space.
    */
   async handleAddedToSpace() {
     await SpaceService.createSpace(
       this.spaceName, this.event.space.displayName);
-    const message = 'Thank you for adding the Project Manager app.' +
+    const message = 'Thank you for adding the Project Management app.' +
       ' Message the app for a list of available commands.';
     return { text: message };
   }
@@ -116,7 +135,7 @@ class ChatApp {
 
   /**
    * Handles a slash command and returns a message as a response.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleSlashCommand() {
     switch (Number(this.event.message.slashCommand.commandId)) {
@@ -137,7 +156,7 @@ class ChatApp {
 
   /**
    * Handles the create user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleCreateUserStory() {
     const title = (this.event.message.argumentText || '').trim();
@@ -162,7 +181,7 @@ class ChatApp {
 
   /**
    * Handles the my user stories command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleMyUserStories() {
     const userStories =
@@ -170,11 +189,11 @@ class ChatApp {
         this.spaceName, this.userName);
     const openUserStories = userStories
       .filter((userStory) => userStory.data.status !== Status.COMPLETED);
-    // Obtain a unique list of users assigned to the fetched user stories.
-    const userIds = [...new Set(openUserStories
-      .filter((userStory) => !!userStory.data.assignee)
-      .map((userStory) => userStory.data.assignee))];
-    const users = await UserService.getUsers(this.spaceName, userIds);
+    const user = new User(
+      this.userName.replace(USERS_PREFIX, ''),
+      this.event.user.displayName,
+      this.event.user.avatarUrl);
+    const users = { [user.id]: user };
     const title = 'User Stories assigned to ' + this.event.user.displayName;
     return {
       cardsV2: [{
@@ -190,7 +209,7 @@ class ChatApp {
 
   /**
    * Handles the user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleUserStory() {
     const id = (this.event.message.argumentText || '').trim();
@@ -224,7 +243,7 @@ class ChatApp {
 
   /**
    * Handles the manage user stories command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleManageUserStories() {
     const userStories =
@@ -252,7 +271,7 @@ class ChatApp {
 
   /**
    * Handles the clean up user stories command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleCleanupUserStories() {
     await UserStoryService.cleanupUserStories(this.spaceName);
@@ -261,7 +280,7 @@ class ChatApp {
 
   /**
    * Returns a help message with the list of available commands.
-   * @return {Object} A message to post back to the DM or space.
+   * @return {Object} A message to post back to the space.
    */
   handleHelp() {
     return {
@@ -276,13 +295,15 @@ class ChatApp {
 
 module.exports = {
   /**
-   * Executes the Chat app and returns a message as a response.
-   * @param {!Object} event The event received from Google Chat.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * Executes the Chat app and returns a
+   * [message](https://developers.google.com/chat/messages-overview) as a
+   * response.
+   * @param {!Object} event The
+   * [event](https://developers.google.com/chat/api/guides/message-formats/events)
+   * received from Google Chat.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   execute: async function (event) {
     return new ChatApp(event).execute();
   }
 };
-
-// [END chat_project_management_app]

@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_space_service]
+
+/**
+ * @fileoverview Service with the application logic specific to working with
+ * [Chat spaces](https://developers.google.com/chat/concepts#messages-and-spaces).
+ */
 
 const { FirestoreService } = require('./firestore-service');
 
@@ -42,5 +46,3 @@ exports.SpaceService = {
   },
 
 }
-
-// [END chat_project_management_space_service]

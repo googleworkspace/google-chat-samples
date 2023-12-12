@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_service]
+
+/**
+ * @fileoverview Service with the application logic specific to working with
+ * [Chat users](https://developers.google.com/chat/identify-reference-users).
+ */
 
 const { NotFoundException } = require('../model/exceptions');
 const { User } = require('../model/user');
@@ -56,5 +60,3 @@ exports.UserService = {
   },
 
 }
-
-// [END chat_project_management_user_service]

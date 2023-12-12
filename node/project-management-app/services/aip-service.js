@@ -13,8 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_aip_service]
 
+/**
+ * @fileoverview Service that calls the Vertex AI API for generative AI text
+ * prediction.
+ */
+
+/**
+ * [Vertex AI Platform](https://cloud.google.com/vertex-ai/docs) client library.
+ */
 const aiplatform = require('@google-cloud/aiplatform');
 const { env } = require('../env.js');
 
@@ -29,12 +36,14 @@ const clientOptions = {
   apiEndpoint: `${env.location}-aiplatform.googleapis.com`,
 };
 
+// Specify the Vertex AI model we use to generate text.
 const publisher = 'google';
 const model = 'text-bison';
 
 // Instantiates a client.
 const predictionServiceClient = new PredictionServiceClient(clientOptions);
 
+// Prompts used to generate text using Vertex AI.
 const generationPrompt = 'Generate a description for a user story with the following title:';
 const grammarPrompt = 'Correct the grammar of the following user story description:'
 const expansionPrompt = 'Expand the following user story description:';
@@ -106,5 +115,3 @@ exports.AIPService = {
   },
 
 }
-
-// [END chat_project_management_aip_service]

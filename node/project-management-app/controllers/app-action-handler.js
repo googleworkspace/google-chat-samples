@@ -13,7 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_app_action_handler]
+
+/**
+ * @fileoverview Application logic to handle card click
+ * [Chat events](https://developers.devsite.corp.google.com/chat/api/guides/message-formats/events#card-clicked).
+ */
 
 const { UserStory } = require('../model/user-story');
 const { User } = require('../model/user');
@@ -24,6 +28,7 @@ const { EditUserStoryCard } = require('../views/edit-user-story-card');
 const { UserStoryCard } = require('../views/user-story-card');
 const { UserStoryCardType } = require('../views/widgets/user-story-card-type');
 
+/** The prefix used by the Google Chat API in the User resource name. */
 const USERS_PREFIX = 'users/';
 
 /**
@@ -42,29 +47,38 @@ const AIAction = {
 /**
  * Handles exceptions thrown by the UserStoryService.
  * @param {!Error} e An exception thrown by the UserStoryService.
- * @return {Object} A dialog status message with a user facing error message.
+ * @return {Object} A
+ * [dialog](https://developers.google.com/chat/how-tos/dialogs) status message
+ * with a user facing error message.
  * @throws {Error} If the exception is not a recognized type from the app.
  */
-function handleException(e) {
+function handleException(e, isDialogEvent) {
   if (e.name === 'NotFoundException' || e.name === 'BadRequestException') {
-    return {
-      actionResponse: {
-        type: 'DIALOG',
-        dialogAction: {
-          actionStatus: {
-            statusCode: e.statusCode,
-            userFacingMessage: e.message
+    if (isDialogEvent) {
+      return {
+        actionResponse: {
+          type: 'DIALOG',
+          dialogAction: {
+            actionStatus: {
+              statusCode: e.statusCode,
+              userFacingMessage: e.message
+            }
           }
         }
-      }
+      };
     }
+    return {
+      text: `⚠️ ${e.message}`
+    };
   } else {
     throw e;
   }
 }
 
 /**
- * Chat application handler for card actions.
+ * Chat application handler for
+ * [card](https://developers.google.com/chat/api/guides/v1/messages/create#create)
+ * actions.
  */
 class ChatAppActionHandler {
   /**
@@ -84,8 +98,11 @@ class ChatAppActionHandler {
   }
 
   /**
-   * Executes the handler for a card action and returns a message as a response.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * Executes the handler for a card
+   * [action](https://developers.google.com/chat/ui/read-form-data) and returns
+   * a [message](https://developers.google.com/chat/messages-overview) as a
+   * response.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async execute() {
     if (this.event.isDialogEvent
@@ -99,6 +116,19 @@ class ChatAppActionHandler {
         }
       };
     }
+    try {
+      const response = await this.handleInvokedFunction();
+      return response;
+    } catch (e) {
+      return handleException(e, this.event.isDialogEvent);
+    }
+  }
+
+  /**
+   * Handles card actions for invoked functions.
+   * @return {Promise<Object>} A message to post back to the space.
+   */
+  async handleInvokedFunction() {
     switch (this.event.common.invokedFunction) {
       case 'myUserStories':
         return this.app.handleMyUserStories();
@@ -127,22 +157,25 @@ class ChatAppActionHandler {
       case 'correctUserStoryDescriptionGrammar':
         return this.handleUserStoryAIAction(AIAction.GRAMMAR);
       default:
-        if (this.cardType === UserStoryCardType.SINGLE_DIALOG
-          || this.cardType === UserStoryCardType.LIST_DIALOG) {
-          return {
-            actionResponse: {
-              type: 'DIALOG',
-              dialogAction: {
-                actionStatus: {
-                  statusCode: 'INVALID_ARGUMENT',
-                  userFacingMessage: '⚠️ Unrecognized action.'
-                }
-              }
+        break;
+    }
+    // If the switch above did not return anything, the provided function name
+    // was not recognized.
+    if (this.cardType === UserStoryCardType.SINGLE_DIALOG
+      || this.cardType === UserStoryCardType.LIST_DIALOG) {
+      return {
+        actionResponse: {
+          type: 'DIALOG',
+          dialogAction: {
+            actionStatus: {
+              statusCode: 'INVALID_ARGUMENT',
+              userFacingMessage: '⚠️ Unrecognized action.'
             }
           }
         }
-        return { text: '⚠️ Unrecognized action.' };
+      }
     }
+    return { text: '⚠️ Unrecognized action.' };
   }
 
   /**
@@ -150,31 +183,27 @@ class ChatAppActionHandler {
    * @return {Promise<Object>} A message to open the user story dialog.
    */
   async handleEditUserStory() {
-    try {
-      const userStory =
-        await UserStoryService.getUserStory(this.spaceName, this.userStoryId);
-      const user = userStory.data.assignee
-        ? await UserService.getUser(
-          this.spaceName, userStory.data.assignee.replace(USERS_PREFIX, ''))
-        : undefined;
-      return {
-        actionResponse: {
-          type: 'DIALOG',
-          dialogAction: {
-            dialog: {
-              body: new EditUserStoryCard(userStory, user)
-            }
+    const userStory =
+      await UserStoryService.getUserStory(this.spaceName, this.userStoryId);
+    const user = userStory.data.assignee
+      ? await UserService.getUser(
+        this.spaceName, userStory.data.assignee.replace(USERS_PREFIX, ''))
+      : undefined;
+    return {
+      actionResponse: {
+        type: 'DIALOG',
+        dialogAction: {
+          dialog: {
+            body: new EditUserStoryCard(userStory, user)
           }
         }
-      };
-    } catch (e) {
-      return handleException(e);
-    }
+      }
+    };
   }
 
   /**
    * Handles the assign user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleAssignUserStory() {
     // Save the user display name and avatar to storage so we can display them
@@ -183,51 +212,39 @@ class ChatAppActionHandler {
       this.userName.replace(USERS_PREFIX, ''),
       this.event.user.displayName,
       this.event.user.avatarUrl);
-    try {
-      await UserService.createOrUpdateUser(this.spaceName, user);
-      // Assign the user story.
-      const userStory =
-        await UserStoryService.assignUserStory(
-          this.spaceName, this.userStoryId, this.userName);
-      return this.buildResponse(userStory, user, /* updated= */ true);
-    } catch (e) {
-      return handleException(e);
-    }
+    await UserService.createOrUpdateUser(this.spaceName, user);
+    // Assign the user story.
+    const userStory =
+      await UserStoryService.assignUserStory(
+        this.spaceName, this.userStoryId, this.userName);
+    return this.buildResponse(userStory, /* updated= */ true, user);
   }
 
   /**
    * Handles the start user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleStartUserStory() {
-    try {
-      const userStory =
-        await UserStoryService.startUserStory(this.spaceName, this.userStoryId);
-      const user = userStory.data.assignee
-        ? await UserService.getUser(this.spaceName, userStory.data.assignee)
-        : undefined;
-      return this.buildResponse(userStory, user, /* updated= */ true);
-    } catch (e) {
-      return handleException(e);
-    }
+    const userStory =
+      await UserStoryService.startUserStory(this.spaceName, this.userStoryId);
+    const user = userStory.data.assignee
+      ? await UserService.getUser(this.spaceName, userStory.data.assignee)
+      : undefined;
+    return this.buildResponse(userStory, /* updated= */ true, user);
   }
 
   /**
    * Handles the complete user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleCompleteUserStory() {
-    try {
-      const userStory =
-        await UserStoryService.completeUserStory(
-          this.spaceName, this.userStoryId);
-      const user = userStory.data.assignee
-        ? await UserService.getUser(this.spaceName, userStory.data.assignee)
-        : undefined;
-      return this.buildResponse(userStory, user, /* updated= */ true);
-    } catch (e) {
-      return handleException(e);
-    }
+    const userStory =
+      await UserStoryService.completeUserStory(
+        this.spaceName, this.userStoryId);
+    const user = userStory.data.assignee
+      ? await UserService.getUser(this.spaceName, userStory.data.assignee)
+      : undefined;
+    return this.buildResponse(userStory, /* updated= */ true, user);
   }
 
   /**
@@ -252,49 +269,41 @@ class ChatAppActionHandler {
       ? formInputs.priority.stringInputs.value[0] : '';
     const size = formInputs.size
       ? formInputs.size.stringInputs.value[0] : '';
-    try {
-      const userStory =
-        await UserStoryService.updateUserStory(
-          this.spaceName,
-          this.userStoryId,
-          title,
-          description,
-          status,
-          priority,
-          size);
-      const user = userStory.data.assignee
-        ? await UserService.getUser(this.spaceName, userStory.data.assignee)
-        : undefined;
-      return this.buildResponse(userStory, user, /* updated= */ true);
-    } catch (e) {
-      return handleException(e);
-    }
+    const userStory =
+      await UserStoryService.updateUserStory(
+        this.spaceName,
+        this.userStoryId,
+        title,
+        description,
+        status,
+        priority,
+        size);
+    const user = userStory.data.assignee
+      ? await UserService.getUser(this.spaceName, userStory.data.assignee)
+      : undefined;
+    return this.buildResponse(userStory, /* updated= */ true, user);
   }
 
   /**
    * Handles the refresh user story command.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   async handleRefreshUserStory() {
-    try {
-      const userStory =
-        await UserStoryService.getUserStory(this.spaceName, this.userStoryId);
-      const user = userStory.data.assignee
-        ? await UserService.getUser(
-          this.spaceName, userStory.data.assignee.replace(USERS_PREFIX, ''))
-        : undefined;
-      return {
-        cardsV2: [{
-          cardId: 'userStoryCard',
-          card: new UserStoryCard(userStory, user)
-        }],
-        actionResponse: {
-          type: 'UPDATE_MESSAGE'
-        }
-      };
-    } catch (e) {
-      return handleException(e);
-    }
+    const userStory =
+      await UserStoryService.getUserStory(this.spaceName, this.userStoryId);
+    const user = userStory.data.assignee
+      ? await UserService.getUser(
+        this.spaceName, userStory.data.assignee.replace(USERS_PREFIX, ''))
+      : undefined;
+    return {
+      cardsV2: [{
+        cardId: 'userStoryCard',
+        card: new UserStoryCard(userStory, user)
+      }],
+      actionResponse: {
+        type: 'UPDATE_MESSAGE'
+      }
+    };
   }
 
   /**
@@ -314,46 +323,42 @@ class ChatAppActionHandler {
       ? formInputs.size.stringInputs.value[0] : '';
     const assignee = this.event.common.parameters
       ? this.event.common.parameters.assignee : undefined;
-    try {
-      switch (action) {
-        case AIAction.GENERATE:
-          if (title.trim().length === 0) {
-            description = '';
-          } else {
-            description = await AIPService.generateDescription(title);
-          }
-          break;
-        case AIAction.EXPAND:
-          if (description.trim().length > 0) {
-            description = await AIPService.expandDescription(description);
-          }
-          break;
-        case AIAction.GRAMMAR:
-          if (description.trim().length > 0) {
-            description = await AIPService.correctDescription(description);
-          }
-          break;
-        default:
-        // Unrecognized action.
-      }
-      // Display the (potentially unsaved) current values of the fields from the
-      // dialog, not the values from the database.
-      const userStoryData = {
-        title,
-        description,
-        status,
-        priority,
-        size,
-        assignee,
-      };
-      const userStory = new UserStory(this.userStoryId, userStoryData);
-      const user = assignee
-        ? await UserService.getUser(this.spaceName, assignee)
-        : undefined;
-      return this.buildResponse(userStory, user, /* updated= */ false);
-    } catch (e) {
-      return handleException(e);
+    switch (action) {
+      case AIAction.GENERATE:
+        if (title.trim().length === 0) {
+          description = '';
+        } else {
+          description = await AIPService.generateDescription(title);
+        }
+        break;
+      case AIAction.EXPAND:
+        if (description.trim().length > 0) {
+          description = await AIPService.expandDescription(description);
+        }
+        break;
+      case AIAction.GRAMMAR:
+        if (description.trim().length > 0) {
+          description = await AIPService.correctDescription(description);
+        }
+        break;
+      default:
+      // Unrecognized action.
     }
+    // Display the (potentially unsaved) current values of the fields from the
+    // dialog, not the values from the database.
+    const userStoryData = {
+      title,
+      description,
+      status,
+      priority,
+      size,
+      assignee,
+    };
+    const userStory = new UserStory(this.userStoryId, userStoryData);
+    const user = assignee
+      ? await UserService.getUser(this.spaceName, assignee)
+      : undefined;
+    return this.buildResponse(userStory, /* updated= */ false, user);
   }
 
   /**
@@ -369,11 +374,11 @@ class ChatAppActionHandler {
    * - story list dialog: push a new dialog with an updated story list card
    *
    * @param {!UserStory} userStory The updated user story.
-   * @param {?User} user The user assigned to the user story.
    * @param {!boolean} updated Whether the user story was updated in storage.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @param {?User} user The user assigned to the user story.
+   * @return {Promise<Object>} A message to post back to the space.
    */
-  async buildResponse(userStory, user, updated) {
+  async buildResponse(userStory, updated, user) {
     switch (this.cardType) {
       case UserStoryCardType.SINGLE_MESSAGE:
         return {
@@ -410,7 +415,13 @@ class ChatAppActionHandler {
       case UserStoryCardType.LIST_DIALOG:
         return this.app.handleManageUserStories();
       default:
-        return {};
+        return {
+          text: updated ? 'User story updated.' : null,
+          cardsV2: [{
+            cardId: 'userStoryCard',
+            card: new UserStoryCard(userStory, user)
+          }],
+        };
     }
   }
 
@@ -418,14 +429,18 @@ class ChatAppActionHandler {
 
 module.exports = {
   /**
-   * Executes the Chat app action handler and returns a message as a response.
-   * @param {!Object} event The event received from Google Chat.
+   * Executes the Chat app
+   * [action](https://developers.google.com/chat/ui/read-form-data) handler and
+   * returns a
+   * [message](https://developers.google.com/chat/messages-overview) as a
+   * response.
+   * @param {!Object} event The
+   * [event](https://developers.google.com/chat/api/guides/message-formats/events)
+   * received from Google Chat.
    * @param {!ChatApp} app The Chat app that is calling this action handler.
-   * @return {Promise<Object>} A message to post back to the DM or space.
+   * @return {Promise<Object>} A message to post back to the space.
    */
   execute: async function (event, app) {
     return new ChatAppActionHandler(event, app).execute();
   }
 };
-
-// [END chat_project_management_app_action_handler]

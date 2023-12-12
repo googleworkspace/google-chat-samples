@@ -106,7 +106,7 @@ describe('App', function () {
       const response = await App.execute(event);
 
       assert.deepStrictEqual(response, {
-        text: 'Thank you for adding the Project Manager app.' +
+        text: 'Thank you for adding the Project Management app.' +
           ' Message the app for a list of available commands.'
       });
       assert.ok(test.mocks.spaceService.createSpace.calledOnceWith(
@@ -212,8 +212,6 @@ describe('App', function () {
       assert.ok(
         test.mocks.userStoryService.listUserStoriesByUser.calledOnceWith(
           SPACE_NAME, USER_NAME));
-      assert.ok(
-        test.mocks.userService.getUsers.calledOnceWith(SPACE_NAME, [USER_ID]));
     });
   });
 
@@ -394,8 +392,6 @@ describe('App', function () {
           assert.ok(
             test.mocks.userStoryService.listUserStoriesByUser.calledOnceWith(
               SPACE_NAME, USER_NAME));
-          assert.ok(
-            test.mocks.userService.getUsers.calledOnceWith(SPACE_NAME, [USER_ID]));
         });
       });
     }

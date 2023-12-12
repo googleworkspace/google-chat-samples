@@ -13,7 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_card]
+
+/**
+ * @fileoverview Module that exports a
+ * [card](https://developers.google.com/chat/api/guides/v1/messages/create#create)
+ * object that the Chat app then sends back to Chat in a message or
+ * [dialog](https://developers.google.com/chat/how-tos/dialogs) with a standard
+ * view of a user story.
+ */
 
 const { UserStory, StatusIcon } = require('../model/user-story');
 const { User } = require('../model/user');
@@ -91,5 +98,3 @@ exports.UserStoryCard = class {
   }
 
 }
-
-// [END chat_project_management_user_story_card]

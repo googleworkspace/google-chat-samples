@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_row_widget]
+
+/**
+ * @fileoverview Module that exports a
+ * [widget](https://developers.google.com/chat/api/reference/rest/v1/cards#Widget)
+ * object that the Chat app can add to a card to display a row in a list with
+ * data for a single user story.
+ */
 
 const { UserStory, StatusIcon } = require('../../model/user-story');
 
@@ -63,5 +69,3 @@ exports.UserStoryRowWidget = class {
   }
 
 }
-
-// [END chat_project_management_user_story_row_widget]

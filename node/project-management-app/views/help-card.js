@@ -13,10 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_help_card]
 
 /**
- * A Card with a description of the available commands.
+ * A
+ * [card](https://developers.google.com/chat/api/guides/v1/messages/create#create)
+ * with a description of the available commands.
  */
 exports.HelpCard = class {
 
@@ -115,5 +116,3 @@ exports.HelpCard = class {
   }
 
 }
-
-// [END chat_project_management_help_card]

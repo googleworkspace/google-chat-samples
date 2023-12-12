@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_assginee_widget]
+
+/**
+ * @fileoverview Module that exports a
+ * [widget](https://developers.google.com/chat/api/reference/rest/v1/cards#Widget)
+ * object that the Chat app can add to a card to display the assignee of a user
+ * story.
+ */
 
 const { User } = require('../../model/user');
 
@@ -48,5 +54,3 @@ exports.UserStoryAssigneeWidget = class {
   }
 
 }
-
-// [END chat_project_management_user_story_assginee_widget]

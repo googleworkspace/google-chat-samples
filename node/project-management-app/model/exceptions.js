@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_exceptions]
+
+/**
+ * @fileoverview Exception types used internally by the application logic.
+ */
 
 /**
  * A User Story is not found in storage.
@@ -36,5 +39,3 @@ exports.BadRequestException = class extends Error {
     this.statusCode = 'INVALID_ARGUMENT';
   }
 }
-
-// [END chat_project_management_exceptions]

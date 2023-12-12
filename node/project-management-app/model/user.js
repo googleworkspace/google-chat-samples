@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user]
+
+/**
+ * @fileoverview Definition of classes and enums that the application services
+ * use to store and pass user data between functions. They set the data model
+ * for the Firestore database.
+ */
 
 /**
  * A user that interacted with the app.
@@ -35,5 +40,3 @@ exports.User = class {
     this.avatarUrl = avatarUrl;
   }
 }
-
-// [END chat_project_management_user]

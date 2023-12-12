@@ -13,7 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story]
+
+/**
+ * @fileoverview Definition of classes and enums that the application services
+ * use to store and pass user story data between functions. They set the data
+ * model for the Firestore database.
+ */
 
 /**
  * User story statuses.
@@ -55,7 +60,7 @@ exports.Priority = {
 };
 
 /**
- * User story T-shirt sizes.
+ * User story sizes.
  * @enum {string}
  */
 exports.Size = {
@@ -100,5 +105,3 @@ exports.UserStory = class {
     this.data = data;
   }
 }
-
-// [END chat_project_management_user_story]

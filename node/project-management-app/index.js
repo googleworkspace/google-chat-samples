@@ -13,12 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_index]
 
+/**
+ * @fileoverview Definition of a Cloud Function that responds to interaction
+ * events from the Project Management Google Chat app.
+ */
+
+/** [Cloud Functions](https://cloud.google.com/functions/docs) client library */
 const functions = require('@google-cloud/functions-framework');
 const App = require('./controllers/app');
 const { env } = require('./env.js');
 
+/**
+ * Cloud Function that responds to interaction events from Google Chat. It uses
+ * the {@code App} object to handle the Project Management application logic.
+ */
 functions.http('projectManagementChatApp', async (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res
@@ -37,5 +46,3 @@ functions.http('projectManagementChatApp', async (req, res) => {
     console.log(JSON.stringify({ message: 'Response sent', responseMessage }));
   }
 });
-
-// [END chat_project_management_index]

@@ -13,7 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_project_management_user_story_columns_widget]
+
+/**
+ * @fileoverview Module that exports a
+ * [widget](https://developers.google.com/chat/api/reference/rest/v1/cards#Widget)
+ * object that the Chat app can add to a card to display information in two
+ * columns.
+ */
 
 /**
  * Returns an Icon widget with the provided URL, or <code>null</code> if no URL
@@ -74,5 +80,3 @@ exports.UserStoryColumnsWidget = class {
   }
 
 }
-
-// [END chat_project_management_user_story_columns_widget]
