@@ -47,9 +47,12 @@ const AIAction = {
 /**
  * Handles exceptions thrown by the UserStoryService.
  * @param {!Error} e An exception thrown by the UserStoryService.
- * @return {Object} A
- * [dialog](https://developers.google.com/chat/how-tos/dialogs) status message
- * with a user facing error message.
+ * @param {!boolean} isDialogEvent Whether the event that led to the exception
+ * was a [dialog](https://developers.google.com/chat/how-tos/dialogs) submission.
+ * @return {Object} If the event that led to the exception was from a dialog, a
+ * dialog action response with a user facing error message. Otherwise, a
+ * [text message](https://developers.google.com/chat/api/guides/v1/messages/create#respond-user-interaction)
+ * with the error message.
  * @throws {Error} If the exception is not a recognized type from the app.
  */
 function handleException(e, isDialogEvent) {
