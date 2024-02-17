@@ -24,21 +24,21 @@
  */
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
-    res.send(
+    return res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
   }
 
   // Checks for the presence of event.message.matchedUrl and responds with a
   // text message if present
   if (req.body.message.matchedUrl) {
-    res.json({
+    return res.json({
       'text': 'req.body.message.matchedUrl.url: ' +
         req.body.message.matchedUrl.url,
     });
   }
 
   // If the Chat app doesn’t detect a link preview URL pattern, it says so.
-  res.json({'text': 'No matchedUrl detected.'});
+  return res.json({'text': 'No matchedUrl detected.'});
 };
 
 // [END hangouts_chat_preview_link]

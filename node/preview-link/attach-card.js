@@ -24,14 +24,14 @@
  */
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
-    res.send(
+    return res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
   }
 
   // Checks for the presence of event.message.matchedUrl and attaches a card
   // if present
   if (req.body.message.matchedUrl) {
-    res.json({
+    return res.json({
       'actionResponse': {'type': 'UPDATE_USER_MESSAGE_CARDS'},
       'cardsV2': [
         {
@@ -100,7 +100,7 @@ exports.onMessage = (req, res) => {
   }
 
   // If the Chat app doesn’t detect a link preview URL pattern, it says so.
-  res.json({'text': 'No matchedUrl detected.'});
+  return res.json({'text': 'No matchedUrl detected.'});
 };
 
 // [END hangouts_chat_preview_link]

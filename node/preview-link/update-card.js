@@ -24,7 +24,7 @@
  */
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
-    res.send(
+    return res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
   }
 
@@ -38,7 +38,7 @@ exports.onMessage = (req, res) => {
       'UPDATE_MESSAGE';
 
     if (req.body.action.actionMethodName === 'assign') {
-      res.json({
+      return res.json({
         'actionResponse': {
 
           // Dynamically returns the correct actionResponse type.
