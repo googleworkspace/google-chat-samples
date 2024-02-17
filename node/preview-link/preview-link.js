@@ -26,12 +26,7 @@ exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
-  }
-
-  // Checks for the presence of event.message.matchedUrl and attaches a card
-  // if present
-  if (req.body.message.matchedUrl) {
-    res.json(createMessage());
+    return;
   }
 
   // Respond to button clicks on attached cards
@@ -45,7 +40,15 @@ exports.onMessage = (req, res) => {
 
     if (req.body.action.actionMethodName === 'assign') {
       res.json(createMessage(actionResponseType, 'You'));
+      return;
     }
+  }
+
+  // Checks for the presence of event.message.matchedUrl and attaches a card
+  // if present
+  if (req.body.message.matchedUrl) {
+    res.json(createMessage());
+    return;
   }
 
   // If the Chat app doesn’t detect a link preview URL pattern, it says so.

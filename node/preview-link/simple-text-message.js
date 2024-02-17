@@ -26,6 +26,7 @@ exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
+    return;
   }
 
   // Checks for the presence of event.message.matchedUrl and responds with a
@@ -35,6 +36,7 @@ exports.onMessage = (req, res) => {
       'text': 'req.body.message.matchedUrl.url: ' +
         req.body.message.matchedUrl.url,
     });
+    return;
   }
 
   // If the Chat app doesn’t detect a link preview URL pattern, it says so.
