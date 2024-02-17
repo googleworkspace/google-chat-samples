@@ -24,9 +24,8 @@
  */
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
-    res.send(
+    return res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
-    return;
   }
 
   // Respond to button clicks on attached cards
@@ -39,20 +38,18 @@ exports.onMessage = (req, res) => {
       'UPDATE_MESSAGE';
 
     if (req.body.action.actionMethodName === 'assign') {
-      res.json(createMessage(actionResponseType, 'You'));
-      return;
+      return res.json(createMessage(actionResponseType, 'You'));
     }
   }
 
   // Checks for the presence of event.message.matchedUrl and attaches a card
   // if present
   if (req.body.message.matchedUrl) {
-    res.json(createMessage());
-    return;
+    return res.json(createMessage());
   }
 
   // If the Chat app doesn’t detect a link preview URL pattern, it says so.
-  res.json({'text': 'No matchedUrl detected.'});
+  return res.json({'text': 'No matchedUrl detected.'});
 };
 
 /**

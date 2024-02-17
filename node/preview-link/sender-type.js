@@ -24,9 +24,8 @@
  */
 exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
-    res.send(
+    return res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
-    return;
   }
 
   // Respond to button clicks on attached cards
@@ -38,7 +37,7 @@ exports.onMessage = (req, res) => {
       'UPDATE_USER_MESSAGE_CARDS' :
       'UPDATE_MESSAGE';
 
-    res.json({
+    return res.json({
       'actionResponse': {
 
         // Dynamically returns the correct actionResponse type.
