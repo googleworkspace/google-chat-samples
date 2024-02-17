@@ -26,6 +26,7 @@ exports.onMessage = (req, res) => {
   if (req.method === 'GET' || !req.body.message) {
     res.send(
       'Hello! This function is meant to be used in a Google Chat Space.');
+    return;
   }
 
   // Respond to button clicks on attached cards
