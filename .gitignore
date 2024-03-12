@@ -13,3 +13,4 @@ service-account.json
 **/python-3*/
 **/.history/
 .vscode/
+**/.clasp.json
