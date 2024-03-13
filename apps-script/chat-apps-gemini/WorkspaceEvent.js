@@ -81,8 +81,7 @@ function processSubscription() {
                 }]
               }}
             }]}}],
-            // TODO: Debug private message failures (noticed on 03/12).
-            // privateMessageViewer: { name: chatMessage.sender.name }
+            privateMessageViewer: { name: chatMessage.sender.name }
           },
           chatMessage.space.name);
         }
