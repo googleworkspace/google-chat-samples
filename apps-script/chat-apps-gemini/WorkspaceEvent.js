@@ -53,9 +53,12 @@ function processSubscription() {
       // Renews subscription.
       renewSubscription(JSON.parse(dataStr).subscription.name);
     } else if (ceType === "google.workspace.chat.message.v1.created") {
-      // Processes the message text when it's sent by an user with the feature enabled.
+      // Processes the message text when it's sent by an user with the inclusivity feature enabled.
       const chatMessage = JSON.parse(dataStr).message;
-      if (chatMessage.sender.type !== "BOT" && shouldHelpWithInclusivity(chatMessage.space.name)) {
+      if (
+        chatMessage.sender.type !== "BOT"
+        && shouldHelpWithInclusivity(chatMessage.space.name, chatMessage.sender.name)
+      ) {
         const inclusivityCheck = provideInclusivityFeedback(chatMessage.text);
         if (inclusivityCheck !== "It's inclusive!") {
           createAppMessageUsingRest({
@@ -72,17 +75,21 @@ function processSubscription() {
                 parameters: [{
                   key: "spaceId",
                   value: chatMessage.space.name
+                }, {
+                  key: "userId",
+                  value: chatMessage.sender.name
                 }]
               }}
             }]}}],
-            privateMessageViewer: { name: chatMessage.sender.name }
+            // TODO: Debug private message failures (noticed on 03/12).
+            // privateMessageViewer: { name: chatMessage.sender.name }
           },
           chatMessage.space.name);
         }
       }
     }
     // Acknowledges successful processing to avoid getting it again next time.
-    ackSubscription(subscriptionId, message.ackId);
+    ackSubscription(message.ackId);
   }
 }
 

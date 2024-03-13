@@ -6,11 +6,6 @@
 const appProperties = PropertiesService.getScriptProperties();
 
 /**
- * Contains the user preferences.
- */
-const userProperties = PropertiesService.getUserProperties();
-
-/**
  * Saves a new issue.
  * 
  * @param {string} title the title of the issue
@@ -27,7 +22,8 @@ function saveCreatedIssue(title, description, spaceId, subscriptionId) {
     subscriptionId: subscriptionId,
     status: "OPENED",
     resolution : "",
-    reportUrl: ""
+    reportUrl: "",
+    disabledInclusivityHelp: []
   }));
 
   return JSON.parse(appProperties.getProperty(spaceId));
@@ -52,14 +48,15 @@ function saveClosedIssue(spaceId, resolution, reportUrl) {
 }
 
 /**
- * Disables inclusivity help in a space for the user.
+ * Disables inclusivity help in a space for a user.
  * 
  * @param {string} spaceId the ID of dedicated space of the issue
+ * @param {string} userId the ID of user
  */
-function disableInclusivityHelp(spaceId) {
-  userProperties.setProperty(spaceId, JSON.stringify({
-    inclusivityHelp: false
-  }));
+function disableInclusivityHelp(spaceId, userId) {
+  var issue = JSON.parse(appProperties.getProperty(spaceId));
+  issue.disabledInclusivityHelp.push(userId);
+  appProperties.setProperty(spaceId, JSON.stringify(issue));
 }
 
 /**
@@ -68,8 +65,10 @@ function disableInclusivityHelp(spaceId) {
  * Inclusivity help is enabled by default.
  * 
  * @param {string} spaceId the ID of dedicated space of the issue
+ * @param {string} userId the ID of user
  * @returns whether the app should help with inclusivity
  */
-function shouldHelpWithInclusivity(spaceId) {
-  return !userProperties.getProperty(spaceId) || JSON.parse(userProperties.getProperty(spaceId)).inclusivityHelp;
+function shouldHelpWithInclusivity(spaceId, userId) {
+  return JSON.parse(appProperties.getProperty(spaceId))
+    .disabledInclusivityHelp.indexOf(userId) < 0;
 }

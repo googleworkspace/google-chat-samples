@@ -30,7 +30,7 @@ function onCardClick(event) {
 
   // Disable inclusivity help accessory widget
   if (event.action.actionMethodName === "disableInclusivityHelp") {
-    disableInclusivityHelp(event.common.parameters.spaceId);
+    disableInclusivityHelp(event.common.parameters.spaceId, event.user.name);
   }
 }
 
@@ -64,7 +64,7 @@ function processSlashCommand(event) {
     }};
   }
 
-  if (event.message.slashCommand.commandId == CLOSE_COMMAND_ID && event.message.space.type != "DM") {
+  if (event.message.slashCommand.commandId == CLOSE_COMMAND_ID && event.message.space.type !== "DM") {
     // Closes the issue associated to the space.
     const spaceId = event.message.space.name;
     const resolution = event.message.argumentText;
@@ -202,9 +202,9 @@ function onAppHome() {
             }, {
               text: "Open report",
               onClick: { openLink: {
-                url: issue.reportUrl != "" ? issue.reportUrl : "docs.new"
+                url: issue.reportUrl !== "" ? issue.reportUrl : "docs.new"
               }},
-              disabled: issue.reportUrl == ""
+              disabled: issue.reportUrl === ""
           }]}
         }]
       });
