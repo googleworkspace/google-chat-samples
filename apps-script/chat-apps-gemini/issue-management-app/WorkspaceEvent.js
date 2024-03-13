@@ -1,3 +1,19 @@
+/**
+ * Copyright 2024 Google LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 // This script contains the Google Workspace events-specific utilities functions.
 
 /**
@@ -53,13 +69,13 @@ function processSubscription() {
       // Renews subscription.
       renewSubscription(JSON.parse(dataStr).subscription.name);
     } else if (ceType === "google.workspace.chat.message.v1.created") {
-      // Processes the message text when it's sent by an user with the inclusivity feature enabled.
+      // Processes the message text when it's sent in a space with the inclusivity feature enabled.
       const chatMessage = JSON.parse(dataStr).message;
       if (
         chatMessage.sender.type !== "BOT"
-        && shouldHelpWithInclusivity(chatMessage.space.name, chatMessage.sender.name)
+        && shouldHelpWithInclusivity(chatMessage.space.name)
       ) {
-        const inclusivityCheck = provideInclusivityFeedback(chatMessage.text);
+        const inclusivityCheck = getInclusivityFeedback(chatMessage.text);
         if (inclusivityCheck !== "It's inclusive!") {
           createAppMessageUsingRest({
             cardsV2: [{ cardId: "1", card: { header: {
@@ -67,21 +83,18 @@ function processSubscription() {
                 subtitle: `The following words are not inclusive: ${inclusivityCheck}`
             }}}],
             accessoryWidgets: [{ buttonList: { buttons: [{
+              altText: "Disable inclusivity help",
               icon: {
-                iconUrl: "https://developers.google.com/chat/images/quickstart-app-avatar.png"
+                iconUrl: "https://upload.wikimedia.org/wikipedia/commons/6/63/Stop_hand_rugen.png"
               },
               onClick: { action: {
                 function: "disableInclusivityHelp",
                 parameters: [{
                   key: "spaceId",
                   value: chatMessage.space.name
-                }, {
-                  key: "userId",
-                  value: chatMessage.sender.name
                 }]
               }}
-            }]}}],
-            privateMessageViewer: { name: chatMessage.sender.name }
+            }]}}]
           },
           chatMessage.space.name);
         }

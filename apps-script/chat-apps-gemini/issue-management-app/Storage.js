@@ -1,3 +1,19 @@
+/**
+ * Copyright 2024 Google LLC
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 // This script contains the storage-specific utilities functions.
 
 /**
@@ -7,6 +23,8 @@ const appProperties = PropertiesService.getScriptProperties();
 
 /**
  * Saves a new issue.
+ * 
+ * Inclusivity help is enabled by default.
  * 
  * @param {string} title the title of the issue
  * @param {string} description the description of the issue
@@ -23,7 +41,7 @@ function saveCreatedIssue(title, description, spaceId, subscriptionId) {
     status: "OPENED",
     resolution : "",
     reportUrl: "",
-    disabledInclusivityHelp: []
+    inclusivityHelp: true
   }));
 
   return JSON.parse(appProperties.getProperty(spaceId));
@@ -48,27 +66,22 @@ function saveClosedIssue(spaceId, resolution, reportUrl) {
 }
 
 /**
- * Disables inclusivity help in a space for a user.
+ * Disables inclusivity help in a space.
  * 
  * @param {string} spaceId the ID of dedicated space of the issue
- * @param {string} userId the ID of user
  */
-function disableInclusivityHelp(spaceId, userId) {
+function disableInclusivityHelp(spaceId) {
   var issue = JSON.parse(appProperties.getProperty(spaceId));
-  issue.disabledInclusivityHelp.push(userId);
+  issue.inclusivityHelp = false;
   appProperties.setProperty(spaceId, JSON.stringify(issue));
 }
 
 /**
- * Checks whether the app should help with inclusivity in a given space for the user.
- * 
- * Inclusivity help is enabled by default.
+ * Checks whether the app should help with inclusivity in a given space.
  * 
  * @param {string} spaceId the ID of dedicated space of the issue
- * @param {string} userId the ID of user
  * @returns whether the app should help with inclusivity
  */
-function shouldHelpWithInclusivity(spaceId, userId) {
-  return JSON.parse(appProperties.getProperty(spaceId))
-    .disabledInclusivityHelp.indexOf(userId) < 0;
+function shouldHelpWithInclusivity(spaceId) {
+  return JSON.parse(appProperties.getProperty(spaceId)).inclusivityHelp;
 }
