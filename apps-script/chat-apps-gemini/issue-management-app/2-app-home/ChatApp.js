@@ -43,11 +43,6 @@ function onCardClick(event) {
   if (event.action.actionMethodName === "createIssue") {
     return createIssue(event);
   }
-
-  // Disable inclusivity help accessory widget
-  if (event.action.actionMethodName === "disableInclusivityHelp") {
-    disableInclusivityHelp(event.common.parameters.spaceId);
-  }
 }
 
 /**
@@ -85,9 +80,7 @@ function processSlashCommand(event) {
     const spaceId = event.message.space.name;
     const resolution = event.message.argumentText;
     const issue = JSON.parse(appProperties.getProperty(spaceId));
-    const history = exportSpaceHistory(spaceId);
-    const summary = summarizeSpace(history);
-    const docUrl = createReport(issue.title, history, summary);
+    const docUrl = createReport(issue.title, issue.description, resolution);
     saveClosedIssue(spaceId, resolution, docUrl);
 
     return {
@@ -100,49 +93,6 @@ function processSlashCommand(event) {
 }
 
 /**
- * Fetches and concatenates the 100 first space messages by using the Google Chat API.
- *
- * Messages with slash commands are filtered (app command invocations).
- *
- * @return {string} concatenate space messages in the format "Sender's name: Message"
- */
-function exportSpaceHistory(spaceName) {
-  const messages = Chat.Spaces.Messages.list(spaceName, { 'pageSize': 100 }).messages;
-  // Returns results after fetching message sender display names.
-  let users = new Map();
-  return messages
-    .filter(message => message.slashCommand === undefined)
-    .map(message => `${getUserDisplayName(users, message.sender.name)}: ${message.text}`)
-    .join('\n');
-}
-
-/**
- * Fetches a user's display name by using the Admin Directory API.
- *
- * A cache is used to only call the API once per user.
- *
- * @param {Map} cache the map containing users previously fetched
- * @param {string} userId the user ID to fetch
- * @return {string} the user's display name
- */
-function getUserDisplayName(cache, userId) {
-  if (cache.has(userId)) {
-    return cache.get(userId);
-  }
-  let displayName = 'Unknown User';
-  try {
-    const user = AdminDirectory.Users.get(
-      userId.replace("users/", ""),
-      { projection: 'BASIC', viewType: 'domain_public' });
-    displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
-  } catch (e) {
-    // Ignores errors, uses 'Unknown User' by default.
-  }
-  cache.set(userId, displayName);
-  return displayName;
-}
-
-/**
  * Handles create issue dialog form submissions in Google Chat.
  *
  * @param {Object} event the event object from Google Chat
@@ -152,8 +102,7 @@ function createIssue(event) {
   const title = event.common.formInputs.title[""].stringInputs.value[0];
   const description = event.common.formInputs.description[""].stringInputs.value[0];
   const spaceUrl = createIssueSpace(title, description);
-  const subscriptionId = createSpaceSubscription(spaceUrl);
-  const createdIssue = saveCreatedIssue(title, description, spaceUrl, subscriptionId);
+  const createdIssue = saveCreatedIssue(title, description, spaceUrl);
 
   return {
     actionResponse: { type: "NEW_MESSAGE" },
@@ -237,10 +186,7 @@ function onAppHome() {
  *
  * @param {Object} event the event object from Google Chat
  */
-function onRemoveFromSpace(event) {
-    var issue = JSON.parse(appProperties.getProperty(event.space.name));
-    deleteSubscription(issue.subscriptionId);
-}
+function onRemoveFromSpace(event) {}
 
 /**
  * Responds to a ADDED_TO_SPACE event in Google Chat.
