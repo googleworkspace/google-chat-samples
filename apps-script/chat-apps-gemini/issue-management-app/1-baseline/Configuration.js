@@ -18,3 +18,7 @@
 
 const CREATE_COMMAND_ID = 1;
 const CLOSE_COMMAND_ID = 2;
+const CHAT_CREDENTIALS = {
+  // Replace with the Google Chat credentials to use for app authenticatio, the service account
+  // private key's JSON.
+}

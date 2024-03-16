@@ -37,12 +37,7 @@ function createAppMessageUsingChatService(message, spaceId) {
  * @return {Object} the authenticated app service
  */
 function getService_() {
-  const CHAT_CREDENTIALS = {
-    // Replace with the Google Chat credentials to use for app authenticatio, the service account
-    // private key's JSON.
-  }
-
-  return OAuth2.createService("chat-app@apps-script-chat-app-400918.iam.gserviceaccount.com")
+  return OAuth2.createService(CHAT_CREDENTIALS.client_email)
     .setTokenUrl(CHAT_CREDENTIALS.token_uri)
     .setPrivateKey(CHAT_CREDENTIALS.private_key)
     .setIssuer(CHAT_CREDENTIALS.client_email)
