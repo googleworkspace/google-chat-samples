@@ -22,4 +22,3 @@ const CHAT_CREDENTIALS = {
   // Replace with the Google Chat credentials to use for app authenticatio, the service account
   // private key's JSON.
 }
-  
