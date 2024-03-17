@@ -74,7 +74,7 @@ function processSubscription() {
       if (chatMessage.sender.type !== "BOT") {
         const inclusivityCheck = getInclusivityFeedback(chatMessage.text);
         if (inclusivityCheck !== "It's inclusive!") {
-          createAppMessageUsingRest({
+          createAppMessageUsingChatService({
             cardsV2: [{ cardId: "1", card: { header: {
                 title: "Inclusivity",
                 subtitle: `The following words are not inclusive: ${inclusivityCheck}`

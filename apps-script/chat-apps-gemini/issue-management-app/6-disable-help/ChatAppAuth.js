@@ -29,21 +29,6 @@ function createAppMessageUsingChatService(message, spaceId) {
 }
 
 /**
- * Creates a new message by using the REST API.
- * 
- * @param {Object} message the message object to send to Google Chat
- * @param {string} spaceId the space ID where to create the message
- */
-function createAppMessageUsingRest(message, spaceId) {
-  UrlFetchApp.fetch(`https://chat.googleapis.com/v1/${spaceId}/messages`, {
-    method: "POST",
-    contentType: "application/json",
-    headers: { "Authorization": "Bearer " + getService_().getAccessToken() },
-    payload: JSON.stringify(message)
-  });
-}
-
-/**
  * Authenticates the app service by using the OAuth2 library.
  * 
  * Warning: This example uses a service account private key for simplicity's sake, it should always
