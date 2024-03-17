@@ -89,6 +89,7 @@ function processSlashCommand(event) {
     const summary = summarizeSpace(history);
     const docUrl = createReport(issue.title, issue.description, resolution, history, summary);
     saveClosedIssue(spaceId, resolution, docUrl);
+    deleteSubscription(issue.subscriptionId);
 
     return {
       actionResponse: { type: "NEW_MESSAGE" },
