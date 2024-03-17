@@ -24,5 +24,5 @@ const CHAT_CREDENTIALS = {
 }
 const PROJECT_ID = 'replace-with-gcp-project-id';
 const VERTEX_AI_LOCATION_ID = 'us-central1';
-const GWS_PUBSUB_TOPIC_ID = 'projects/replace-with-gcp-project-id/topics/replace-with-workspace-events-topic-id';
-const GWS_PUBSUB_SUBSCRIPTION_ID = 'projects/replace-with-gcp-project-id/subscriptions/replace-with-workspace-events-subscription-id';
+const GWS_PUBSUB_TOPIC_ID = `projects/${PROJECT_ID}/topics/workspace-events`;
+const GWS_PUBSUB_SUBSCRIPTION_ID = `projects/${PROJECT_ID}/subscriptions/workspace-events-sub`;
