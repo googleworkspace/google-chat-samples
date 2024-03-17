@@ -69,10 +69,11 @@ function getInclusivityFeedback(text) {
       contents: {
         role: "user",
         parts: {
-            text: "Are there any words that obviously go against inclusivity in this text:"
-              + `\n\n----------\n${text}\n----------\n\n`
-              + "If there are not, answer \"It's inclusive!\" "
-              + "otherwise list them in a single really short sentence separated by commas."
+          text: "Are there any words that obviously go against inclusivity in this text:"
+            + `\n\n----------\n${text}\n----------\n\n`
+            + "If there are not, answer \"It's inclusive!\" "
+            + "otherwise answer by listing them separated by commas. "
+            + "Do not answer with any explanation."
         }
       },
       safetySettings: {
