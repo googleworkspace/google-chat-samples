@@ -57,7 +57,7 @@ functions.http('agent-response-adapter', (request, response) => {
     merge_behavior: "REPLACE",
     messages: [{ payload: {
       // Reuses the original data store agent response text.
-      text: request.body.messages[0].payload.text,
+      text: request.body.messages[0].text.text[0],
       cardsV2: [{
         cardId: "sourcesCard",
         card: { sections: [{
