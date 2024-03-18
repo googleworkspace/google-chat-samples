@@ -1,0 +1,9 @@
+{
+  "name": "agent-response-adapter",
+  "version": "0.0.1",
+  "description": "Adapts Dialogflow CX data store agent responses to compeling Google Chat messages.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@google-cloud/functions-framework": "^3.0.0"
+  }
+}
