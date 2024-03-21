@@ -26,7 +26,7 @@ function summarizeSpace(history) {
   const url = `https://${VERTEX_AI_LOCATION_ID}-aiplatform.googleapis.com/v1`
     + `/projects/${PROJECT_ID}/locations/${VERTEX_AI_LOCATION_ID}`
     + "/publishers/google/models/gemini-1.0-pro:generateContent";
-  const options =  {
+  const options = {
     method: "POST",
     headers: { Authorization: "Bearer " + ScriptApp.getOAuthToken() },
     contentType: "application/json",
