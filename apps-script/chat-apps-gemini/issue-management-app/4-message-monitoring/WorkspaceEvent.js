@@ -26,7 +26,7 @@
  */
 function createSpaceSubscription(spaceId) {
   const response = UrlFetchApp.fetch(
-    `https://workspaceevents.googleapis.com/v1beta/subscriptions`,
+    `https://workspaceevents.googleapis.com/v1/subscriptions`,
     {
       method: "POST",
       contentType: "application/json",
@@ -108,7 +108,7 @@ function ackSubscription(ackId) {
  * @param {string} subscriptionId the ID of the subscription to renew
  */
 function renewSubscription(subscriptionId) {
-  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1beta/${subscriptionId}`, {
+  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1/${subscriptionId}`, {
     method: "PATCH",
     contentType: "application/json",
     headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
@@ -122,7 +122,7 @@ function renewSubscription(subscriptionId) {
  * @param {string} subscriptionId the ID of the subscription to delete
  */
 function deleteSubscription(subscriptionId) {
-  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1beta/${subscriptionId}`, {
+  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1/${subscriptionId}`, {
     method: "DELETE",
     contentType: "application/json",
     headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() }
