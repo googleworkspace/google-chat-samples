@@ -3,6 +3,11 @@
   "dependencies": {
     "enabledAdvancedServices": [
       {
+        "userSymbol": "AdminDirectory",
+        "version": "directory_v1",
+        "serviceId": "admin"
+      },
+      {
         "userSymbol": "Chat",
         "version": "v1",
         "serviceId": "chat"
@@ -27,6 +32,8 @@
     "https://www.googleapis.com/auth/chat.messages.readonly",
     "https://www.googleapis.com/auth/chat.messages.create",
     "https://www.googleapis.com/auth/documents",
-    "https://www.googleapis.com/auth/script.external_request"
+    "https://www.googleapis.com/auth/script.external_request",
+    "https://www.googleapis.com/auth/admin.directory.user.readonly",
+    "https://www.googleapis.com/auth/cloud-platform"
   ]
 }

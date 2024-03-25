@@ -80,7 +80,9 @@ function processSlashCommand(event) {
     const spaceId = event.message.space.name;
     const resolution = event.message.argumentText;
     const issue = JSON.parse(appProperties.getProperty(spaceId));
-    const docUrl = createReport(issue.title, issue.description, resolution);
+    const history = exportSpaceHistory(spaceId);
+    const summary = summarizeSpace(history);
+    const docUrl = createReport(issue.title, issue.description, resolution, history, summary);
     saveClosedIssue(spaceId, resolution, docUrl);
 
     return {
@@ -90,6 +92,49 @@ function processSlashCommand(event) {
   }
 
   return { text: "The command isn't supported." };
+}
+
+/**
+ * Fetches and concatenates the 100 first space messages by using the Google Chat API.
+ *
+ * Messages with slash commands are filtered (app command invocations).
+ *
+ * @return {string} concatenate space messages in the format "Sender's name: Message"
+ */
+function exportSpaceHistory(spaceName) {
+  const messages = Chat.Spaces.Messages.list(spaceName, { 'pageSize': 100 }).messages;
+  // Returns results after fetching message sender display names.
+  let users = new Map();
+  return messages
+    .filter(message => message.slashCommand === undefined)
+    .map(message => `${getUserDisplayName(users, message.sender.name)}: ${message.text}`)
+    .join('\n');
+}
+
+/**
+ * Fetches a user's display name by using the Admin Directory API.
+ *
+ * A cache is used to only call the API once per user.
+ *
+ * @param {Map} cache the map containing users previously fetched
+ * @param {string} userId the user ID to fetch
+ * @return {string} the user's display name
+ */
+function getUserDisplayName(cache, userId) {
+  if (cache.has(userId)) {
+    return cache.get(userId);
+  }
+  let displayName = 'Unknown User';
+  try {
+    const user = AdminDirectory.Users.get(
+      userId.replace("users/", ""),
+      { projection: 'BASIC', viewType: 'domain_public' });
+    displayName = user.name.displayName ? user.name.displayName : user.name.fullName;
+  } catch (e) {
+    // Ignores errors, uses 'Unknown User' by default.
+  }
+  cache.set(userId, displayName);
+  return displayName;
 }
 
 /**
