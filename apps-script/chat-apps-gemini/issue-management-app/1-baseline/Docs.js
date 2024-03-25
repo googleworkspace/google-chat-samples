@@ -22,9 +22,11 @@
  * @param {string} title the title of the issue
  * @param {string} description the description of the issue
  * @param {string} resolution the resolution of the issue
+ * @param {string} history the history of the issue
+ * @param {string} summary the summary of the issue
  * @return {string} the URL of the created report
  */
-function createReport(title, description, resolution) {
+function createReport(title, description, resolution, history, summary) {
   let doc = DocumentApp.create(title);
   let body = doc.getBody();
   body.appendParagraph(`Issue Report: ${title}`).setHeading(DocumentApp.ParagraphHeading.TITLE);
@@ -32,5 +34,9 @@ function createReport(title, description, resolution) {
   body.appendParagraph(description);
   body.appendParagraph("Resolution").setHeading(DocumentApp.ParagraphHeading.HEADING1);
   body.appendParagraph(resolution);
+  body.appendParagraph("Summary").setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  body.appendParagraph(summary);
+  body.appendParagraph("History").setHeading(DocumentApp.ParagraphHeading.HEADING1);
+  body.appendParagraph(history);
   return doc.getUrl();
 }
