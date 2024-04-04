@@ -120,8 +120,9 @@ class ChatApp {
     }
 
     // Reply with welcome message.
-    const text = 'Thank you for adding me to this space.'
-      + ' This Chat app helps answer questions based on past conversations.';
+    const text = 'Thank you for adding me to this space. I help answer'
+      + ' questions based on past conversation in this space. Go ahead and ask'
+      + ' me a question!';
     return { text: text };
   }
 

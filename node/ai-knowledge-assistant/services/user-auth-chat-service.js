@@ -63,8 +63,8 @@ exports.UserAuthChatService = {
    * Lists messages in a Google Chat space by calling the Chat API with user
    * credentials.
    *
-   * <p>Only the messages sent by human users are returned. So, messages posted
-   * by Chat apps are discarded.
+   * <p>Only the text messages sent by human users are returned. So, messages
+   * posted by Chat apps or with an empty text field are discarded.
    *
    * <p>Uses the method
    * [spaces.messages.list](https://developers.google.com/workspace/chat/api/reference/rest/v1/spaces.messages/list)
@@ -108,7 +108,7 @@ exports.UserAuthChatService = {
       }
       if (response.data.messages) {
         response.data.messages
-          .filter(message => message.sender.type !== 'BOT')
+          .filter(message => (message.sender.type !== 'BOT') && message.text)
           .map(message =>
             new Message(message.name, message.text, message.createTime))
           .forEach(message => messages.push(message));

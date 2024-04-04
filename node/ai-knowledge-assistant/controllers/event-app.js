@@ -79,7 +79,7 @@ class EventApp {
 
   /**
    * Handles message created and message updated events.
-   * The event is ignored if the message was created by an app.
+   * The event is ignored if the message was created by an app or has empty text.
    * Otherwise, the message is stored in the database.
    * If the event is message created, we handle the messge using AI to
    * potentially answer the question.
@@ -87,9 +87,9 @@ class EventApp {
    * @returns {Promise<void>}
    */
   async handleMessageEvent(message) {
-    if (message.sender.type === 'BOT') {
+    if ((message.sender.type === 'BOT') || !message.text) {
       if (env.logging) {
-        console.log('Ignoring message from a Chat app.');
+        console.log('Ignoring message from a Chat app or with an empty text.');
       }
       return;
     }
