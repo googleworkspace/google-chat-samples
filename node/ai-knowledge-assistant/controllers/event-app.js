@@ -194,8 +194,8 @@ class EventApp {
                     'name': 'contact_support'
                   }
                 },
-                'text': 'Contact a space manager',
-                'altText': 'Contact a space manager',
+                'text': 'Get help',
+                'altText': 'Get additional help from a space manager',
                 'onClick': {
                   'action': {
                     'function': 'doContactSupport'

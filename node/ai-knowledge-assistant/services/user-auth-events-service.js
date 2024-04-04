@@ -99,7 +99,7 @@ exports.UserAuthEventsService = {
       ],
       // The PubSub notification endpoint.
       notificationEndpoint: {
-        pubsubTopic: env.topic
+        pubsubTopic: `projects/${env.project}/topics/${env.topic}`
       },
       // The payload options.
       payloadOptions: {
@@ -151,7 +151,7 @@ exports.UserAuthEventsService = {
     const workspaceEventsClient = await initializeWorkspaceEventsClient(userName);
     const subscription = {
       // Renews with the maximum possible time-to-live (TTL).
-      ttl: '0'
+      ttl: '0s'
     };
     let response;
     try {
