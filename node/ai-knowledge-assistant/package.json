@@ -1,0 +1,37 @@
+{
+  "name": "ai-knowledge-assistant",
+  "version": "1.0.0",
+  "description": "A sample AI Knowledge Assistant app for Google Chat",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha -p -j 2 -t 5s \"test/**/*.test.js\""
+  },
+  "keywords": [
+    "AI Knowledge Assistant",
+    "Google Chat",
+    "Gemini",
+    "Vertex AI"
+  ],
+  "contributors": [
+    "Dennis Qin",
+    "Gustavo Tondello"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@google-cloud/firestore": "^7.6.0",
+    "@google-cloud/functions-framework": "^3.3.0",
+    "@google-cloud/vertexai": "^0.5.0",
+    "@googleapis/chat": "^22.0.0",
+    "@googleapis/workspaceevents": "^1.0.0",
+    "google-auth-library": "^9.7.0"
+  },
+  "devDependencies": {
+    "cloudevents": "^8.0.0",
+    "express": "^4.18.3",
+    "https": "^1.0.0",
+    "mocha": "^10.2.0",
+    "proxyquire": "^2.1.3",
+    "sinon": "^17.0.1",
+    "supertest": "^6.3.4"
+  }
+}
