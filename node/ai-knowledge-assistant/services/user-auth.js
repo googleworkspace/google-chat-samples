@@ -29,7 +29,7 @@ const { FirestoreService } = require('./firestore-service');
 const keys = require('../client_secrets.json').web;
 
 // Define the app's authorization scopes.
-const scopes = ['https://www.googleapis.com/auth/chat.messages'];
+const scopes = ['https://www.googleapis.com/auth/chat.messages.readonly'];
 
 /**
  * Creates a new OAuth2 client with the configured keys.
