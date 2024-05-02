@@ -25,22 +25,14 @@
  * @returns the ID of the newly created subscription
  */
 function createSpaceSubscription(spaceId) {
-  const response = UrlFetchApp.fetch(
-    `https://workspaceevents.googleapis.com/v1/subscriptions`,
-    {
-      method: "POST",
-      contentType: "application/json",
-      headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
-      payload: JSON.stringify({
-        targetResource: `//chat.googleapis.com/${spaceId}`,
-        eventTypes: ["google.workspace.chat.message.v1.created"],
-        notificationEndpoint: { pubsubTopic: GWS_PUBSUB_TOPIC_ID },
-        payloadOptions: { includeResource: true },
-      })
-    }
-  );
+  const operation = WorkspaceEvents.Subscriptions.create({
+    targetResource: `//chat.googleapis.com/${spaceId}`,
+    eventTypes: ["google.workspace.chat.message.v1.created"],
+    notificationEndpoint: { pubsubTopic: GWS_PUBSUB_TOPIC_ID },
+    payloadOptions: { includeResource: true },
+  });
 
-  return JSON.parse(response.getContentText()).response.name;
+  return JSON.parse(operation).response.name;
 }
 
 /**
@@ -108,12 +100,7 @@ function ackSubscription(ackId) {
  * @param {string} subscriptionId the ID of the subscription to renew
  */
 function renewSubscription(subscriptionId) {
-  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1/${subscriptionId}`, {
-    method: "PATCH",
-    contentType: "application/json",
-    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() },
-    payload: JSON.stringify({ ttl: { seconds: 0 } })
-  });
+  WorkspaceEvents.Subscriptions.patch({ttl: '0s'}, subscriptionId);
 }
 
 /**
@@ -122,9 +109,5 @@ function renewSubscription(subscriptionId) {
  * @param {string} subscriptionId the ID of the subscription to delete
  */
 function deleteSubscription(subscriptionId) {
-  UrlFetchApp.fetch(`https://workspaceevents.googleapis.com/v1/${subscriptionId}`, {
-    method: "DELETE",
-    contentType: "application/json",
-    headers: { "Authorization": "Bearer " + ScriptApp.getOAuthToken() }
-  });
+  WorkspaceEvents.Subscriptions.remove(subscriptionId);
 }

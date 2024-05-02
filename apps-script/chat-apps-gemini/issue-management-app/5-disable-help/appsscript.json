@@ -11,6 +11,11 @@
         "userSymbol": "Chat",
         "version": "v1",
         "serviceId": "chat"
+      },
+      {
+        "userSymbol": "WorkspaceEvents",
+        "version": "v1",
+        "serviceId": "workspaceevents"
       }
     ],
     "libraries": [
