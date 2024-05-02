@@ -32,7 +32,7 @@ function createSpaceSubscription(spaceId) {
     payloadOptions: { includeResource: true },
   });
 
-  return JSON.parse(operation).response.name;
+  return operation.response.name;
 }
 
 /**
