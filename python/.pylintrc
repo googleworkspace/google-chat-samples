@@ -12,7 +12,7 @@
 # Profiled execution.
 # DEFAULT:  profile=no
 
-# Add files or directories to the blacklist. They should be base names, not
+# Add files or directories to the denylist. They should be base names, not
 # paths.
 # DEFAULT:  ignore=CVS
 # NOTE: This path must be relative due to the use of
