@@ -11,7 +11,7 @@
   limitations under the License.
 */
 
-// [START pub-sub-main]
+// [START chat-pub-sub-main]
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.gax.core.FixedCredentialsProvider;
@@ -153,4 +153,4 @@ class EchoApp implements MessageReceiver {
     chatServiceClient.createMessage(createMessageRequest);
   }
 }
-// [END pub-sub-main]
+// [END chat-pub-sub-main]
