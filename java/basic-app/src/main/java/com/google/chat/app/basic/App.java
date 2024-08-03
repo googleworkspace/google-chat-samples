@@ -36,7 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class App {
 
   // Authentication audience (either APP_URL or PROJECT_NUMBER)
-  static String AUDIENCE_TYPE = "APP_URL";
+  static String AUDIENCE_TYPE = "AUDIENCE_TYPE";
 
   // Intended audience of the token:
   // - The URL of the app when AUDIENCE_TYPE is set to APP_URL
@@ -136,6 +136,7 @@ public class App {
       // [END chat_request_verification_project_number]
     }
 
-    return false;
+    // Skip verification if AUDIENCE_TYPE is not set with supported value
+    return true;
   }
 }
