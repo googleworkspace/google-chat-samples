@@ -1,19 +1,19 @@
 # Google Chat basic app
 
 This code sample creates a simple Google Chat app that responds to events and
-messages from a room. The sample is built using Java 11 and 
+messages from a space. The sample is built using Java 17 and 
 [Spring Boot](https://spring.io/projects/spring-boot) on Google App Engine,
 Standard Environment.
 
 ## Deploy the sample
 
-  1. Follow the steps in [Setting Up Your Development Environment](https://cloud.google.com/appengine/docs/standard/java11/setting-up-environment)
+  1. Follow the steps in [Setting Up Your Development Environment](https://cloud.google.com/appengine/docs/standard/setting-up-environment?tab=java)
      to install Java and the Google Cloud SDK.
       
-  1. Follow the steps in [Using Maven and the App Engine Plugin](https://cloud.google.com/appengine/docs/standard/java11/using-maven)
+  1. Follow the steps in [Using Maven and the App Engine Plugin](https://cloud.google.com/appengine/docs/standard/java-gen2/using-maven)
      to install Maven.
 
-  1. Follow the steps in [Setting Up Your GCP Resources](https://cloud.google.com/appengine/docs/standard/java11/console/#create)
+  1. Follow the steps in [Setting Up Your GCP Resources](https://cloud.google.com/appengine/docs/standard/managing-projects-apps-billing#create)
      to create a project and enable App Engine.
 
   1. Run the following command to deploy the app:
@@ -28,14 +28,14 @@ Standard Environment.
      [Publishing apps](https://developers.google.com/chat/how-tos/apps-publish).
   1. When configuring the app on the **Configuration** tab on the
      **Google Chat API** page, enter the URL for the deployed version
-     of the app into the **app URL** text box.
+     of the app into the **App URL** text box.
 
 
 ## Interact with the app
 
-Either add and @mention the app in a room or in a direct mention to engage with the app.
+Either add and @mention the app in a space or in a direct mention to engage with the app.
 
-When added to a room or messaged, the app will respond with a simple reply.
+When added to a space or messaged, the app will respond with a simple reply.
 
 ## Run the sample locally
 
@@ -48,5 +48,5 @@ To verify that the sample is running and responds with the correct data
 to incoming requests, run the following command from the terminal:
 
 ```
-curl -X POST -H 'Content-Type: application/json' 'http://localhost:8080' -d '{ "type": "MESSAGE", "message": { "text": "Hello!", "sender": { "displayName": "me"}}, "space": { "displayName": "some room"}}'
+curl -X POST -H 'Content-Type: application/json' 'http://localhost:8080' -d '{ "type": "MESSAGE", "message": { "text": "Hello!", "sender": { "displayName": "me"}}, "space": { "displayName": "some space"}}'
 ```

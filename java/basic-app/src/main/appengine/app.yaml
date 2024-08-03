@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-runtime: java11
+runtime: java17
 instance_class: F1
 
 # Explicitly set the memory limit and maximum heap size for the Spring Boot app
