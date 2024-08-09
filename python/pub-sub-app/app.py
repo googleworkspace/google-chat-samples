@@ -53,11 +53,6 @@ def receive_messages():
     logging.info('Data : %s', event)
     space_name = event['space']['name']
 
-    # If the app was removed, we don't respond.
-    if event['type'] == 'REMOVED_FROM_SPACE':
-      logging.info('App removed rom space %s', space_name)
-      return
-
     # Post the response to Google Chat.
     request = format_request(event)
     if request is not None:
@@ -82,7 +77,11 @@ def format_request(event):
   space_name = event['space']['name']
   event_type = event['type']
 
-  if event_type == 'ADDED_TO_SPACE' and 'message' not in event:
+  # If the app was removed, we don't respond.
+  if event['type'] == 'REMOVED_FROM_SPACE':
+    logging.info('App removed rom space %s', space_name)
+    return
+  elif event_type == 'ADDED_TO_SPACE' and 'message' not in event:
     # An app can also be added to a space by @mentioning it in a
     # message. In that case, we fall through to the message case
     # and let the app respond. If the app was added using the
