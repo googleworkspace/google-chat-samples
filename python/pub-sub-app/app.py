@@ -15,51 +15,53 @@
 Google Chat App that listens for messages via Cloud Pub/Sub.
 """
 
-# [START pub-sub-bot]
+# [START chat_pub_sub_app]
 
 import json
 import logging
 import os
 import sys
 import time
+from google.apps import chat_v1 as google_chat
 from google.cloud import pubsub_v1
-from googleapiclient.discovery import build
-import google.auth
+from google.oauth2.service_account import Credentials
 
 
 def receive_messages():
   """Receives messages from a pull subscription."""
 
-  scopes = ['https://www.googleapis.com/auth/chat.app']
-  credentials, project_id = google.auth.default()
-  credentials = credentials.with_scopes(scopes=scopes)
-  chat = build('chat', 'v1', credentials=credentials)
+  scopes = ['https://www.googleapis.com/auth/chat.bot']
+  service_account_key_path = os.environ.get(
+    'GOOGLE_APPLICATION_CREDENTIALS')
+  creds = Credentials.from_service_account_file(
+    service_account_key_path)
+  chat = google_chat.ChatServiceClient(
+    credentials = creds,
+    client_options = {
+      "scopes": scopes
+    })
 
+  project_id = os.environ.get('PROJECT_ID')
   subscription_id = os.environ.get('SUBSCRIPTION_ID')
   subscriber = pubsub_v1.SubscriberClient()
   subscription_path = subscriber.subscription_path(
       project_id, subscription_id)
 
+  # Handle incoming message, then ack/nack the received message
   def callback(message):
-    logging.info('Received message: %s', message.data)
-
     event = json.loads(message.data)
+    logging.info('Data : %s', event)
     space_name = event['space']['name']
 
-    # If the app was removed, we don't need to return a response.
-    if event['type'] == 'REMOVED_FROM_SPACE':
-      logging.info('App removed rom space %s', space_name)
-      return
+    # Post the response to Google Chat.
+    request = format_request(event)
+    if request is not None:
+      chat.create_message(request)
 
-    response = format_response(event)
-
-    # Send the asynchronous response back to Google Chat
-    chat.spaces().messages().create(
-        parent=space_name,
-        body=response).execute()
+    # Ack the message.
     message.ack()
 
-  subscriber.subscribe(subscription_path, callback=callback)
+  subscriber.subscribe(subscription_path, callback = callback)
   logging.info('Listening for messages on %s', subscription_path)
 
   # Keep main thread from exiting while waiting for messages
@@ -67,43 +69,54 @@ def receive_messages():
     time.sleep(60)
 
 
-def format_response(event):
-  """Determine what response to provide based upon event data.
+def format_request(event):
+  """Send message to Google Chat based on the type of event.
   Args:
     event: A dictionary with the event data.
   """
-
+  space_name = event['space']['name']
   event_type = event['type']
 
-  text = ""
-  sender_name = event['user']['displayName']
-
-  match event_type:
-    case 'ADDED_TO_SPACE':
-      if event['space']['type'] == 'ROOM':
-        text = 'Thanks for adding me to {}!'.format(
-            event['space']['displayName'])
-      else:
-        text = 'Thanks for adding me to a DM, {}!'.format(sender_name)
-
-    case 'MESSAGE':
-      # The following three lines of code update the thread that raised the event.
-      # Remove them if you want to send the message in a new thread.
-      if event['message']['thread'] is not None:
-        thread_id = event['message']['thread']
-        response['thread'] = thread_id
-
-      text = 'Your message, {}: "{}"'.format(
-          sender_name, event['message']['text'])
-
-  response = {'text': text}
-
-  return response
+  # If the app was removed, we don't respond.
+  if event['type'] == 'REMOVED_FROM_SPACE':
+    logging.info('App removed rom space %s', space_name)
+    return
+  elif event_type == 'ADDED_TO_SPACE' and 'message' not in event:
+    # An app can also be added to a space by @mentioning it in a
+    # message. In that case, we fall through to the message case
+    # and let the app respond. If the app was added using the
+    # invite flow, we just post a thank you message in the space.
+    return google_chat.CreateMessageRequest(
+        parent = space_name,
+        message = {
+          'text': 'Thank you for adding me!'
+        }
+    )
+  elif event_type in ['ADDED_TO_SPACE', 'MESSAGE']:
+    # In case of message, post the response in the same thread.
+    return google_chat.CreateMessageRequest(
+        parent = space_name,
+        message_reply_option = google_chat.CreateMessageRequest.MessageReplyOption.REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD,
+        message = {
+          'text': 'You said: `' + event['message']['text'] + '`',
+          'thread': {
+            'name': event['message']['thread']['name']
+          }
+        }
+    )
 
 
 if __name__ == '__main__':
+  if 'PROJECT_ID' not in os.environ:
+    logging.error('Missing PROJECT_ID env var.')
+    sys.exit(1)
+
   if 'SUBSCRIPTION_ID' not in os.environ:
     logging.error('Missing SUBSCRIPTION_ID env var.')
+    sys.exit(1)
+
+  if 'GOOGLE_APPLICATION_CREDENTIALS' not in os.environ:
+    logging.error('Missing GOOGLE_APPLICATION_CREDENTIALS env var.')
     sys.exit(1)
 
   logging.basicConfig(
@@ -112,4 +125,4 @@ if __name__ == '__main__':
       format='{levelname:.1}{asctime} {filename}:{lineno}] {message}')
   receive_messages()
 
-# [END pub-sub-bot]
+# [END chat_pub_sub_app]
