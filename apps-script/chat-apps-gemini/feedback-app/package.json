@@ -1,9 +1,0 @@
-{
-  "name": "feedback-app-backend",
-  "version": "0.0.1",
-  "description": "Mocks a feedback app backend.",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "@google-cloud/functions-framework": "^3.0.0"
-  }
-}
