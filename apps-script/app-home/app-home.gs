@@ -35,7 +35,7 @@ function getHomeCard() {
     { buttonList: { buttons: [{
       text: "Update app home",
       onClick: { action: {
-        function: "updateAppHomeCard"
+        function: "updateAppHome"
       }}
     }]}}
   ]}]};
