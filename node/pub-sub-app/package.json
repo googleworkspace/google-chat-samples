@@ -8,7 +8,6 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "express": "^4.19.2",
     "@google-apps/chat": "^0.4.0",
     "@google-cloud/pubsub": "^4.5.0"
   },
