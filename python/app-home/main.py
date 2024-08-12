@@ -14,7 +14,6 @@ Google Chat app with an app home in Python App Engine
 """
 
 import datetime
-import logging
 from typing import Any, Mapping
 from flask import Flask, request, json
 
