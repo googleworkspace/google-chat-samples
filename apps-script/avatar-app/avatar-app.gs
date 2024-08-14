@@ -66,7 +66,7 @@ function createMessage(displayName, avatarUrl) {
         sections: [{ widgets: [{
           textParagraph: { text: 'Your avatar picture: ' }
         }, {
-          image: {imageUrl}
+          image: { imageUrl: avatarUrl }
         }]}]
       }
     }]

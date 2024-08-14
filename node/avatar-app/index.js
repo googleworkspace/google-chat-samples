@@ -17,7 +17,7 @@
 // The ID of the slash command "/about".
 // It's not enabled by default, set to the actual ID to enable it. You need to
 // use the same ID as set in the Google Chat API configuration.
-const ABOUT_COMMAND_ID = null;
+const ABOUT_COMMAND_ID = "";
 
 // [START chat_avatar_app]
 
@@ -61,10 +61,10 @@ exports.avatarApp = function avatarApp(req, res) {
  * Creates a card with two widgets.
  * 
  * @param {string} displayName the sender's display name
- * @param {string} imageUrl the URL for the sender's avatar
+ * @param {string} avatarUrl the URL for the sender's avatar
  * @return {Object} a card with the user's avatar.
  */
-function createMessage(displayName, imageUrl) {
+function createMessage(displayName, avatarUrl) {
   return {
     text: 'Here\'s your avatar',
     cardsV2: [{
@@ -77,7 +77,7 @@ function createMessage(displayName, imageUrl) {
         sections: [{ widgets: [{
           textParagraph: { text: 'Your avatar picture: ' }
         }, {
-          image: {imageUrl}
+          image: { imageUrl: avatarUrl }
         }]}]
       }
     }]

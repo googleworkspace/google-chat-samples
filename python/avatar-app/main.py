@@ -24,7 +24,7 @@ import functions_framework
 ABOUT_COMMAND_ID = ""
 
 @functions_framework.http
-def hello_chat(req: flask.Request) -> Mapping[str, Any]:
+def avatar_app(req: flask.Request) -> Mapping[str, Any]:
   """Google Cloud Function that handles requests from Google Chat
 
   Args:
