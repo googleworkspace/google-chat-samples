@@ -67,7 +67,7 @@ def get_home_card() -> Mapping[str, Any]:
         "function": "update_app_home"
       }}
     }]}}
-  ]}]};
+  ]}]}
 # [END chat_app_home]
 
 # [START chat_app_home_update]
