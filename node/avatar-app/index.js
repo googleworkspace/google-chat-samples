@@ -65,8 +65,6 @@ exports.avatarApp = function avatarApp(req, res) {
  * @return {Object} a card with the user's avatar.
  */
 function createMessage(displayName, imageUrl) {
-  const avatarSection = ;
-
   return {
     text: 'Here\'s your avatar',
     cardsV2: [{
