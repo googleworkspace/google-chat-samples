@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
-// [START hangouts_chat_avatar_bot]
+// [START chat_avatar_app]
+import java.util.List;
+
 import com.google.api.services.chat.v1.model.CardWithId;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Card;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1CardHeader;
@@ -28,10 +30,14 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import java.util.List;
 
-public class HelloChat implements HttpFunction {
+public class App implements HttpFunction {
   private static final Gson gson = new Gson();
+
+  // The ID of the slash command "/about".
+  // It's not enabled by default, set to the actual ID to enable it. You need to
+  // use the same ID as set in the Google Chat API configuration.
+  private static final String ABOUT_COMMAND_ID = "";
 
   @Override
   public void service(HttpRequest request, HttpResponse response) throws Exception {
@@ -42,11 +48,26 @@ public class HelloChat implements HttpFunction {
       return;
     }
 
+    // [START chat_avatar_slash_command]
+    // Checks for the presence of a slash command in the message.
+    if (body.getAsJsonObject("message").has("slashCommand")) {
+      // Executes the slash command logic based on its ID.
+      // Slash command IDs are set in the Google Chat API configuration.
+      JsonObject slashCommand = body.getAsJsonObject("message").getAsJsonObject("slashCommand");
+      switch (slashCommand.get("commandId").getAsString()) {
+        case ABOUT_COMMAND_ID:
+          Message aboutMessage = new Message();
+          aboutMessage.setText("The Avatar app replies to Google Chat messages.");
+          response.getWriter().write(gson.toJson(aboutMessage));
+          return;
+      }
+    }
+    // [END chat_avatar_slash_command]
+
     JsonObject sender = body.getAsJsonObject("message").getAsJsonObject("sender");
     String displayName = sender.has("displayName") ? sender.get("displayName").getAsString() : "";
     String avatarUrl = sender.has("avatarUrl") ? sender.get("avatarUrl").getAsString() : "";
     Message message = createMessage(displayName, avatarUrl);
-
     response.getWriter().write(gson.toJson(message));
   }
 
@@ -85,4 +106,4 @@ public class HelloChat implements HttpFunction {
     return message;
   }
 }
-// [END hangouts_chat_avatar_bot]
+// [END chat_avatar_app]

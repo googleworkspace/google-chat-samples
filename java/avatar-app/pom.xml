@@ -15,7 +15,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-<!-- [START hangouts_chat_avatar_bot_build] -->
+<!-- [START chat_avatar_app_build] -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -68,4 +68,4 @@ limitations under the License.
     </plugins>
   </build>
 </project>
-<!-- [END hangouts_chat_avatar_bot_build] -->
+<!-- [END chat_avatar_app_build] -->
