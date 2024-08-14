@@ -1,15 +1,10 @@
 {
   "name": "avatar-app",
   "version": "1.0.0",
-  "description": "A basic Google Chat app that returns the user's avatar image ",
+  "description": "A Google Chat app that returns the user's avatar image",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint": "^6.8.0",
-    "eslint-config-google": "^0.14.0"
-  }
+  "license": "Apache-2.0"
 }
