@@ -66,23 +66,6 @@ python -m unittest tests/*
 virtualenv deactivate
 ```
 
-## Troubleshooting
-
-Note: When running this sample, you may receive an error about
-SpooledTemporaryFile class missing from the werkzeug module. To fix this, after
-you've downloaded all of the support libraries to lib/ open up
-lib/werkzeug/formparser.py and change the following line
-
-```
-from tempfile import SpooledTemporaryFile
-```
-
-to
-
-```
-from tempfile import TemporaryFile
-```
-
 ## Optional: Enable Google Chat app request verification
 
 This code sample supports request verification but it's disabled by default. To enable it you need to:
