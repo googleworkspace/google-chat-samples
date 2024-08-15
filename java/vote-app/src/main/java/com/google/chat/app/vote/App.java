@@ -26,7 +26,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.api.client.json.GenericJson;
-import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Action;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1ActionParameter;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Button;
@@ -100,7 +99,6 @@ public class App {
         break;
     }
 
-    logger.severe("Response: " + response.toPrettyString());
     return response;
   }
 
@@ -184,7 +182,6 @@ public class App {
     actionResponse.set("type", update ? "UPDATE_MESSAGE" : "NEW_MESSAGE");
 
     GenericJson response = new GenericJson();
-    response.setFactory(GsonFactory.getDefaultInstance());
     response.set("actionResponse", actionResponse);
     response.set("cards", List.of(card));
     return response;
