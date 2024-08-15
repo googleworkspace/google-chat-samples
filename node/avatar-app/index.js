@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+// [START chat_avatar_app]
+
 // The ID of the slash command "/about".
 // It's not enabled by default, set to the actual ID to enable it. You need to
 // use the same ID as set in the Google Chat API configuration.
 const ABOUT_COMMAND_ID = "";
-
-// [START chat_avatar_app]
 
 /**
  * Google Cloud Function that responds to messages sent from a
