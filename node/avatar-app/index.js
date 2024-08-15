@@ -35,7 +35,7 @@ exports.avatarApp = function avatarApp(req, res) {
   }
 
   // Stores the Google Chat event as a variable.
-  var event = req.body;
+  const event = req.body;
 
   // [START chat_avatar_slash_command]
   // Checks for the presence of a slash command in the message.
