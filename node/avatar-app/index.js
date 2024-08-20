@@ -45,6 +45,7 @@ exports.avatarApp = function avatarApp(req, res) {
     switch (event.message.slashCommand.commandId) {
       case ABOUT_COMMAND_ID:
         return res.send({
+          privateMessageViewer: event.user,
           text: 'The Avatar app replies to Google Chat messages.'
         });
     }
