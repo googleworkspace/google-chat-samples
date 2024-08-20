@@ -44,7 +44,10 @@ def avatar_app(req: flask.Request) -> Mapping[str, Any]:
     # Executes the slash command logic based on its ID.
     # Slash command IDs are set in the Google Chat API configuration.
     if request_json["message"]["slashCommand"]["commandId"] == ABOUT_COMMAND_ID:
-      return { "text": 'The Avatar app replies to Google Chat messages.' }
+      return {
+        "privateMessageViewer": request_json["user"],
+        "text": 'The Avatar app replies to Google Chat messages.'
+      }
   # [END chat_avatar_slash_command]
 
   display_name = request_json["message"]["sender"]["displayName"]

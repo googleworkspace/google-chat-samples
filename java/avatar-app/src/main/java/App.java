@@ -56,8 +56,9 @@ public class App implements HttpFunction {
       JsonObject slashCommand = body.getAsJsonObject("message").getAsJsonObject("slashCommand");
       switch (slashCommand.get("commandId").getAsString()) {
         case ABOUT_COMMAND_ID:
-          Message aboutMessage = new Message();
-          aboutMessage.setText("The Avatar app replies to Google Chat messages.");
+        JsonObject aboutMessage = new JsonObject();
+        aboutMessage.addProperty("text", "The Avatar app replies to Google Chat messages.");
+        aboutMessage.add("privateMessageViewer", body.getAsJsonObject("user"));
           response.getWriter().write(gson.toJson(aboutMessage));
           return;
       }
