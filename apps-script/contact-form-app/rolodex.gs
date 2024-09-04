@@ -302,6 +302,7 @@ function submitForm(user, userInputs, dialogEventType) {
     // form data from the dialog or card. Sends private
     // text message that confirms submission.
   } else {
+    const confirmationMessage = "✅ " + contactName + " has been added to your contacts."
     if (dialogEventType == "SUBMIT_DIALOG") {
       return {
         "actionResponse": {
@@ -314,13 +315,13 @@ function submitForm(user, userInputs, dialogEventType) {
           }
         },
         "privateMessageViewer": user,
-        "text": "✅ " + contactName + " has been added to your contacts."
+        "text": confirmationMessage
       }} else {
         return {
         "actionResponse": {
           "type": "NEW_MESSAGE"},
         "privateMessageViewer": user,
-        "text": "✅ " + contactName + " has been added to your contacts."
+        "text": confirmationMessage
     }}
   }
 }
