@@ -308,8 +308,9 @@ function submitForm(user, userInputs, dialogEventType) {
         },
         "privateMessageViewer": user,
         "text": confirmationMessage
-      }} else {
-        return {
+      }
+    } else {
+      return {
         "actionResponse": {
           "type": "NEW_MESSAGE"},
         "privateMessageViewer": user,
