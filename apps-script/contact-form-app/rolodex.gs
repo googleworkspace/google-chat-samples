@@ -327,7 +327,7 @@ function submitForm(user, userInputs, dialogEventType) {
 * @return {string} Display-friend date (English US)
 */
 function convertMillisToDateString(millis) {
-  var date = new Date(millis);
-  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  const date = new Date(millis);
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString('en-US', options); 
 }
