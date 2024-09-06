@@ -78,10 +78,10 @@ function onMessage(event) {
 }
 
 /**
-* Responds to CARD_CLICKED interaction events in Google Chat.
-*
-* @param {Object} event the CARD_CLICKED interaction event from Google Chat
-*/
+ * Responds to CARD_CLICKED interaction events in Google Chat.
+ *
+ * @param {Object} event the CARD_CLICKED interaction event from Google Chat
+ */
 function onCardClick(event) {
 
   if (event.common.invokedFunction === "openDialog") {
