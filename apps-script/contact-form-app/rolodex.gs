@@ -319,13 +319,11 @@ function submitForm(user, userInputs, dialogEventType) {
 }
 
 /**
-* Converts date in milliseconds since epoch to user-friendly string.
-*
-*
-* @param {Object} milliseconds since epoch time.
-*
-* @return {string} Display-friend date (English US)
-*/
+  * Converts date in milliseconds since epoch to user-friendly string.
+  *
+  * @param {Object} millis the milliseconds since epoch time.
+  * @return {string} Display-friend date (English US)
+  */
 function convertMillisToDateString(millis) {
   const date = new Date(millis);
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
