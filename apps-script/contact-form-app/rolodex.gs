@@ -93,14 +93,7 @@ function onCardClick(event) {
     const contactBirthdate = fetchFormValue(event, "contactBirthdate");
     const contactType = fetchFormValue(event, "contactType");
     const user = event.user;
-    if (event.isDialogEvent === true ){
-      const fromDialog = true;
-      return openNextCard(user, contactName, contactBirthdate, contactType, fromDialog)
-    }
-    else {
-      return openNextCard(user, contactName, contactBirthdate, contactType);
-    }
-    
+    return openNextCard(user, contactName, contactBirthdate, contactType, event.isDialogEvent)
   }
 
   if (event.common.invokedFunction === "submitForm") {
