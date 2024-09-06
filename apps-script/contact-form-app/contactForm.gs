@@ -2,7 +2,7 @@
  * The section of the contact card that contains the form input widgets. Used in a dialog and card message.
  * To add and preview widgets, use the Card Builder: https://addons.gsuite.google.com/uikit/builder
  */
-const contactFormWidgets = [
+const CONTACT_FORM_WIDGETS = [
     {
       "textInput": {
         "name": "contactName",
