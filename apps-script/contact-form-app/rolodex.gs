@@ -295,7 +295,7 @@ function submitForm(user, userInputs, dialogEventType) {
     // text message that confirms submission.
   } else {
     const confirmationMessage = "✅ " + contactName + " has been added to your contacts."
-    if (dialogEventType == "SUBMIT_DIALOG") {
+    if (dialogEventType === "SUBMIT_DIALOG") {
       return {
         "actionResponse": {
           "type": "NEW_MESSAGE",
