@@ -16,12 +16,11 @@
  */
 
 /**
-* Responds to a MESSAGE interaction event in Google Chat.
-*
-* @param {Object} event the MESSAGE interaction event from Chat API.
-*
-* @return {Object} opens a dialog or sends private message with text and card.
-*/
+ * Responds to a MESSAGE interaction event in Google Chat.
+ *
+ * @param {Object} event the MESSAGE interaction event from Chat API.
+ * @return {Object} message response that opens a dialog or sends private message with text and card.
+ */
 function onMessage(event) {
 
   // Checks for the presence of event.message.slashCommand.
