@@ -150,7 +150,7 @@ function fetchFormValue(event, widgetName) {
 *
 * @return {Object} open a dialog.
 */
-function openDialog(event) {
+function openDialog() {
   return {
     "actionResponse": {
       "type": "DIALOG",
