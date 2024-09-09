@@ -115,7 +115,7 @@ function onCardClick(event) {
 function fetchFormValue(event, widgetName) {
   console.log('Fetching the following form values from widget ' + JSON.stringify(widgetName) +':\n ' + JSON.stringify(event.common.formInputs))
 
-  let formItem = event.common.formInputs[widgetName][""];
+  const formItem = event.common.formInputs[widgetName][""];
 
   // For widgets that receive StringInputs data, the value input by the user.
   if (formItem.hasOwnProperty("stringInputs")){
