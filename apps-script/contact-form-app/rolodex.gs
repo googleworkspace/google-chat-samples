@@ -239,7 +239,7 @@ function openNextCard(user, contactName, contactBirthdate, contactType, fromDial
   };
   }
   // Updates existing card message with contact information that the user input.
-  else return{
+  const contactName = userInputs["contactName"];
       "actionResponse": {
       "type": "UPDATE_MESSAGE",
       },
@@ -248,8 +248,6 @@ function openNextCard(user, contactName, contactBirthdate, contactType, fromDial
       "card": {"sections": [cardConfirmation]}
       }]
   }
-  
-}
 
 /**
 * Submits information from a dialog or card message.
