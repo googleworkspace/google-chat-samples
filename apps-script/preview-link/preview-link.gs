@@ -17,171 +17,129 @@
 
 /**
  * Responds to messages that have links whose URLs match URL patterns
- * configured for link previews.
+ * configured for link previewing.
  *
- * @param {Object} event The event object from Chat API.
+ * @param {Object} event The event object from Chat.
+ *
  * @return {Object} Response from the Chat app attached to the message with
  * the previewed link.
  */
 function onMessage(event) {
-  // Checks for the presence of event.message.matchedUrl and attaches a card
-  // if present
-  if (event.message.matchedUrl) {
-    return {
-      'actionResponse': {
-        'type': 'UPDATE_USER_MESSAGE_CARDS',
-      },
-      'cardsV2': [{
-        'cardId': 'previewLink',
-        'card': {
-          'header': {
-            'title': 'Example Customer Service Case',
-            'subtitle': 'Case basics',
-          },
-          'sections': [{
-            'widgets': [
-              {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
-              {'keyValue': {'topLabel': 'Assignee', 'content': 'Charlie'}},
-              {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
-              {
-                'keyValue': {
-                  'topLabel': 'Subject', 'content': 'It won\'t turn on...',
-                }
-              },
-            ],
-          },
-          {
-            'widgets': [{
-              'buttons': [
-                {
-                  'textButton': {
-                    'text': 'OPEN CASE',
-                    'onClick': {
-                      'openLink': {
-                        'url': 'https://support.example.com/orders/case123',
-                      },
-                    },
-                  },
-                },
-                {
-                  'textButton': {
-                    'text': 'RESOLVE CASE',
-                    'onClick': {
-                      'openLink': {
-                        'url': 'https://support.example.com/orders/case123?resolved=y',
-                      },
-                    },
-                  },
-                },
-                {
-                  'textButton': {
-                    'text': 'ASSIGN TO ME',
-                    'onClick': {'action': {'actionMethodName': 'assign'}}
-                  },
-                },
-              ],
-            }],
-          }],
-        },
-      }],
-    };
+  // If the Chat app does not detect a link preview URL pattern, reply
+  // with a text message that says so.
+  if (!event.message.matchedUrl) {
+    return { text: 'No matchedUrl detected.' };
   }
 
-  // If the Chat app doesn’t detect a link preview URL pattern, it says so.
-  return {'text': 'No matchedUrl detected.'};
+  // [START] preview-links-text
+  // Reply with a text message for URLs of the subdomain "text"
+  if (event.message.matchedUrl.url.includes("text.example.com")) {
+    return {
+      text: 'event.message.matchedUrl.url: ' + event.message.matchedUrl.url
+    };
+  }
+  // [END] preview-links-text
+
+  // [START] preview-links-card
+  // Attach a card to the message for URLs of the subdomain "support"
+  if (event.message.matchedUrl.url.includes("support.example.com")) {
+    // A hard-coded card is used in this example. In a real-life scenario,
+    // the case information would be fetched and used to build the card.
+    return {
+      actionResponse: { type: 'UPDATE_USER_MESSAGE_CARDS' },
+      cardsV2: [{
+        cardId: 'attachCard',
+        card: {
+          header: {
+            title: 'Example Customer Service Case',
+            subtitle: 'Case basics',
+          },
+          sections: [{ widgets: [
+            { decoratedText: { topLabel: 'Case ID', text: 'case123'}},
+            { decoratedText: { topLabel: 'Assignee', text: 'Charlie'}},
+            { decoratedText: { topLabel: 'Status', text: 'Open'}},
+            { decoratedText: { topLabel: 'Subject', text: 'It won\'t turn on...' }},
+            { buttonList: { buttons: [{
+              text: 'OPEN CASE',
+              onClick: { openLink: {
+                url: 'https://support.example.com/orders/case123'
+              }},
+            }, {
+              text: 'RESOLVE CASE',
+              onClick: { openLink: {
+                url: 'https://support.example.com/orders/case123?resolved=y',
+              }},
+            }, {
+              text: 'ASSIGN TO ME',
+              onClick: { action: { function: 'assign'}}
+            }]}}
+          ]}]
+        }
+      }]
+    };
+  }
+  // [END] preview-links-card
 }
 
+// [START] preview-links-assign
 /**
  * Updates a card that was attached to a message with a previewed link.
  *
- * @param {Object} event The event object from Chat API.
+ * @param {Object} event The event object from Chat.
+ *
  * @return {Object} Response from the Chat app. Either a new card attached to
  * the message with the previewed link, or an update to an existing card.
  */
 function onCardClick(event) {
-  // Checks whether the message event originated from a human or a Chat app
-  // and sets actionResponse to "UPDATE_USER_MESSAGE_CARDS if human or
-  // "UPDATE_MESSAGE" if Chat app.
-  const actionResponseType = event.message.sender.type === 'HUMAN' ?
-    'UPDATE_USER_MESSAGE_CARDS' :
-    'UPDATE_MESSAGE';
-
   // To respond to the correct button, checks the button's actionMethodName.
   if (event.action.actionMethodName === 'assign') {
-    return assignCase(actionResponseType);
+    // A hard-coded card is used in this example. In a real-life scenario,
+    // an actual assign action would be performed before building the card.
+
+    // Checks whether the message event originated from a human or a Chat app
+    // and sets actionResponse.type to "UPDATE_USER_MESSAGE_CARDS if human or
+    // "UPDATE_MESSAGE" if Chat app.
+    const actionResponseType = event.message.sender.type === 'HUMAN' ?
+      'UPDATE_USER_MESSAGE_CARDS' :
+      'UPDATE_MESSAGE';
+
+    // Returns the updated card that displays "You" for the assignee
+    // and that disables the button.
+    return {
+      actionResponse: { type: actionResponseType },
+      cardsV2: [{
+        cardId: 'attachCard',
+        card: {
+          header: {
+            title: 'Example Customer Service Case',
+            subtitle: 'Case basics',
+          },
+          sections: [{ widgets: [
+            { decoratedText: { topLabel: 'Case ID', text: 'case123'}},
+            // The assignee is now "You"
+            { decoratedText: { topLabel: 'Assignee', text: 'You'}},
+            { decoratedText: { topLabel: 'Status', text: 'Open'}},
+            { decoratedText: { topLabel: 'Subject', text: 'It won\'t turn on...' }},
+            { buttonList: { buttons: [{
+              text: 'OPEN CASE',
+              onClick: { openLink: {
+                url: 'https://support.example.com/orders/case123'
+              }},
+            }, {
+              text: 'RESOLVE CASE',
+              onClick: { openLink: {
+                url: 'https://support.example.com/orders/case123?resolved=y',
+              }},
+            }, {
+              text: 'ASSIGN TO ME',
+              // The button is now disabled
+              disabled: true,
+              onClick: { action: { function: 'assign'}}
+            }]}}
+          ]}]
+        }
+      }]
+    };
   }
 }
-
-/**
- * Updates a card to say that "You" are the assignee after clicking the Assign
- * to Me button.
- *
- * @param {String} actionResponseType Which actionResponse the Chat app should
- * use to update the attached card based on who created the message.
- * @return {Object} Response from the Chat app. Updates the card attached to
- * the message with the previewed link.
- */
-function assignCase(actionResponseType) {
-  return {
-    'actionResponse': {
-
-      // Dynamically returns the correct actionResponse type.
-      'type': actionResponseType,
-    },
-    'cardsV2': [{
-      'cardId': 'assignCase',
-      'card': {
-        'header': {
-          'title': 'Example Customer Service Case',
-          'subtitle': 'Case basics',
-        },
-        'sections': [{
-          'widgets': [
-            {'keyValue': {'topLabel': 'Case ID', 'content': 'case123'}},
-            {'keyValue': {'topLabel': 'Assignee', 'content': 'You'}},
-            {'keyValue': {'topLabel': 'Status', 'content': 'Open'}},
-            {
-              'keyValue': {
-                'topLabel': 'Subject', 'content': 'It won\'t turn on...',
-              }
-            },
-          ],
-        },
-        {
-          'widgets': [{
-            'buttons': [
-              {
-                'textButton': {
-                  'text': 'OPEN CASE',
-                  'onClick': {
-                    'openLink': {
-                      'url': 'https://support.example.com/orders/case123',
-                    },
-                  },
-                },
-              },
-              {
-                'textButton': {
-                  'text': 'RESOLVE CASE',
-                  'onClick': {
-                    'openLink': {
-                      'url': 'https://support.example.com/orders/case123?resolved=y',
-                    },
-                  },
-                },
-              },
-              {
-                'textButton': {
-                  'text': 'ASSIGN TO ME',
-                  'onClick': {'action': {'actionMethodName': 'assign'}},
-                },
-              },
-            ],
-          }],
-        }],
-      },
-    }],
-  };
-}
-
-// [END hangouts_chat_preview_link]
+// [END] preview-links-assign
