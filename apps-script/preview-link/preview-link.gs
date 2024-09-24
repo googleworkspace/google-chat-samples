@@ -31,16 +31,16 @@ function onMessage(event) {
     return { text: 'No matchedUrl detected.' };
   }
 
-  // [START] preview-links-text
+  // [START preview_links_text]
   // Reply with a text message for URLs of the subdomain "text"
   if (event.message.matchedUrl.url.includes("text.example.com")) {
     return {
       text: 'event.message.matchedUrl.url: ' + event.message.matchedUrl.url
     };
   }
-  // [END] preview-links-text
+  // [END preview_links_text]
 
-  // [START] preview-links-card
+  // [START preview_links_card]
   // Attach a card to the message for URLs of the subdomain "support"
   if (event.message.matchedUrl.url.includes("support.example.com")) {
     // A hard-coded card is used in this example. In a real-life scenario,
@@ -78,10 +78,10 @@ function onMessage(event) {
       }]
     };
   }
-  // [END] preview-links-card
+  // [END preview_links_card]
 }
 
-// [START] preview-links-assign
+// [START preview_links_assign]
 /**
  * Updates a card that was attached to a message with a previewed link.
  *
@@ -142,4 +142,4 @@ function onCardClick(event) {
     };
   }
 }
-// [END] preview-links-assign
+// [END preview_links_assign]
