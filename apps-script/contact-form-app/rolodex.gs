@@ -36,7 +36,7 @@ function onMessage(event) {
                 "buttonList": {
                   "buttons": [
                     {
-                      "text": "/addContact",
+                      "text": "Add Contact",
                       "onClick": {
                         "action": {
                           "function": "openDialog",
