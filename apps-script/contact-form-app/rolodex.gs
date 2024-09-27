@@ -122,8 +122,9 @@ function fetchFormValue(event, widgetName) {
   }  
   // If no input types match, returns null.  
   return null;  
-}
-/**  
+}  
+
+/**
  * Opens a dialog that prompts users to add details about a contact.  
  *  
  * @return {Object} a message with an action response to open a dialog.  
@@ -217,7 +218,7 @@ function openNextCard(user, contactName, contactBirthdate, contactType, fromDial
     };  
   }
   // Updates existing card message with contact information that the user input.
-  const contactName = userInputs["contactName"];
+  return {
       "actionResponse": {
       "type": "UPDATE_MESSAGE",
       },
@@ -236,7 +237,7 @@ function openNextCard(user, contactName, contactBirthdate, contactType, fromDial
   * @return {Object} a message response that opens a dialog or posts a private message.  
   */
 function submitForm(user, userInputs, dialogEventType) {
-  const contactName = userInputs["contactName"]
+  const contactName = userInputs["contactName"];
   // Checks to make sure the user entered a contact
   // name. If no name value detected, returns
   // an error message.
@@ -258,7 +259,9 @@ function submitForm(user, userInputs, dialogEventType) {
       return {
         "privateMessageViewer": user,
         "text": errorMessage 
-      }}}
+      };
+    }
+  }
   // Otherwise the Chat app indicates that it received
   // form data from the dialog or card. Sends private
   // text message that confirms submission.
