@@ -1,6 +1,6 @@
 
 /**
- * Copyright 2023 Google Inc.
+ * Copyright 2024 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@
  * @return {Object} message response that opens a dialog or sends private message with text and card.
  */
 function onMessage(event) {
-
   // Checks for the presence of event.message.slashCommand.
   // If the slash command is "/about", responds with a text message and button that opens a dialog.
   // If the slash command is "/addContact", opens a dialog.
@@ -53,28 +52,25 @@ function onMessage(event) {
         return openDialog(event);
     }
   }
-
   // If user sends the Chat app a message without a slash command, the app responds
   // privately with a text and card to add a contact.
-  else {
-    return {
-      "privateMessageViewer": event.user,
-      "text": "To add a contact, try `/addContact` or complete the form below:",
-      "cardsV2": [{
-        "cardId": "addContactForm",
-        "card": {
-          "header": {"title": "Add a contact"},
-          "sections":[{
-            "widgets": contactFormWidgets.concat([{
-                "buttonList": {
-                    "buttons": [{
-                      "text": "Review and submit",
-                        "onClick": {
-                          "action": {"function": "openNextCard",
-            }}}]}}])}]
-         }}]
-    };
-  }
+  return {
+    "privateMessageViewer": event.user,
+    "text": "To add a contact, try `/addContact` or complete the form below:",
+    "cardsV2": [{
+      "cardId": "addContactForm",
+      "card": {
+        "header": {"title": "Add a contact"},
+        "sections":[{
+          "widgets": contactFormWidgets.concat([{
+              "buttonList": {
+                  "buttons": [{
+                    "text": "Review and submit",
+                      "onClick": {
+                        "action": {"function": "openNextCard",
+          }}}]}}])}]
+       }}]
+  };
 }
 
 /**
@@ -83,11 +79,9 @@ function onMessage(event) {
  * @param {Object} event the CARD_CLICKED interaction event from Google Chat
  */
 function onCardClick(event) {
-
   if (event.common.invokedFunction === "openDialog") {
     return openDialog(event);
   }
-
   if (event.common.invokedFunction === "openNextCard") {
     const contactName = fetchFormValue(event, "contactName");
     const contactBirthdate = fetchFormValue(event, "contactBirthdate");
@@ -95,7 +89,6 @@ function onCardClick(event) {
     const user = event.user;
     return openNextCard(user, contactName, contactBirthdate, contactType, event.isDialogEvent)
   }
-
   if (event.common.invokedFunction === "submitForm") {
     const user = event.user;
     const userInputs = event.common.parameters;
@@ -111,45 +104,30 @@ function onCardClick(event) {
  * @param {String} widgetName a unique ID for the widget, specified in the widget's name field
  * @returns the value inputted by the user.
  */
-
 function fetchFormValue(event, widgetName) {
-  console.log('Fetching the following form values from widget ' + JSON.stringify(widgetName) +':\n ' + JSON.stringify(event.common.formInputs))
-
   const formItem = event.common.formInputs[widgetName][""];
-
-  // For widgets that receive StringInputs data, the value input by the user.
-  if (formItem.hasOwnProperty("stringInputs")){
-    var stringInput = event.common.formInputs[widgetName][""].stringInputs.value[0];
-    console.log(`Found string input, returning: ${stringInput}`)
-    if (stringInput != null) {
-      return stringInput
-     }
-
-    }
-
-    // For widgets that receive dateInput data, the value input by the user.
-    else if (formItem.hasOwnProperty("dateInput")) {
-    var dateInput = event.common.formInputs[widgetName][""].dateInput.msSinceEpoch;
-    console.log(`Found date input, returning: ${dateInput}`)
-     if (dateInput != null) {
-      return dateInput
-     }
-
-    }
-
-    // If no input types match, returns null
-    else {
-     console.log('No stringInputs or dateInput found.')
-     
-    return null;}
-    }
-
-/**
-* Opens a dialog that prompts users to add details about a contact.
-*
-*
-* @return {Object} open a dialog.
-*/
+  // For widgets that receive StringInputs data, the value input by the user.  
+  if (formItem.hasOwnProperty("stringInputs")){  
+    const stringInput = event.common.formInputs[widgetName][""].stringInputs.value[0];  
+    if (stringInput != null) {  
+      return stringInput;  
+    }  
+  }  
+  // For widgets that receive dateInput data, the value input by the user.  
+  if (formItem.hasOwnProperty("dateInput")) {  
+    const dateInput = event.common.formInputs[widgetName][""].dateInput.msSinceEpoch;  
+     if (dateInput != null) {  
+       return dateInput;  
+     }  
+  }  
+  // If no input types match, returns null.  
+  return null;  
+}
+/**  
+ * Opens a dialog that prompts users to add details about a contact.  
+ *  
+ * @return {Object} a message with an action response to open a dialog.  
+ */
 function openDialog() {
   return {
     "actionResponse": {
@@ -183,60 +161,60 @@ function openDialog() {
   };
 }
 
-/**
-* Returns another dialog or card message that displays a confirmation of
-* contact details before users submit.
-*
-* @param {String} the user who submitted the information.
-* @param {String} contactName the contact name from the previous dialog or card.
-* @param {String} contactBirthdate the birthdate from the previous dialog or card.
-* @param {String} contactType the contact type from the previous dialog or card.
-* @param {boolean} whether the information was submitted from a dialog.
-*
-* @return {Object} returns a dialog or private card message.
-*/
+/**  
+ * Returns another dialog or card message that displays a confirmation of  
+ * contact details before users submit.  
+ *  
+ * @param {String} user the user who submitted the information.  
+ * @param {String} contactName the contact name from the previous dialog or card.  
+ * @param {String} contactBirthdate the birthdate from the previous dialog or card.  
+ * @param {String} contactType the contact type from the previous dialog or card.  
+ * @param {boolean} fromDialog whether the information was submitted from a dialog.  
+ *  
+ * @return {Object} returns a dialog or private card message.  
+ */
 function openNextCard(user, contactName, contactBirthdate, contactType, fromDialog) {
   const name = contactName ?? "<i>Not provided</i>";
   const birthdate = contactBirthdate ?? "<i>Not provided</i>";
   const type = contactType ?? "<i>Not provided</i>";
-  const cardConfirmation =
-              {
-                "header": "Your contact",
-                "widgets": [
-                  {"textParagraph": {"text": "Confirm contact information and submit:"}},
-                  {"textParagraph": {"text": "<b>Name:</b> " + name}},
-                  {"textParagraph": {"text": "<b>Birthday:</b> " + convertMillisToDateString(birthdate)}},
-                  {"textParagraph": {"text": "<b>Type:</b> " + type}},
-                  {"buttonList": {
-                      "buttons": [
-                        {"text": "Submit",
-                          "onClick": {
-                            "action": {
-                              "function": "submitForm",
-                               "parameters": [
-                                 {"key": "contactName",
-                                  "value": name
-                                 },
-                                 {"key": "contactBirthdate",
-                                  "value": birthdate
-                                 },
-                                 {"key": "contactType",
-                                  "value": type
-                    }]}}}]}}]};
+  const cardConfirmation = {
+          "header": "Your contact",
+          "widgets": [
+            {"textParagraph":{"text": "Confirm contact information and submit:"}},
+            {"textParagraph": {"text": "<b>Name:</b> " + name}},
+            {"textParagraph": {"text": "<b>Birthday:</b> " + convertMillisToDateString(birthdate)}},
+            {"textParagraph": {"text": "<b>Type:</b> " + type}},
+            {"buttonList": {
+                "buttons": [
+                  {"text": "Submit",
+                    "onClick": {
+                      "action": {
+                        "function": "submitForm",
+                         "parameters": [
+                           {"key": "contactName",
+                            "value": name
+                           },
+                           {"key": "contactBirthdate",
+                            "value": birthdate
+                           },
+                           {"key": "contactType",
+                            "value": type
+                  }]}}}]
+             }}]};
   // Returns another dialog with contact information that the user input.
-  if (fromDialog) {
-    return {
-    "action_response": {
-      "type": "DIALOG",
-      "dialog_action": {
-        "dialog": {
-          "body": {
-            "sections": [ cardConfirmation ]
-          }
-        }
-      }
-    }
-  };
+  if (fromDialog) {  
+    return {  
+      "action_response": {  
+        "type": "DIALOG",  
+        "dialog_action": {  
+          "dialog": {  
+            "body": {  
+              "sections": [ cardConfirmation ]  
+            }  
+          }  
+        }  
+      }  
+    };  
   }
   // Updates existing card message with contact information that the user input.
   const contactName = userInputs["contactName"];
@@ -249,26 +227,22 @@ function openNextCard(user, contactName, contactBirthdate, contactType, fromDial
       }]
   }
 
-/**
-* Submits information from a dialog or card message.
-*
-* @param {Object} user the person who submitted the information.
-* @param {Object} userInputs the form input values specified in event object parameters
-* @param {boolean} whether information was submitted from a dialog
-*
-* @return {Object} 
-*/
+/**  
+  * Submits information from a dialog or card message.  
+  *  
+  * @param {Object} user the person who submitted the information.  
+  * @param {Object} userInputs the form input values specified in event object parameters  
+  * @param {boolean} dialogEventType contains "SUBMIT_DIALOG" if the event came from a dialog  
+  * @return {Object} a message response that opens a dialog or posts a private message.  
+  */
 function submitForm(user, userInputs, dialogEventType) {
-  console.log('Submitting form inputs: ' + JSON.stringify(userInputs));
   const contactName = userInputs["contactName"]
-  
   // Checks to make sure the user entered a contact
   // name. If no name value detected, returns
   // an error message.
-  
   if (!contactName) {
-    const errorMessage = "Don't forget to name your new contact!"
-    if (dialogEventType == "SUBMIT_DIALOG") {
+    const errorMessage = "Don't forget to name your new contact!";
+    if (dialogEventType === "SUBMIT_DIALOG") {
       return {
         "actionResponse": {
           "type": "DIALOG",
@@ -284,38 +258,33 @@ function submitForm(user, userInputs, dialogEventType) {
       return {
         "privateMessageViewer": user,
         "text": errorMessage 
-      }
-
-    }
-
-    // Otherwise the Chat app indicates that it received
-    // form data from the dialog or card. Sends private
-    // text message that confirms submission.
-  } else {
-    const confirmationMessage = "✅ " + contactName + " has been added to your contacts."
-    if (dialogEventType === "SUBMIT_DIALOG") {
-      return {
-        "actionResponse": {
-          "type": "NEW_MESSAGE",
-          "dialogAction": {
-            "actionStatus": {
-              "statusCode": "OK",
-              "userFacingMessage": "Success " + JSON.stringify(contactName)
-            }
+      }}}
+  // Otherwise the Chat app indicates that it received
+  // form data from the dialog or card. Sends private
+  // text message that confirms submission.
+  const confirmationMessage = "✅ " + contactName + " has been added to your contacts.";
+  if (dialogEventType === "SUBMIT_DIALOG") {
+    return {
+      "actionResponse": {
+        "type": "NEW_MESSAGE",
+        "dialogAction": {
+          "actionStatus": {
+            "statusCode": "OK",
+            "userFacingMessage": "Success " + JSON.stringify(contactName)
           }
-        },
-        "privateMessageViewer": user,
-        "text": confirmationMessage
-      }
-    } else {
-      return {
-        "actionResponse": {
-          "type": "NEW_MESSAGE"
-        },
-        "privateMessageViewer": user,
-        "text": confirmationMessage
-    }}
-  }
+        }
+      },
+      "privateMessageViewer": user,
+      "text": confirmationMessage
+    }
+  } else {
+    return {
+      "actionResponse": {
+        "type": "NEW_MESSAGE"
+      },
+      "privateMessageViewer": user,
+      "text": confirmationMessage
+  }}
 }
 
 /**
