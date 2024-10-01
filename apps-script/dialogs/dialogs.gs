@@ -45,8 +45,7 @@ function onMessage(event) {
         "cardId": "addContact",
         "card": {
           "header": {
-            "title": "Rolodex",
-            "subtitle": "Manage your contacts!",
+            "title": "Add a contact",
             "imageUrl": "https://www.gstatic.com/images/branding/product/2x/contacts_48dp.png",
             "imageType": "CIRCLE"
           },
