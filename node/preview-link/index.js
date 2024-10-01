@@ -1,11 +1,11 @@
 /**
- * Copyright 2022 Google LLC.
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,6 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+const express = require('express');
+const PORT = process.env.PORT || 8080;
+
+const app = express()
+  .use(express.urlencoded({extended: false}))
+  .use(express.json());
+
+app.post('/', async (req, res) => {
+  let event = req.body;
+  if (event.type === 'MESSAGE') {
+    return res.json(onMessage(event));
+  } else if (event.type === 'CARD_CLICKED') {
+    return res.json(onCardClick(event));
+  }
+
+  return res.json({});
+});
 
 /**
  * Responds to messages that have links whose URLs match URL patterns
@@ -142,3 +160,7 @@ function onCardClick(event) {
   }
 }
 // [END preview_links_assign]
+
+app.listen(PORT, () => {
+  console.log(`Server is running in port - ${PORT}`);
+});
