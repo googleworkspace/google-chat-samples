@@ -19,37 +19,37 @@
  * To add and preview widgets, use the Card Builder: https://addons.gsuite.google.com/uikit/builder
  */
 const CONTACT_FORM_WIDGETS = [
-    {
-      "textInput": {
-        "name": "contactName",
-        "label": "First and last name",
-        "type": "SINGLE_LINE"
-      }
-    },
-    {
-      "dateTimePicker": {
-        "name": "contactBirthdate",
-        "label": "Birthdate",
-        "type": "DATE_ONLY"
-      }
-    },
-    {
-      "selectionInput": {
-        "name": "contactType",
-        "label": "Contact type",
-        "type": "RADIO_BUTTON",
-        "items": [
-          {
-            "text": "Work",
-            "value": "Work",
-            "selected": false
-          },
-          {
-            "text": "Personal",
-            "value": "Personal",
-            "selected": false
-          }
-        ]
-      }
+  {
+    "textInput": {
+      "name": "contactName",
+      "label": "First and last name",
+      "type": "SINGLE_LINE"
     }
-  ];
+  },
+  {
+    "dateTimePicker": {
+      "name": "contactBirthdate",
+      "label": "Birthdate",
+      "type": "DATE_ONLY"
+    }
+  },
+  {
+    "selectionInput": {
+      "name": "contactType",
+      "label": "Contact type",
+      "type": "RADIO_BUTTON",
+      "items": [
+        {
+          "text": "Work",
+          "value": "Work",
+          "selected": false
+        },
+        {
+          "text": "Personal",
+          "value": "Personal",
+          "selected": false
+        }
+      ]
+    }
+  }
+];
