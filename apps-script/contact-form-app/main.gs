@@ -28,7 +28,7 @@ function onMessage(event) {
         // If the slash command is "/about", responds with a text message and button
         // that opens a dialog.
         return {
-          text: "Manage your contacts with the Rolodex app 📇. To add a " +
+          text: "Manage your personal and business contacts 📇. To add a " +
                   "contact, use the slash command `/addContact`.",
           accessoryWidgets: [{ buttonList: { buttons: [{
             text: "Add Contact",
@@ -53,7 +53,7 @@ function onMessage(event) {
       cardId: "addContactForm",
       card: {
         header: { title: "Add a contact" },
-        sections:[{ widgets: contactFormWidgets.concat([{
+        sections:[{ widgets: CONTACT_FORM_WIDGETS.concat([{
           buttonList: { buttons: [{
             text: "Review and submit",
             onClick: { action: { function : "openNextCard" }}
@@ -126,7 +126,7 @@ function openDialog() {
     type: "DIALOG",
     dialogAction: { dialog: { body: { sections: [{
       header: "Add new contact",
-      widgets: contactFormWidgets.concat([{
+      widgets: CONTACT_FORM_WIDGETS.concat([{
         buttonList: { buttons: [{
           text: "Review and submit",
           onClick: { action: { function: "openNextCard" }}
