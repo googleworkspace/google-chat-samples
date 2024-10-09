@@ -67,7 +67,7 @@ function onMessage(event) {
 /**
  * Responds to CARD_CLICKED interaction events in Google Chat.
  *
- * @param {Object} event the CARD_CLICKED interaction event from Google Chat
+ * @param {Object} event the CARD_CLICKED interaction event from Google Chat.
  * @return {Object} message responses specific to the dialog handling.
  */
 function onCardClick(event) {
