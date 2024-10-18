@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-const { getTestServer } = require('@google-cloud/functions-framework/testing');
+const {getTestServer} = require('@google-cloud/functions-framework/testing');
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
@@ -22,7 +22,7 @@ const request = require('supertest');
 
 const getTestEnvironment = () => {
   const app = {
-    execute: sinon.stub().returns({ text: 'App executed.' }),
+    execute: sinon.stub().returns({text: 'App executed.'}),
   };
 
   return {
@@ -37,7 +37,7 @@ const getTestEnvironment = () => {
         },
       }
     }),
-    mocks: { app },
+    mocks: {app},
   };
 };
 

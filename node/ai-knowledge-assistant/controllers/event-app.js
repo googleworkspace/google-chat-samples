@@ -21,13 +21,13 @@
  * renews the subscription when receiving a lifecycle notification event.
  */
 
-const { env } = require('../env.js');
-const { SubscriptionEventType } = require('../model/events');
-const { Message } = require('../model/message');
-const { AIPService } = require('../services/aip-service');
-const { AppAuthChatService } = require('../services/app-auth-chat-service');
-const { FirestoreService } = require('../services/firestore-service');
-const { UserAuthEventsService } = require('../services/user-auth-events-service');
+const {env} = require('../env.js');
+const {SubscriptionEventType} = require('../model/events');
+const {Message} = require('../model/message');
+const {AIPService} = require('../services/aip-service');
+const {AppAuthChatService} = require('../services/app-auth-chat-service');
+const {FirestoreService} = require('../services/firestore-service');
+const {UserAuthEventsService} = require('../services/user-auth-events-service');
 
 /**
  * Chat application logic for event processing.
@@ -104,7 +104,7 @@ class EventApp {
       message.space.name,
       new Message(message.name, message.text, message.createTime));
     if (this.eventType === SubscriptionEventType.MESSAGE_CREATED
-        || this.eventType === SubscriptionEventType.BATCH_MESSAGE_CREATED) {
+      || this.eventType === SubscriptionEventType.BATCH_MESSAGE_CREATED) {
       await this.handleAIaction();
     }
   }

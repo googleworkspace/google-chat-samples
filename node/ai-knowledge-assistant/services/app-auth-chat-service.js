@@ -30,7 +30,7 @@ const CHAT_BOT_SCOPE = ['https://www.googleapis.com/auth/chat.bot'];
  */
 async function initializeChatClient() {
   // Authenticate with Application Default Credentials.
-  const auth = new chat.auth.GoogleAuth({ scopes: CHAT_BOT_SCOPE });
+  const auth = new chat.auth.GoogleAuth({scopes: CHAT_BOT_SCOPE});
   const authClient = await auth.getClient();
 
   // Create the Chat API client with app credentials.
@@ -61,7 +61,7 @@ exports.AppAuthChatService = {
    * @param {!chat.chat_v1.Schema$Message} message The message to be created.
    * @return {Promise<chat.chat_v1.Schema$Message>} The creatd message.
    */
-  createMessageInThread: async function(spaceName, message) {
+  createMessageInThread: async function (spaceName, message) {
     const chatClient = await initializeChatClient();
     const request = {
       parent: spaceName,
@@ -96,7 +96,7 @@ exports.AppAuthChatService = {
    * @returns {Promise<string | null>} The resource name of the first space
    *     manager encountered or {@code null} if a space manager could not be found.
    */
-  listSpaceManager: async function(spaceName) {
+  listSpaceManager: async function (spaceName) {
     const chatClient = await initializeChatClient();
     let pageToken = '';
 

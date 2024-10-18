@@ -20,7 +20,7 @@
  */
 
 const workspaceevents = require('@googleapis/workspaceevents');
-const { SubscriptionEventType } = require('../model/events');
+const {SubscriptionEventType} = require('../model/events');
 
 /** The scope needed to call the Workspace Events API as an app. */
 const CHAT_BOT_SCOPE = ['https://www.googleapis.com/auth/chat.bot'];
@@ -32,7 +32,7 @@ const CHAT_BOT_SCOPE = ['https://www.googleapis.com/auth/chat.bot'];
  */
 async function initializeWorkspaceEventsClient() {
   // Authenticate with Application Default Credentials.
-  const auth = new workspaceevents.auth.GoogleAuth({ scopes: CHAT_BOT_SCOPE });
+  const auth = new workspaceevents.auth.GoogleAuth({scopes: CHAT_BOT_SCOPE});
   const authClient = await auth.getClient();
 
   // Create the Workspace Events API client with app credentials.

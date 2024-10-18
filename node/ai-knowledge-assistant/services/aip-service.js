@@ -22,20 +22,8 @@
 /**
  * [Vertex AI Platform](https://cloud.google.com/vertex-ai/docs) client library.
  */
-const { VertexAI } = require('@google-cloud/vertexai');
-const { env } = require('../env.js');
-
-// Prompts used to generate text using Vertex AI.
-const questionPrompt = 'The following message was sent by a user in a chat conversation.'
-  + ' Does the message contain a question? Answer yes or no only.\n\nMessage:';
-const chatCorpusPrompt = 'You are an AI Knowledge Assistant that can answer questions'
-  + ' from new employees based on previous answers given by users in a chat space'
-  + ' or content posted by users in the chat space.\n\n'
-  + 'This is the conversation history so far:';
-const answerQuestionPrompt = 'Based on the knowledge provided in the conversation'
-  + ' history above, please answer the following question. If the conversation'
-  + ' history does not provide an answer to the question, politely explain that'
-  + ' you cannot answer the question.';
+const {VertexAI} = require('@google-cloud/vertexai');
+const {env} = require('../env.js');
 
 /**
  * Service that executes AI text prediction.
@@ -48,7 +36,9 @@ exports.AIPService = {
    * @return {Promise<boolean>} Whether the user message contains a question.
    */
   containsQuestion: async function (message) {
-    const response = await this.callPredict(`${questionPrompt} ${message}`);
+    const prompt = `Does the message contain a question? Message: "${message}".
+    Answer 'yes' or 'no' only.`;
+    const response = await this.callPredict(prompt);
     return response.toLowerCase().includes('yes');
   },
 
@@ -61,8 +51,16 @@ exports.AIPService = {
    */
   answerQuestion: async function (question, messages) {
     const messageText = messages.map(message => message.text).join('\n\n');
-    return this.callPredict(
-      `${chatCorpusPrompt}\n\n${messageText}\n\n${answerQuestionPrompt}\n\n${question}`);
+
+    const prompt = `You are an AI Knowledge Assistant that can answer questions
+    from new employees purely based on previous answers given by users in a chat
+    space. Based on the following conversation history: ${messageText}, please
+    answer the following question: ${question}. If the conversation history does
+    not provide an answer to the question, just respond
+    "Information not available". Your response must be a single paragraph in
+    plain text with no formatting.`;
+
+    return this.callPredict(prompt);
   },
 
   /**
@@ -79,12 +77,25 @@ exports.AIPService = {
 
     // Instantiate the model
     const generativeModel = vertexAI.getGenerativeModel({
-      model: 'gemini-1.0-pro',
+      model: 'gemini-1.5-pro',
+      temperature: 0,
     });
 
-    const chat = generativeModel.startChat({});
-    const result = await chat.sendMessage(prompt);
-    return result.response.candidates[0].content.parts[0].text;
+    const request = {
+      contents: [{role: 'user', parts: [{text: prompt, }]}],
+    };
+    const result = await generativeModel.generateContent(request);
+    const response = result.response.candidates[0].content.parts[0].text;
+
+    if (env.logging) {
+      console.log(JSON.stringify({
+        message: 'callPredict',
+        request,
+        response,
+      }));
+    }
+
+    return response;
   },
 
 }

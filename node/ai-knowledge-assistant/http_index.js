@@ -23,8 +23,8 @@
 const functions = require('@google-cloud/functions-framework');
 const express = require('express');
 const App = require('./controllers/app');
-const { oauth2callback } = require('./services/user-auth');
-const { env } = require('./env.js');
+const {oauth2callback} = require('./services/user-auth');
+const {env} = require('./env.js');
 
 // Initialize an Express app to handle routing.
 const expressApp = express();
@@ -63,12 +63,12 @@ expressApp.post('/', async (req, res) => {
   }
 
   if (env.logging) {
-    console.log(JSON.stringify({ message: 'Request received', event }));
+    console.log(JSON.stringify({message: 'Request received', event}));
   }
   const responseMessage = await App.execute(event);
   res.json(responseMessage);
   if (env.logging) {
-    console.log(JSON.stringify({ message: 'Response sent', responseMessage }));
+    console.log(JSON.stringify({message: 'Response sent', responseMessage}));
   }
 });
 
