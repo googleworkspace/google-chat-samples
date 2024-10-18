@@ -22,8 +22,8 @@
 
 const auth = require('google-auth-library');
 const url = require('url');
-const { env } = require('../env');
-const { FirestoreService } = require('./firestore-service');
+const {env} = require('../env');
+const {FirestoreService} = require('./firestore-service');
 
 // The application's OAuth client credentials.
 const keys = require('../client_secrets.json').web;
@@ -79,7 +79,7 @@ exports.generateAuthUrl = function (userName, configCompleteRedirectUrl) {
   const authorizeUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline',
     scope: scopes.join(' '),
-    state: base64encode({ userName, configCompleteRedirectUrl }),
+    state: base64encode({userName, configCompleteRedirectUrl}),
     prompt: 'consent'
   });
   return authorizeUrl;
@@ -128,7 +128,7 @@ exports.oauth2callback = async function (req, res) {
 
   // Get access and refresh tokens.
   const oauth2Client = createClient();
-  const { tokens } = await oauth2Client.getToken(q.code);
+  const {tokens} = await oauth2Client.getToken(q.code);
 
   // Save them to the storage so the app can use them to make API calls.
   if (env.logging) {

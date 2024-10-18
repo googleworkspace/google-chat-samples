@@ -20,13 +20,13 @@
  * It handles Chat app mentions and added to space events.
  */
 
-const { env } = require('../env.js');
-const { AppAuthChatService } = require('../services/app-auth-chat-service');
-const { AppAuthEventsService } = require('../services/app-auth-events-service');
-const { FirestoreService } = require('../services/firestore-service');
-const { UserAuthChatService } = require('../services/user-auth-chat-service');
-const { UserAuthEventsService } = require('../services/user-auth-events-service');
-const { generateAuthUrl } = require('../services/user-auth.js');
+const {env} = require('../env.js');
+const {AppAuthChatService} = require('../services/app-auth-chat-service');
+const {AppAuthEventsService} = require('../services/app-auth-events-service');
+const {FirestoreService} = require('../services/firestore-service');
+const {UserAuthChatService} = require('../services/user-auth-chat-service');
+const {UserAuthEventsService} = require('../services/user-auth-events-service');
+const {generateAuthUrl} = require('../services/user-auth.js');
 
 /**
  * Google Chat
@@ -123,7 +123,7 @@ class ChatApp {
     const text = 'Thank you for adding me to this space. I help answer'
       + ' questions based on past conversation in this space. Go ahead and ask'
       + ' me a question!';
-    return { text: text };
+    return {text: text};
   }
 
   /**
@@ -160,7 +160,7 @@ class ChatApp {
     if (spaceManagerName) {
       text = `<${spaceManagerName}> ${text}`;
     }
-    return { text: text };
+    return {text: text};
   }
 }
 

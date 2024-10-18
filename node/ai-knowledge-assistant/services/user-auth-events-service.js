@@ -20,11 +20,11 @@
  */
 
 const workspaceevents = require('@googleapis/workspaceevents');
-const { env } = require('../env');
-const { SubscriptionEventType } = require('../model/events');
-const { InvalidTokenException } = require('../model/exceptions');
-const { FirestoreService } = require('./firestore-service');
-const { initializeOauth2Client } = require('./user-auth');
+const {env} = require('../env');
+const {SubscriptionEventType} = require('../model/events');
+const {InvalidTokenException} = require('../model/exceptions');
+const {FirestoreService} = require('./firestore-service');
+const {initializeOauth2Client} = require('./user-auth');
 
 /**
  * Initializes the Workspace Events API client with user credentials.

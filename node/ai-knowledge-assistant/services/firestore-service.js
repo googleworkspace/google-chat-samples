@@ -33,8 +33,8 @@
  */
 
 /** [Firestore](https://cloud.google.com/firestore/docs) client library. */
-const { Firestore } = require('@google-cloud/firestore');
-const { Message } = require('../model/message');
+const {Firestore} = require('@google-cloud/firestore');
+const {Message} = require('../model/message');
 
 /** The prefix used by the Google Chat API in the Space resource name. */
 const SPACES_PREFIX = 'spaces/';
@@ -120,7 +120,7 @@ exports.FirestoreService = {
     const docRef = db
       .collection(SPACES_COLLECTION)
       .doc(spaceName.replace(SPACES_PREFIX, ''));
-    await docRef.set({ spaceName });
+    await docRef.set({spaceName});
   },
 
   /**
@@ -142,7 +142,7 @@ exports.FirestoreService = {
    * @param {!Message[]} messages The Message data to persist.
    * @return {Promise<Void>}
    */
-  createOrUpdateMessages: async function (spaceName, messages) {
+  createOrUpdateMessages: async function (spaceName, messages = []) {
     messages.forEach(message => this.createOrUpdateMessage(spaceName, message));
   },
 
@@ -219,7 +219,7 @@ exports.FirestoreService = {
     const docRef = db
       .collection(USERS_COLLECTION)
       .doc(userName.replace(USERS_PREFIX, ''));
-    await docRef.set({ accessToken, refreshToken });
+    await docRef.set({accessToken, refreshToken});
   },
 
   /**

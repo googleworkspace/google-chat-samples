@@ -20,10 +20,10 @@
  */
 
 const chat = require('@googleapis/chat');
-const { InvalidTokenException } = require('../model/exceptions');
-const { Message } = require('../model/message');
-const { FirestoreService } = require('./firestore-service');
-const { initializeOauth2Client } = require('./user-auth');
+const {InvalidTokenException} = require('../model/exceptions');
+const {Message} = require('../model/message');
+const {FirestoreService} = require('./firestore-service');
+const {initializeOauth2Client} = require('./user-auth');
 
 /**
  * Initializes the Chat API client with user credentials.
@@ -112,9 +112,9 @@ exports.UserAuthChatService = {
           .map(message =>
             new Message(message.name, message.text, message.createTime))
           .forEach(message => messages.push(message));
-        }
-        pageToken = response.data.nextPageToken;
-      } while (pageToken);
+      }
+      pageToken = response.data.nextPageToken;
+    } while (pageToken);
 
     return messages;
   }

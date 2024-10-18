@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-const { getFunction } = require('@google-cloud/functions-framework/testing');
-const { CloudEvent } = require('cloudevents');
+const {getFunction} = require('@google-cloud/functions-framework/testing');
+const {CloudEvent} = require('cloudevents');
 const assert = require('assert');
 const proxyquire = require('proxyquire');
 const sinon = require('sinon');
@@ -34,7 +34,7 @@ const getTestEnvironment = () => {
         },
       }
     }),
-    mocks: { eventApp },
+    mocks: {eventApp},
   };
 };
 
@@ -56,7 +56,7 @@ describe('eventsApp', function () {
     await aiSupportEvents(new CloudEvent({
       type: 'google.cloud.pubsub.topic.v1.messagePublished',
       source: '//pubsub.googleapis.com/projects/test/topics/events',
-      data: { message },
+      data: {message},
     }));
 
     assert.ok(test.mocks.eventApp.execute.calledOnceWith(
