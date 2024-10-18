@@ -19,7 +19,7 @@
  */
 const env = {
   // Replace with your GCP project ID.
-  project: 'ws-developer-017',
+  project: 'project-id',
 
   // Replace with your GCP project location. Used for Vertex AI calls.
   location: 'us-central1',
