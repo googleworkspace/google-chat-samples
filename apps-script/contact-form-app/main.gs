@@ -129,6 +129,7 @@ function openConfirmation(event) {
         text: "<b>Birthday:</b> " + convertMillisToDateString(birthdate)
       }}, {
       textParagraph: { text: "<b>Type:</b> " + type }}, {
+      // [START set_parameters]
       buttonList: { buttons: [{
         text: "Submit",
         onClick: { action: {
@@ -140,6 +141,7 @@ function openConfirmation(event) {
           }]
         }}
       }]}
+      // [END set_parameters]
     }]
   };
 
