@@ -31,7 +31,7 @@ function onMessage(event) {
           text: "Manage your personal and business contacts 📇. To add a " +
                   "contact, use the slash command `/addContact`.",
           accessoryWidgets: [{
-            // [START openDialogFromButton]
+            // [START open_dialog_from_button]
             buttonList: { buttons: [{
               text: "Add Contact",
               onClick: { action: {
@@ -39,7 +39,7 @@ function onMessage(event) {
                 interaction: "OPEN_DIALOG"
               }}
             }]}
-            // [END openDialogFromButton]
+            // [END open_dialog_from_button]
           }]
         }
       case 2:
@@ -68,7 +68,7 @@ function onMessage(event) {
   };
 }
 
-// [START subsequentSteps]
+// [START subsequent_steps]
 /**
  * Responds to CARD_CLICKED interaction events in Google Chat.
  *
@@ -88,7 +88,7 @@ function onCardClick(event) {
   }
 }
 
-// [START openInitialDialog]
+// [START open_initial_dialog]
 /**
  * Opens the initial step of the dialog that lets users add contact details.
  *
@@ -108,7 +108,7 @@ function openInitialDialog() {
     }]}}}
   }};
 }
-// [END openInitialDialog]
+// [END open_initial_dialog]
 
 /**
  * Returns the second step as a dialog or card message that lets users confirm details.
@@ -160,7 +160,7 @@ function openConfirmation(event) {
     }]
   }
 }
-// [END subsequentSteps]
+// [END subsequent_steps]
 
 /**
   * Validates and submits information from a dialog or card message
@@ -171,7 +171,7 @@ function openConfirmation(event) {
   *                  message.
   */
 function submitForm(event) {
-  // [START statusNotification]
+  // [START status_notification]
   const contactName = event.common.parameters["contactName"];
   // Checks to make sure the user entered a contact name.
   // If no name value detected, returns an error message.
@@ -192,9 +192,9 @@ function submitForm(event) {
       };
     }
   }
-  // [END statusNotification]
+  // [END status_notification]
 
-  // [START confirmationMessage]
+  // [START confirmation_message]
   // The Chat app indicates that it received form data from the dialog or card.
   // Sends private text message that confirms submission.
   const confirmationMessage = "✅ " + contactName + " has been added to your contacts.";
@@ -217,7 +217,7 @@ function submitForm(event) {
       text: confirmationMessage
     };
   }
-  // [START confirmationMessage]
+  // [START confirmation_message]
 }
 
 /**
