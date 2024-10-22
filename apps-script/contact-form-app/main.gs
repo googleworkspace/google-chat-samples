@@ -60,7 +60,7 @@ function onMessage(event) {
         sections:[{ widgets: CONTACT_FORM_WIDGETS.concat([{
           buttonList: { buttons: [{
             text: "Review and submit",
-            onClick: { action: { function : "openConfirmationDialog" }}
+            onClick: { action: { function : "openConfirmation" }}
           }]}
         }])}]
       }
@@ -80,8 +80,8 @@ function onCardClick(event) {
   if (event.common.invokedFunction === "openInitialDialog") {
     return openInitialDialog();
   // Confirmation dialog form page
-  } else if (event.common.invokedFunction === "openConfirmationDialog") {
-    return openConfirmationDialog(event);
+  } else if (event.common.invokedFunction === "openConfirmation") {
+    return openConfirmation(event);
   // Submission dialog form page
   } else if (event.common.invokedFunction === "submitForm") {
     return submitForm(event);
@@ -102,7 +102,7 @@ function openInitialDialog() {
       widgets: CONTACT_FORM_WIDGETS.concat([{
         buttonList: { buttons: [{
           text: "Review and submit",
-          onClick: { action: { function: "openConfirmationDialog" }}
+          onClick: { action: { function: "openConfirmation" }}
         }]}
       }])
     }]}}}
@@ -116,7 +116,7 @@ function openInitialDialog() {
  * @param {Object} event the interactive event with form inputs.
  * @return {Object} returns a dialog or private card message.
  */
-function openConfirmationDialog(event) {
+function openConfirmation(event) {
   const name = fetchFormValue(event, "contactName") ?? "<i>Not provided</i>";
   const birthdate = fetchFormValue(event, "contactBirthdate") ?? "<i>Not provided</i>";
   const type = fetchFormValue(event, "contactType") ?? "<i>Not provided</i>";
