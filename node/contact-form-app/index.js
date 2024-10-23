@@ -22,7 +22,6 @@ const app = express()
   .use(express.json());
 
 app.post('/', async (req, res) => {
-  console.log("Body: " + JSON.stringify(req.body));
   let event = req.body;
 
   let body = {};
