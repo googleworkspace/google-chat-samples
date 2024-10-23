@@ -219,7 +219,7 @@ function submitForm(event) {
       text: confirmationMessage
     };
   }
-  // [START confirmation_message]
+  // [END confirmation_message]
 }
 
 /**
