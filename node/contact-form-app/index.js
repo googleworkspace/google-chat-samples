@@ -1,5 +1,5 @@
 /**
- * Copyright 2024 Google Inc.
+ * Copyright 2024 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,27 @@
  * limitations under the License.
  */
 
+const express = require('express');
+const PORT = process.env.PORT || 8080;
+
+const app = express()
+  .use(express.urlencoded({extended: false}))
+  .use(express.json());
+
+app.post('/', async (req, res) => {
+  console.log("Body: " + JSON.stringify(req.body));
+  let event = req.body;
+
+  let body = {};
+  if (event.type === 'MESSAGE') {
+    body = onMessage(event);
+  } else if (event.type === 'CARD_CLICKED') {
+    body = onCardClick(event);
+  }
+
+  return res.json(body);
+});
+
 /**
  * Responds to a MESSAGE interaction event in Google Chat.
  *
@@ -24,7 +45,7 @@
 function onMessage(event) {
   if (event.message.slashCommand) {
     switch (event.message.slashCommand.commandId) {
-      case 1:
+      case "1":
         // If the slash command is "/about", responds with a text message and button
         // that opens a dialog.
         return {
@@ -42,7 +63,7 @@ function onMessage(event) {
             // [END open_dialog_from_button]
           }]
         }
-      case 2:
+      case "2":
         // If the slash command is "/addContact", opens a dialog.
         return openInitialDialog();
     }
@@ -230,16 +251,16 @@ function submitForm(event) {
  * @returns the value inputted by the user, null if no value can be found.
  */
 function fetchFormValue(event, widgetName) {
-  const formItem = event.common.formInputs[widgetName][""];
+  const formItem = event.common.formInputs[widgetName];
   // For widgets that receive StringInputs data, the value input by the user.
   if (formItem.hasOwnProperty("stringInputs")) {
-    const stringInput = event.common.formInputs[widgetName][""].stringInputs.value[0];
+    const stringInput = event.common.formInputs[widgetName].stringInputs.value[0];
     if (stringInput != null) {
       return stringInput;
     }
   // For widgets that receive dateInput data, the value input by the user.
   } else if (formItem.hasOwnProperty("dateInput")) {
-    const dateInput = event.common.formInputs[widgetName][""].dateInput.msSinceEpoch;
+    const dateInput = event.common.formInputs[widgetName].dateInput.msSinceEpoch;
      if (dateInput != null) {
        return dateInput;
      }
@@ -255,10 +276,14 @@ function fetchFormValue(event, widgetName) {
  * @return {string} Display-friend date (English US).
  */
 function convertMillisToDateString(millis) {
-  const date = new Date(millis);
+  const date = new Date(Number(millis));
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
   return date.toLocaleDateString('en-US', options);
 }
+
+app.listen(PORT, () => {
+  console.log(`Server is running in port - ${PORT}`);
+});
 
 // [START input_widgets]
 /**
