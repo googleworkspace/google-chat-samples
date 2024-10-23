@@ -137,9 +137,9 @@ function openInitialDialog() {
  * @return {Object} returns a dialog or private card message.
  */
 function openConfirmation(event) {
-  const name = fetchFormValue(event, "contactName") ?? "<i>Not provided</i>";
-  const birthdate = fetchFormValue(event, "contactBirthdate") ?? "<i>Not provided</i>";
-  const type = fetchFormValue(event, "contactType") ?? "<i>Not provided</i>";
+  const name = fetchFormValue(event, "contactName") ?? "";
+  const birthdate = fetchFormValue(event, "contactBirthdate") ?? "";
+  const type = fetchFormValue(event, "contactType") ?? "";
   const cardConfirmation = {
     header: "Your contact",
     widgets: [{
@@ -223,14 +223,12 @@ function submitForm(event) {
   if (event.dialogEventType === "SUBMIT_DIALOG") {
     return {
       actionResponse: {
-        type: "NEW_MESSAGE",
+        type: "DIALOG",
         dialogAction: { actionStatus: {
           statusCode: "OK",
-          userFacingMessage: "Success " + JSON.stringify(contactName)
+          userFacingMessage: "Success " + contactName
         }}
-      },
-      privateMessageViewer: event.user,
-      text: confirmationMessage
+      }
     }
   } else {
     return {
