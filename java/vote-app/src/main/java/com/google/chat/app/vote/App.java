@@ -15,7 +15,6 @@ package com.google.chat.app.vote;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.logging.Logger;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,10 +24,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.client.json.GenericJson;
+import com.google.api.services.chat.v1.model.ActionResponse;
+import com.google.api.services.chat.v1.model.CardWithId;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Action;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1ActionParameter;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Button;
+import com.google.api.services.chat.v1.model.GoogleAppsCardV1ButtonList;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Card;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1CardHeader;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Image;
@@ -36,14 +37,13 @@ import com.google.api.services.chat.v1.model.GoogleAppsCardV1OnClick;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Section;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1TextParagraph;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Widget;
+import com.google.api.services.chat.v1.model.Message;
 
 @SpringBootApplication
 @RestController
 public class App {
 
-  private static final Logger logger = Logger.getLogger(App.class.getName());
-
-  static String[] IMAGES = new String[]{
+  static String[] IMAGES = new String[] {
     "https://media2.giphy.com/media/3oEjHK3aw2LcB1V3QQ/giphy.gif",
     "https://media3.giphy.com/media/l0HlUIHlH4AKadXzy/giphy.gif",
     "https://media0.giphy.com/media/3otPorfb8Lu7wjKllm/giphy.gif",
@@ -61,15 +61,11 @@ public class App {
    * - Update existing card for 'upvote' clicks
    * - Create new vote for 'newvote' clicks
    * - Display a different image after each event
-   *
-   * @param event Event from chat.
-   * @return GenericJson
-   * @throws Exception
    */
   @PostMapping("/")
   @ResponseBody
-  public GenericJson onEvent(@RequestBody JsonNode event) throws Exception {
-    GenericJson response = new GenericJson();
+  public Message onEvent(@RequestBody JsonNode event) throws Exception {
+    Message response = new Message();
     switch (event.get("type").asText()) {
       case "ADDED_TO_SPACE":
         // Create new vote session for when added to a space
@@ -112,78 +108,40 @@ public class App {
    * @param update whether it's an update or a new vote session
    * @return the vote card
    */
-  private GenericJson createMessage(String voteId, String statement, String voter, int count, boolean update) {
-    GoogleAppsCardV1CardHeader cardHeader = new GoogleAppsCardV1CardHeader();
-    cardHeader.setTitle(String.format("Vote: %s", statement));
-
-    GoogleAppsCardV1TextParagraph textParagraph = new GoogleAppsCardV1TextParagraph();
-    textParagraph.setText(String.format("%d votes, last vote was by %s!", count, voter));
-
-    GoogleAppsCardV1Widget textParagraphWidget = new GoogleAppsCardV1Widget();
-    textParagraphWidget.setTextParagraph(textParagraph);
-
-    GoogleAppsCardV1Image image = new GoogleAppsCardV1Image();
-    image.setImageUrl(IMAGES[count % IMAGES.length]);
-
-    GoogleAppsCardV1Widget imageWidget = new GoogleAppsCardV1Widget();
-    imageWidget.setImage(image);
-
-    GoogleAppsCardV1ActionParameter voteIdParameter = new GoogleAppsCardV1ActionParameter();
-    voteIdParameter.setKey("voteId");
-    voteIdParameter.setValue(voteId);
-
-    GoogleAppsCardV1ActionParameter statementParameter = new GoogleAppsCardV1ActionParameter();
-    statementParameter.setKey("statement");
-    statementParameter.setValue(statement);
-
-    GoogleAppsCardV1ActionParameter countParameter = new GoogleAppsCardV1ActionParameter();
-    countParameter.setKey("count");
-    countParameter.setValue(String.format("%d", count));
-
-    GoogleAppsCardV1Action upvoteAction = new GoogleAppsCardV1Action();
-    upvoteAction.set("actionMethodName", "upvote");
-    upvoteAction.setParameters(List.of(voteIdParameter, statementParameter, countParameter));
-
-    GoogleAppsCardV1OnClick upvoteOnClick = new GoogleAppsCardV1OnClick();
-    upvoteOnClick.setAction(upvoteAction);
-
-    GoogleAppsCardV1Button upvoteButton = new GoogleAppsCardV1Button();
-    upvoteButton.setText("UPVOTE");
-    upvoteButton.setOnClick(upvoteOnClick);
-
-    GenericJson upvoteTextButton = new GenericJson();
-    upvoteTextButton.set("textButton", upvoteButton);
-
-    GoogleAppsCardV1Action newvoteAction = new GoogleAppsCardV1Action();
-    newvoteAction.set("actionMethodName", "newvote");
-
-    GoogleAppsCardV1OnClick newvoteOnClick = new GoogleAppsCardV1OnClick();
-    newvoteOnClick.setAction(newvoteAction);
-
-    GoogleAppsCardV1Button newvoteButton = new GoogleAppsCardV1Button();
-    newvoteButton.setText("NEW VOTE");
-    newvoteButton.setOnClick(newvoteOnClick);
-
-    GenericJson newvoteTextButton = new GenericJson();
-    newvoteTextButton.set("textButton", newvoteButton);
-
-    GenericJson buttonsWidget = new GenericJson();
-    buttonsWidget.set("buttons", List.of(upvoteTextButton, newvoteTextButton));
-
-    GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
-    section.set("widgets", List.of(textParagraphWidget, imageWidget, buttonsWidget));
-
-    GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
-    card.setName(voteId);
-    card.setHeader(cardHeader);
-    card.set("sections", List.of(section));
-
-    GenericJson actionResponse = new GenericJson();
-    actionResponse.set("type", update ? "UPDATE_MESSAGE" : "NEW_MESSAGE");
-
-    GenericJson response = new GenericJson();
-    response.set("actionResponse", actionResponse);
-    response.set("cards", List.of(card));
-    return response;
+  private Message createMessage(String voteId, String statement, String voter, int count, boolean update) {
+    return new Message()
+      .setActionResponse(new ActionResponse()
+        .setType(update ? "UPDATE_MESSAGE" : "NEW_MESSAGE"))
+      .setCardsV2(List.of(new CardWithId()
+        .setCardId("voteCard")
+        .setCard(new GoogleAppsCardV1Card()
+          .setName(voteId)
+          .setHeader(new GoogleAppsCardV1CardHeader()
+            .setTitle(String.format("Vote: %s", statement)))
+          .set("sections", List.of(new GoogleAppsCardV1Section()
+            .setWidgets(List.of(
+              new GoogleAppsCardV1Widget().setTextParagraph(new GoogleAppsCardV1TextParagraph()
+                .setText(String.format("%d votes, last vote was by %s!", count, voter))),
+              new GoogleAppsCardV1Widget().setImage(new GoogleAppsCardV1Image()
+                .setImageUrl(IMAGES[count % IMAGES.length])),
+                new GoogleAppsCardV1Widget().setButtonList(new GoogleAppsCardV1ButtonList()
+                  .setButtons(List.of(
+                    new GoogleAppsCardV1Button()
+                      .setText("UPVOTE")
+                      .setOnClick(new GoogleAppsCardV1OnClick()
+                        .setAction(new GoogleAppsCardV1Action()
+                          .setFunction("newvote")
+                          .setParameters(List.of(
+                            new GoogleAppsCardV1ActionParameter()
+                              .setKey("voteId").setValue(voteId),
+                            new GoogleAppsCardV1ActionParameter()
+                              .setKey("statement").setValue(statement),
+                            new GoogleAppsCardV1ActionParameter()
+                              .setKey("count").setValue(String.format("%d", count)))))),
+                    new GoogleAppsCardV1Button()
+                      .setText("NEW VOTE")
+                      .setOnClick(new GoogleAppsCardV1OnClick()
+                        .setAction(new GoogleAppsCardV1Action()
+                          .setFunction("newvote")))))))))))));
   }
 }

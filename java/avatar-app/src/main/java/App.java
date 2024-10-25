@@ -25,6 +25,7 @@ import com.google.api.services.chat.v1.model.GoogleAppsCardV1Section;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1TextParagraph;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Widget;
 import com.google.api.services.chat.v1.model.Message;
+import com.google.api.services.chat.v1.model.User;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
@@ -56,9 +57,10 @@ public class App implements HttpFunction {
       JsonObject slashCommand = body.getAsJsonObject("message").getAsJsonObject("slashCommand");
       switch (slashCommand.get("commandId").getAsString()) {
         case ABOUT_COMMAND_ID:
-        JsonObject aboutMessage = new JsonObject();
-        aboutMessage.addProperty("text", "The Avatar app replies to Google Chat messages.");
-        aboutMessage.add("privateMessageViewer", body.getAsJsonObject("user"));
+          Message aboutMessage = new Message();
+          aboutMessage.setText("The Avatar app replies to Google Chat messages.");
+          aboutMessage.setPrivateMessageViewer(new User()
+            .setName(body.getAsJsonObject("user").get("name").getAsString()));
           response.getWriter().write(gson.toJson(aboutMessage));
           return;
       }
@@ -73,38 +75,20 @@ public class App implements HttpFunction {
   }
 
   Message createMessage(String displayName, String avatarUrl) {
-    GoogleAppsCardV1CardHeader cardHeader = new GoogleAppsCardV1CardHeader();
-    cardHeader.setTitle(String.format("Hello %s!", displayName));
-
-    GoogleAppsCardV1TextParagraph textParagraph = new GoogleAppsCardV1TextParagraph();
-    textParagraph.setText("Your avatar picture: ");
-
-    GoogleAppsCardV1Widget avatarWidget = new GoogleAppsCardV1Widget();
-    avatarWidget.setTextParagraph(textParagraph);
-
-    GoogleAppsCardV1Image image = new GoogleAppsCardV1Image();
-    image.setImageUrl(avatarUrl);
-
-    GoogleAppsCardV1Widget avatarImageWidget = new GoogleAppsCardV1Widget();
-    avatarImageWidget.setImage(image);
-
-    GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
-    section.setWidgets(List.of(avatarWidget, avatarImageWidget));
-
-    GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
-    card.setName("Avatar Card");
-    card.setHeader(cardHeader);
-    card.setSections(List.of(section));
-
-    CardWithId cardWithId = new CardWithId();
-    cardWithId.setCardId("previewLink");
-    cardWithId.setCard(card);
-
-    Message message = new Message();
-    message.setText("Here's your avatar");
-    message.setCardsV2(List.of(cardWithId));
-
-    return message;
+    return new Message()
+      .setText("Here's your avatar")
+      .setCardsV2(List.of(new CardWithId()
+        .setCardId("previewLink")
+        .setCard(new GoogleAppsCardV1Card()
+          .setName("Avatar Card")
+          .setHeader(new GoogleAppsCardV1CardHeader()
+            .setTitle(String.format("Hello %s!", displayName)))
+          .setSections(List.of(new GoogleAppsCardV1Section().setWidgets(List.of(
+            new GoogleAppsCardV1Widget()
+              .setTextParagraph(new GoogleAppsCardV1TextParagraph()
+                .setText("Your avatar picture: ")),
+            new GoogleAppsCardV1Widget()
+              .setImage(new GoogleAppsCardV1Image().setImageUrl(avatarUrl)))))))));
   }
 }
 // [END chat_avatar_app]

@@ -43,13 +43,7 @@ public class App {
   }
 
   // [START chat_app_home]
-  /**
-   * Process Google Chat events
-   *
-   * @param event Event from chat.
-   * @return GenericJson
-   * @throws Exception
-   */
+  // Process Google Chat events
   @PostMapping("/")
   @ResponseBody
   public GenericJson onEvent(@RequestBody JsonNode event) throws Exception {
@@ -77,35 +71,18 @@ public class App {
 
   // Create the app home card
   GoogleAppsCardV1Card getHomeCard() {
-    GoogleAppsCardV1TextParagraph textParagraph = new GoogleAppsCardV1TextParagraph();
-    textParagraph.setText("Here is the app home 🏠 It's " + new Date());
-
-    GoogleAppsCardV1Widget textParagraphWidget = new GoogleAppsCardV1Widget();
-    textParagraphWidget.setTextParagraph(textParagraph);
-
-    GoogleAppsCardV1Action action = new GoogleAppsCardV1Action();
-    action.setFunction("updateAppHome");
-
-    GoogleAppsCardV1OnClick onClick = new GoogleAppsCardV1OnClick();
-    onClick.setAction(action);
-
-    GoogleAppsCardV1Button button = new GoogleAppsCardV1Button();
-    button.setText("Update app home");
-    button.setOnClick(onClick);
-
-    GoogleAppsCardV1ButtonList buttonList = new GoogleAppsCardV1ButtonList();
-    buttonList.setButtons(List.of(button));
-
-    GoogleAppsCardV1Widget buttonListWidget = new GoogleAppsCardV1Widget();
-    buttonListWidget.setButtonList(buttonList);
-
-    GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
-    section.setWidgets(List.of(textParagraphWidget, buttonListWidget));
-
-    GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
-    card.setSections(List.of(section));
-
-    return card;
+    return new GoogleAppsCardV1Card()
+      .setSections(List.of(new GoogleAppsCardV1Section()
+        .setWidgets(List.of(
+          new GoogleAppsCardV1Widget()
+            .setTextParagraph(new GoogleAppsCardV1TextParagraph()
+              .setText("Here is the app home 🏠 It's " + new Date())),
+          new GoogleAppsCardV1Widget()
+            .setButtonList(new GoogleAppsCardV1ButtonList().setButtons(List.of(new GoogleAppsCardV1Button()
+              .setText("Update app home")
+              .setOnClick(new GoogleAppsCardV1OnClick()
+                .setAction(new GoogleAppsCardV1Action()
+                  .setFunction("updateAppHome"))))))))));
   }
   // [END chat_app_home]
 

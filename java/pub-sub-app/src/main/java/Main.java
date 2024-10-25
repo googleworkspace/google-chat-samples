@@ -37,10 +37,9 @@ public class Main {
   public static final String CREDENTIALS_PATH_ENV_PROPERTY = "GOOGLE_APPLICATION_CREDENTIALS";
 
   public static void main(String[] args) throws Exception {
-    ProjectSubscriptionName subscriptionName =
-        ProjectSubscriptionName.of(
-            System.getenv(Main.PROJECT_ID_ENV_PROPERTY),
-            System.getenv(Main.SUBSCRIPTION_ID_ENV_PROPERTY));
+    ProjectSubscriptionName subscriptionName = ProjectSubscriptionName.of(
+      System.getenv(Main.PROJECT_ID_ENV_PROPERTY),
+      System.getenv(Main.SUBSCRIPTION_ID_ENV_PROPERTY));
 
     // Instantiate app, which implements an asynchronous message receiver.
     EchoApp echoApp = new EchoApp();
@@ -68,7 +67,7 @@ class EchoApp implements MessageReceiver {
   // different service accounts, please set the path to the private key JSON file of the service
   // account used to post messages to Google Chat here.
   private static final String SERVICE_ACCOUNT_KEY_PATH =
-      System.getenv(Main.CREDENTIALS_PATH_ENV_PROPERTY);
+    System.getenv(Main.CREDENTIALS_PATH_ENV_PROPERTY);
 
   // Developer code for Google Chat API scope.
   private static final String GOOGLE_CHAT_API_SCOPE = "https://www.googleapis.com/auth/chat.bot";
@@ -78,15 +77,13 @@ class EchoApp implements MessageReceiver {
   ChatServiceClient chatServiceClient;
 
   EchoApp() throws Exception {
-    GoogleCredentials credential =
-        GoogleCredentials.fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_PATH))
-            .createScoped(Collections.singleton(GOOGLE_CHAT_API_SCOPE));
+    GoogleCredentials credential = GoogleCredentials
+      .fromStream(new FileInputStream(SERVICE_ACCOUNT_KEY_PATH))
+      .createScoped(Collections.singleton(GOOGLE_CHAT_API_SCOPE));
 
     // Create the ChatServiceSettings with the app credentials
-    ChatServiceSettings chatServiceSettings =
-        ChatServiceSettings.newBuilder()
-            .setCredentialsProvider(FixedCredentialsProvider.create(credential))
-            .build();
+    ChatServiceSettings chatServiceSettings = ChatServiceSettings.newBuilder()
+      .setCredentialsProvider(FixedCredentialsProvider.create(credential)).build();
 
     // Set the Chat service client
     chatServiceClient = ChatServiceClient.create(chatServiceSettings);
@@ -118,30 +115,21 @@ class EchoApp implements MessageReceiver {
         // through to the MESSAGE case and let the app respond. If the app was added using the
         // invite flow, we just post a thank you message in the space.
         if (!eventJson.has("message")) {
-          createMessageRequest =
-              CreateMessageRequest.newBuilder()
-                  .setParent(eventJson.get("space").get("name").asText())
-                  .setMessage(Message.newBuilder().setText(ADDED_RESPONSE).build())
-                  .build();
+          createMessageRequest = CreateMessageRequest.newBuilder()
+            .setParent(eventJson.get("space").get("name").asText())
+            .setMessage(Message.newBuilder().setText(ADDED_RESPONSE).build()).build();
           break;
         }
       case "MESSAGE":
         // In case of message, post the response in the same thread.
-        createMessageRequest =
-            CreateMessageRequest.newBuilder()
-                .setParent(eventJson.get("space").get("name").asText())
-                .setMessageReplyOption(MessageReplyOption.REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD)
-                .setMessage(
-                    Message.newBuilder()
-                        .setText(
-                            "You said: `" + eventJson.get("message").get("text").asText() + "`")
-                        .setThread(
-                            Thread.newBuilder()
-                                .setName(
-                                    eventJson.get("message").get("thread").get("name").asText())
-                                .build())
-                        .build())
-                .build();
+        createMessageRequest = CreateMessageRequest.newBuilder()
+          .setParent(eventJson.get("space").get("name").asText())
+          .setMessageReplyOption(MessageReplyOption.REPLY_MESSAGE_FALLBACK_TO_NEW_THREAD)
+          .setMessage(Message.newBuilder()
+            .setText("You said: `" + eventJson.get("message").get("text").asText() + "`")
+            .setThread(Thread.newBuilder()
+              .setName(eventJson.get("message").get("thread").get("name").asText())
+              .build()).build()).build();
         break;
       case "REMOVED_FROM_SPACE":
       default:

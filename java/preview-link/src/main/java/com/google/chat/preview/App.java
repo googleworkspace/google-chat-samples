@@ -23,7 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.client.json.GenericJson;
+import com.google.api.services.chat.v1.model.ActionResponse;
+import com.google.api.services.chat.v1.model.CardWithId;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Action;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1Button;
 import com.google.api.services.chat.v1.model.GoogleAppsCardV1ButtonList;
@@ -44,28 +45,22 @@ public class App {
     SpringApplication.run(App.class, args);
   }
 
-  /**
-   * Process Google Chat events
-   *
-   * @param event Event from chat.
-   * @return GenericJson
-   * @throws Exception
-   */
+  // Process Google Chat events
   @PostMapping("/")
   @ResponseBody
-  public GenericJson onEvent(@RequestBody JsonNode event) throws Exception {
+  public Message onEvent(@RequestBody JsonNode event) throws Exception {
     switch (event.at("/type").asText()) {
       case "MESSAGE":
         return onMessage(event);
       case "CARD_CLICKED":
         return onCardClick(event);
     }
-    return new GenericJson();
+    return null;
   }
 
   // Respond to messages that have links whose URLs match URL patterns
   // configured for link previewing.
-  GenericJson onMessage(JsonNode event) {
+  Message onMessage(JsonNode event) {
     // If the Chat app does not detect a link preview URL pattern, reply
     // with a text message that says so.
     if (event.at("/message/matchedUrl").isMissingNode()) {
@@ -85,100 +80,52 @@ public class App {
     if (event.at("/message/matchedUrl/url").asText().contains("support.example.com")) {
       // A hard-coded card is used in this example. In a real-life scenario,
       // the case information would be fetched and used to build the card.
-      GoogleAppsCardV1CardHeader header = new GoogleAppsCardV1CardHeader();
-      header.setTitle("Example Customer Service Case");
-      header.setSubtitle("Case basics");
-
-      GoogleAppsCardV1DecoratedText caseIdDecoratedText = new GoogleAppsCardV1DecoratedText();
-      caseIdDecoratedText.setTopLabel("Case ID");
-      caseIdDecoratedText.setText("case123");
-
-      GoogleAppsCardV1Widget caseIdWidget = new GoogleAppsCardV1Widget();
-      caseIdWidget.setDecoratedText(caseIdDecoratedText);
-
-      GoogleAppsCardV1DecoratedText assigneeDecoratedText = new GoogleAppsCardV1DecoratedText();
-      assigneeDecoratedText.setTopLabel("Assignee");
-      assigneeDecoratedText.setText("Charlie");
-
-      GoogleAppsCardV1Widget assigneeWidget = new GoogleAppsCardV1Widget();
-      assigneeWidget.setDecoratedText(assigneeDecoratedText);
-
-      GoogleAppsCardV1DecoratedText statusDecoratedText = new GoogleAppsCardV1DecoratedText();
-      statusDecoratedText.setTopLabel("Status");
-      statusDecoratedText.setText("Open");
-
-      GoogleAppsCardV1Widget statusWidget = new GoogleAppsCardV1Widget();
-      statusWidget.setDecoratedText(statusDecoratedText);
-
-      GoogleAppsCardV1DecoratedText subjectDecoratedText = new GoogleAppsCardV1DecoratedText();
-      subjectDecoratedText.setTopLabel("Subject");
-      subjectDecoratedText.setText("It won't turn on...");
-
-      GoogleAppsCardV1Widget subjectWidget = new GoogleAppsCardV1Widget();
-      subjectWidget.setDecoratedText(subjectDecoratedText);
-
-      GoogleAppsCardV1OpenLink openOpenLink = new GoogleAppsCardV1OpenLink();
-      openOpenLink.setUrl("https://support.example.com/orders/case123");
-
-      GoogleAppsCardV1OnClick openOnClick = new GoogleAppsCardV1OnClick();
-      openOnClick.setOpenLink(openOpenLink);
-
-      GoogleAppsCardV1Button openButton = new GoogleAppsCardV1Button();
-      openButton.setText("OPEN CASE");
-      openButton.setOnClick(openOnClick);
-
-      GoogleAppsCardV1OpenLink resolveOpenLink = new GoogleAppsCardV1OpenLink();
-      resolveOpenLink.setUrl("https://support.example.com/orders/case123?resolved=y");
-
-      GoogleAppsCardV1OnClick resolveOnClick = new GoogleAppsCardV1OnClick();
-      resolveOnClick.setOpenLink(resolveOpenLink);
-
-      GoogleAppsCardV1Button resolveButton = new GoogleAppsCardV1Button();
-      resolveButton.setText("RESOLVE CASE");
-      resolveButton.setOnClick(resolveOnClick);
-
-      GoogleAppsCardV1Action assignAction = new GoogleAppsCardV1Action();
-      assignAction.setFunction("assign");
-
-      GoogleAppsCardV1OnClick assignOnClick = new GoogleAppsCardV1OnClick();
-      assignOnClick.setAction(assignAction);
-
-      GoogleAppsCardV1Button assignButton = new GoogleAppsCardV1Button();
-      assignButton.setText("ASSIGN TO ME");
-      assignButton.setOnClick(assignOnClick);
-
-      GoogleAppsCardV1ButtonList buttonList = new GoogleAppsCardV1ButtonList();
-      buttonList.setButtons(List.of(openButton, resolveButton, assignButton));
-
-      GoogleAppsCardV1Widget buttonListWidget = new GoogleAppsCardV1Widget();
-      buttonListWidget.setButtonList(buttonList);
-
-      GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
-      section.setWidgets(List.of(caseIdWidget, assigneeWidget, statusWidget, subjectWidget, buttonListWidget));
-
-      GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
-      card.setHeader(header);
-      card.setSections(List.of(section));
-
-      GenericJson cardV2 = new GenericJson();
-      cardV2.set("cardId", "attachCard");
-      cardV2.set("card", card);
-
-      GenericJson actionResponse = new GenericJson();
-      actionResponse.set("type", "UPDATE_USER_MESSAGE_CARDS");
-  
-      GenericJson response = new GenericJson();
-      response.set("actionResponse", actionResponse);
-      response.set("cardsV2", List.of(cardV2));
-      return response;
+      return new Message()
+        .setActionResponse(new ActionResponse()
+          .setType("UPDATE_USER_MESSAGE_CARDS"))
+        .setCardsV2(List.of(new CardWithId()
+          .setCardId("attachCard")
+          .setCard(new GoogleAppsCardV1Card()
+            .setHeader(new GoogleAppsCardV1CardHeader()
+              .setTitle("Example Customer Service Case")
+              .setSubtitle("Case basics"))
+            .setSections(List.of(new GoogleAppsCardV1Section().setWidgets(List.of(
+              new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+                .setTopLabel("Case ID")
+                .setText("case123")),
+              new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+                .setTopLabel("Assignee")
+                .setText("Charlie")),
+              new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+                .setTopLabel("Status")
+                .setText("Open")),
+              new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+                .setTopLabel("Subject")
+                .setText("It won't turn on...")),
+              new GoogleAppsCardV1Widget()
+                .setButtonList(new GoogleAppsCardV1ButtonList().setButtons(List.of(
+                  new GoogleAppsCardV1Button()
+                    .setText("OPEN CASE")
+                    .setOnClick(new GoogleAppsCardV1OnClick()
+                      .setOpenLink(new GoogleAppsCardV1OpenLink()
+                        .setUrl("https://support.example.com/orders/case123"))),
+                  new GoogleAppsCardV1Button()
+                    .setText("RESOLVE CASE")
+                    .setOnClick(new GoogleAppsCardV1OnClick()
+                      .setOpenLink(new GoogleAppsCardV1OpenLink()
+                        .setUrl("https://support.example.com/orders/case123?resolved=y"))),
+                  new GoogleAppsCardV1Button()
+                    .setText("ASSIGN TO ME")
+                    .setOnClick(new GoogleAppsCardV1OnClick()
+                      .setAction(new GoogleAppsCardV1Action().setFunction("assign")))))))))))));
     }
     // [END preview_links_card]
-    return new GenericJson();
+    return null;
   }
 
   // [START preview_links_assign]
   // Updates a card that was attached to a message with a previewed link.
-  GenericJson onCardClick(JsonNode event) {
+  Message onCardClick(JsonNode event) {
     // To respond to the correct button, checks the button's actionMethodName.
     if (event.at("/action/actionMethodName").asText().equals("assign")) {
       // A hard-coded card is used in this example. In a real-life scenario,
@@ -193,97 +140,49 @@ public class App {
 
       // Returns the updated card that displays "You" for the assignee
       // and that disables the button.
-      GoogleAppsCardV1CardHeader header = new GoogleAppsCardV1CardHeader();
-      header.setTitle("Example Customer Service Case");
-      header.setSubtitle("Case basics");
-
-      GoogleAppsCardV1DecoratedText caseIdDecoratedText = new GoogleAppsCardV1DecoratedText();
-      caseIdDecoratedText.setTopLabel("Case ID");
-      caseIdDecoratedText.setText("case123");
-
-      GoogleAppsCardV1Widget caseIdWidget = new GoogleAppsCardV1Widget();
-      caseIdWidget.setDecoratedText(caseIdDecoratedText);
-
-      GoogleAppsCardV1DecoratedText assigneeDecoratedText = new GoogleAppsCardV1DecoratedText();
-      assigneeDecoratedText.setTopLabel("Assignee");
-      // The assignee is now "You"
-      assigneeDecoratedText.setText("You");
-
-      GoogleAppsCardV1Widget assigneeWidget = new GoogleAppsCardV1Widget();
-      assigneeWidget.setDecoratedText(assigneeDecoratedText);
-
-      GoogleAppsCardV1DecoratedText statusDecoratedText = new GoogleAppsCardV1DecoratedText();
-      statusDecoratedText.setTopLabel("Status");
-      statusDecoratedText.setText("Open");
-
-      GoogleAppsCardV1Widget statusWidget = new GoogleAppsCardV1Widget();
-      statusWidget.setDecoratedText(statusDecoratedText);
-
-      GoogleAppsCardV1DecoratedText subjectDecoratedText = new GoogleAppsCardV1DecoratedText();
-      subjectDecoratedText.setTopLabel("Subject");
-      subjectDecoratedText.setText("It won't turn on...");
-
-      GoogleAppsCardV1Widget subjectWidget = new GoogleAppsCardV1Widget();
-      subjectWidget.setDecoratedText(subjectDecoratedText);
-
-      GoogleAppsCardV1OpenLink openOpenLink = new GoogleAppsCardV1OpenLink();
-      openOpenLink.setUrl("https://support.example.com/orders/case123");
-
-      GoogleAppsCardV1OnClick openOnClick = new GoogleAppsCardV1OnClick();
-      openOnClick.setOpenLink(openOpenLink);
-
-      GoogleAppsCardV1Button openButton = new GoogleAppsCardV1Button();
-      openButton.setText("OPEN CASE");
-      openButton.setOnClick(openOnClick);
-
-      GoogleAppsCardV1OpenLink resolveOpenLink = new GoogleAppsCardV1OpenLink();
-      resolveOpenLink.setUrl("https://support.example.com/orders/case123?resolved=y");
-
-      GoogleAppsCardV1OnClick resolveOnClick = new GoogleAppsCardV1OnClick();
-      resolveOnClick.setOpenLink(resolveOpenLink);
-
-      GoogleAppsCardV1Button resolveButton = new GoogleAppsCardV1Button();
-      resolveButton.setText("RESOLVE CASE");
-      resolveButton.setOnClick(resolveOnClick);
-
-      GoogleAppsCardV1Action assignAction = new GoogleAppsCardV1Action();
-      assignAction.setFunction("assign");
-
-      GoogleAppsCardV1OnClick assignOnClick = new GoogleAppsCardV1OnClick();
-      assignOnClick.setAction(assignAction);
-
-      GoogleAppsCardV1Button assignButton = new GoogleAppsCardV1Button();
-      assignButton.setText("ASSIGN TO ME");
-      // The button is now disabled
-      assignButton.setDisabled(true);
-      assignButton.setOnClick(assignOnClick);
-
-      GoogleAppsCardV1ButtonList buttonList = new GoogleAppsCardV1ButtonList();
-      buttonList.setButtons(List.of(openButton, resolveButton, assignButton));
-
-      GoogleAppsCardV1Widget buttonListWidget = new GoogleAppsCardV1Widget();
-      buttonListWidget.setButtonList(buttonList);
-
-      GoogleAppsCardV1Section section = new GoogleAppsCardV1Section();
-      section.setWidgets(List.of(caseIdWidget, assigneeWidget, statusWidget, subjectWidget, buttonListWidget));
-
-      GoogleAppsCardV1Card card = new GoogleAppsCardV1Card();
-      card.setHeader(header);
-      card.setSections(List.of(section));
-
-      GenericJson cardV2 = new GenericJson();
-      cardV2.set("cardId", "attachCard");
-      cardV2.set("card", card);
-
-      GenericJson actionResponse = new GenericJson();
-      actionResponse.set("type", actionResponseType);
-  
-      GenericJson response = new GenericJson();
-      response.set("actionResponse", actionResponse);
-      response.set("cardsV2", List.of(cardV2));
-      return response;
+      return new Message()
+      .setActionResponse(new ActionResponse()
+        .setType(actionResponseType))
+      .setCardsV2(List.of(new CardWithId()
+        .setCardId("attachCard")
+        .setCard(new GoogleAppsCardV1Card()
+          .setHeader(new GoogleAppsCardV1CardHeader()
+            .setTitle("Example Customer Service Case")
+            .setSubtitle("Case basics"))
+          .setSections(List.of(new GoogleAppsCardV1Section().setWidgets(List.of(
+            new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+              .setTopLabel("Case ID")
+              .setText("case123")),
+            new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+              .setTopLabel("Assignee")
+              // The assignee is now "You"
+              .setText("You")),
+            new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+              .setTopLabel("Status")
+              .setText("Open")),
+            new GoogleAppsCardV1Widget().setDecoratedText(new GoogleAppsCardV1DecoratedText()
+              .setTopLabel("Subject")
+              .setText("It won't turn on...")),
+            new GoogleAppsCardV1Widget()
+              .setButtonList(new GoogleAppsCardV1ButtonList().setButtons(List.of(
+                new GoogleAppsCardV1Button()
+                  .setText("OPEN CASE")
+                  .setOnClick(new GoogleAppsCardV1OnClick()
+                    .setOpenLink(new GoogleAppsCardV1OpenLink()
+                      .setUrl("https://support.example.com/orders/case123"))),
+                new GoogleAppsCardV1Button()
+                  .setText("RESOLVE CASE")
+                  .setOnClick(new GoogleAppsCardV1OnClick()
+                    .setOpenLink(new GoogleAppsCardV1OpenLink()
+                      .setUrl("https://support.example.com/orders/case123?resolved=y"))),
+                new GoogleAppsCardV1Button()
+                  .setText("ASSIGN TO ME")
+                  // The button is now disabled
+                  .setDisabled(true)
+                  .setOnClick(new GoogleAppsCardV1OnClick()
+                    .setAction(new GoogleAppsCardV1Action().setFunction("assign")))))))))))));
     }
-    return new GenericJson();
+    return null;
   }
   // [END preview_links_assign]
 }

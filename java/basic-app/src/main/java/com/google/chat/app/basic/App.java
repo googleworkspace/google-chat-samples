@@ -13,6 +13,17 @@
  */
 package com.google.chat.app.basic;
 
+import java.util.Collections;
+import java.util.logging.Logger;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
@@ -21,15 +32,6 @@ import com.google.api.client.http.apache.ApacheHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.chat.v1.model.Message;
-import java.util.Collections;
-import java.util.logging.Logger;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
@@ -49,13 +51,7 @@ public class App {
     SpringApplication.run(App.class, args);
   }
 
-  /**
-   * Returns a simple text message app response based on the type of triggering event
-   *
-   * @param event Event from chat.
-   * @return Message
-   * @throws Exception
-   */
+  // Returns a simple text message app response based on the type of triggering event
   @PostMapping("/")
   @ResponseBody
   public Message onEvent(
