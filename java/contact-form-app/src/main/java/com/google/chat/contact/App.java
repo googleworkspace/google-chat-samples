@@ -27,7 +27,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.google.api.client.json.GenericJson;
 import com.google.api.services.chat.v1.model.AccessoryWidget;
 import com.google.api.services.chat.v1.model.ActionResponse;
 import com.google.api.services.chat.v1.model.ActionStatus;
@@ -59,21 +58,21 @@ public class App {
     SpringApplication.run(App.class, args);
   }
 
+  // Process Google Chat events.
   @PostMapping("/")
   @ResponseBody
-  // Process Google Chat events.
-  public GenericJson onEvent(@RequestBody JsonNode event) throws Exception {
+  public Message onEvent(@RequestBody JsonNode event) throws Exception {
     switch (event.at("/type").asText()) {
       case "MESSAGE":
         return onMessage(event);
       case "CARD_CLICKED":
         return onCardClick(event);
     }
-    return new GenericJson();
+    return null;
   }
 
   // Responds to a MESSAGE interaction event in Google Chat.
-  GenericJson onMessage(JsonNode event) {
+  Message onMessage(JsonNode event) {
     if (!event.at("/message/slashCommand").isMissingNode()) {
       switch(event.at("/message/slashCommand/commandId").asText()) {
         case "1":
@@ -116,7 +115,7 @@ public class App {
 
   // [START subsequent_steps]
   // Responds to CARD_CLICKED interaction events in Google Chat.
-  GenericJson onCardClick(JsonNode event) {
+  Message onCardClick(JsonNode event) {
     String invokedFunction = event.at("/common/invokedFunction").asText();
     // Initial dialog form page
     if ("openInitialDialog".equals(invokedFunction)) {
@@ -128,12 +127,12 @@ public class App {
     } else if ("submitForm".equals(invokedFunction)) {
       return submitForm(event);
     }
-    return new GenericJson(); 
+    return null; 
   }
 
   // [START open_initial_dialog]
   // Opens the initial step of the dialog that lets users add contact details.
-  GenericJson openInitialDialog() {
+  Message openInitialDialog() {
     return new Message().setActionResponse(new ActionResponse()
       .setType("DIALOG")
       .setDialogAction(new DialogAction().setDialog(new Dialog().setBody(new GoogleAppsCardV1Card()
@@ -150,7 +149,7 @@ public class App {
   // [END open_initial_dialog]
 
   // Returns the second step as a dialog or card message that lets users confirm details.
-  GenericJson openConfirmation(JsonNode event) {
+  Message openConfirmation(JsonNode event) {
     String name = fetchFormValue(event, "contactName") != null ?
       fetchFormValue(event, "contactName") : "";
     String birthdate = fetchFormValue(event, "contactBirthdate") != null ?
@@ -198,7 +197,7 @@ public class App {
   // [END subsequent_steps]
 
   // Validates and submits information from a dialog or card message and notifies status.
-  GenericJson submitForm(JsonNode event) {
+  Message submitForm(JsonNode event) {
     // [START status_notification]
     String contactName = event.at("/common/parameters/contactName").asText();
     // Checks to make sure the user entered a contact name.

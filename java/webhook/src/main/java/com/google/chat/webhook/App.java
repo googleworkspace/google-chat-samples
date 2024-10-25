@@ -31,11 +31,9 @@ public class App {
   public static void main(String[] args) throws Exception {
     String message = gson.toJson(Map.of("text", "Hello from Java!"));
 
-    HttpRequest request = HttpRequest.newBuilder(
-        URI.create(URL))
-        .header("accept", "application/json; charset=UTF-8")
-        .POST(HttpRequest.BodyPublishers.ofString(message))
-        .build();
+    HttpRequest request = HttpRequest.newBuilder(URI.create(URL))
+      .header("accept", "application/json; charset=UTF-8")
+      .POST(HttpRequest.BodyPublishers.ofString(message)).build();
 
     HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
