@@ -73,7 +73,6 @@ def on_widget_update(event: dict) -> dict:
       # Only return items based on the query from the user
       ]))}}
     }}
-    # [END process_query]
 
 
 def get_contact(id: str) -> dict:
@@ -83,6 +82,7 @@ def get_contact(id: str) -> dict:
     'startIconUri': "https://www.gstatic.com/images/branding/product/2x/contacts_48dp.png",
     'text': "Contact " + id
   }
+  # [END process_query]
 
 
 if __name__ == '__main__':
