@@ -4,7 +4,7 @@ This code sample creates a Google Chat vote app that allows users to vote
 on a message. The sample is built using Node.JS 20 and [ExpressJS](https://expressjs.com)
 on Google App Engine, Standard Environment.
 
-![Vote app](./node/vote-app/showcase.png]
+![Vote app](./showcase.png]
 
 ## Deploy the sample
 
