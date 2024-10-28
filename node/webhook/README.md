@@ -1,8 +1,6 @@
-# Incoming webhook
+# Google Chat App Webhook
 
-Complete the steps described in the rest of this page, and in about fifteen
-minutes you'll have created a Google Chat app that sends messages to a
-Google Chat room.
+Please see related guide on how to [send messages to Google Chat with incoming webhooks](https://developers.google.com/chat/how-tos/webhooks).
 
 ## Step 1: Register the incoming webhook
 
@@ -26,5 +24,3 @@ Run the sample by running the following command from your working directory:
 ```
 $ node .
 ```
-
-For more information on webhooks, please read the guide on [incoming webhooks](https://developers.google.com/chat/how-tos/webhooks).

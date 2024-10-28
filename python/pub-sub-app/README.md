@@ -3,6 +3,9 @@
 This code sample creates a simple Google Chat app that listens for
 messages via Cloud Pub/Sub.
 
+For more information on how to build with Pub/Sub, please read the
+[guide](https://developers.google.com/workspace/chat/quickstart/pub-sub).
+
 ## Run the sample locally
 
 Before you can run the sample, do the following:

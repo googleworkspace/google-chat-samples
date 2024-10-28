@@ -3,7 +3,7 @@
 This code sample creates a Google Chat vote app that allows users to vote
 on a message.
 
-![Vote app](./apps-script/vote-app/showcase.png]
+![Vote app](./showcase.png]
 
 ## Deploy the sample
 

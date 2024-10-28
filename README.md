@@ -1,44 +1,50 @@
-# Google Chat code samples
+# Google Chat apps code samples
 
 This repository contains the code samples for
-[Google Chat apps](https://developers.google.com/chat).
-There are folders of samples dependent on language and platform. Generally
-the Java and Python samples live in each respective directory, but JavaScript
-has multiple form factors (client-side, server-side/Node.js, Google Apps
-Script [also server side], and Cloud Functions [GCP or Firebase]).
+[interactive Google Chat apps](https://developers.google.com/workspace/chat).
+Most of them are featured in
+[guides](https://developers.google.com/workspace/chat/overview) and
+[tutorials](https://developers.google.com/workspace/chat/samples) hosted in the
+Developer Website.
 
-Which JS platform you choose depends on the type of app application you're
-using/writing. Apps Script features tighter integration with Google Workspace data and
-applications, while Google Cloud Functions has a tighter integration with Google
-Cloud Platform services and APIs. Finally, mobile apps or mobile web apps are
-more likely to want to take advantage of Cloud Functions for Firebase. It is
-also generally straightforward to port from one JS implementation to another,
-for example, to Node.js.
+**Note:** Code samples for the
+[Google Chat API](https://developers.google.com/workspace/chat/api-overview)
+are located in the Git repositories dedicated to Google Workspace APIs (see
+[Node.js](https://github.com/googleworkspace/node-samples/tree/main/chat),
+[Python](https://github.com/googleworkspace/python-samples/tree/main/chat),
+[Java](https://github.com/googleworkspace/java-samples/tree/main/chat),
+[Apps Script](https://github.com/googleworkspace/apps-script-samples/tree/main/chat)).
 
-In each folder, you can find a language-specific implementation of the
-one or more of the following code samples:
+In each folder, you can find language-specific implementations (Node.js,
+Python, Java, Apps Script) of the following code samples and more:
 
   - **Basic app**: This app receives event notices and messages from Google
-    Chat and responds synchronously with simple text responses. This sample
-    demonstrates how to create an HTTP endpoint app using
+    Chat and responds synchronously with text responses after verifying the
+    requests. This sample demonstrates how to create an HTTP endpoint app using
     [Google App Engine](https://cloud.google.com/appengine/).
-  - **Basic async app**: This app receives event notices and messages from
-    Google Chat and responds asynchronously with simple text responses. The
-    responses will appear in the same thread that raised the original event or
-    message. This sample is an HTTP endpoint app built upon
-    [Google App Engine](https://cloud.google.com/appengine/).
+  - **Avatar app**: This app receives messages from Google Chat and responds
+    synchronously with
+    [card-formatted](https://developers.google.com/chat/concepts)
+    responses. This sample demonstrates how to create an HTTP endpoint app
+    using [Google Cloud Run Function](https://cloud.google.com/functions/).
   - **Pub/Sub app**: This app uses
     [Google Cloud Pub/Sub](https://cloud.google.com/pubsub/) to receive messages
     from Google Chat. The app responds back to Google Chat asynchronously.
-  - **Card app**: This app receives event notices and messages from Google
-    Chat and responds synchronously with a
-    [card-formatted](https://developers.google.com/chat/concepts)
-    response. This sample is an HTTP endpoint app built upon
-    [Google App Engine](https://cloud.google.com/appengine/).
   - **Vote app**: This app demonstrates updating interactive cards by providing
     a platform whereby users can vote on topics, such as who can do lunch today,
     who wants to play ball at lunch, etc. Samples can feature images or be
     text-only.
+  - **Contact form app**: This app demonstrates how to handle input forms and
+    data using cards, dialogs, form inputs, and action parameters.
+  - **Preview link app**: This app demonstrates how to use preview links to
+    provide more information for links in messages from Google Chat.
+  - **App home app**: This app handles app home event notices from Google Chat
+    and responds synchronously with cards. Both initialization and updates are
+    implemented.
+  - **Selection input app**: This app demonstrates how to use external data
+    sources to dynamically provide selection items in card widgets.
+  - **Webhook app**: This app demonstrates how to send messages to Google Chat
+    with incoming webhooks.
 
 For additional details about how to set up and run each sample, consult the
 README file included with the sample.

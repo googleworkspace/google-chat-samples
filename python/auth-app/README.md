@@ -9,6 +9,9 @@ endpoints.
 
 The sample is built using Python on Google App Engine, Standard Environment.
 
+For more information on connecting a Chat app with other services and tools,
+please read the
+[guide](https://developers.google.com/workspace/chat/connect-web-services-tools).
 
 ## Deploy the sample
 

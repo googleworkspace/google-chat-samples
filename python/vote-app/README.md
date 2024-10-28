@@ -5,7 +5,7 @@ allows users to vote on a message. The sample is built using Python 3
 and [Flask](https://flask.palletsprojects.com/) on Google App Engine,
 Standard Environment.
 
-![Vote app](./python/vote-app/showcase.png]
+![Vote app](./showcase.png]
 
 ## Deploy the sample
 
