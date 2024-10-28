@@ -5,7 +5,7 @@ on a message. The sample is built using Java 17 and
 [Spring Boot](https://spring.io/projects/spring-boot) on Google App Engine,
 Standard Environment.
 
-![Vote app](./showcase.png]
+![Vote app](./showcase.png)
 
 ## Deploy the sample
 
