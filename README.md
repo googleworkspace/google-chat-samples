@@ -1,6 +1,6 @@
 # Google Chat apps code samples
 
-This repository contains the code samples for
+This repository contains the [code samples](https://developers.google.com/workspace/chat/samples) for
 [interactive Google Chat apps](https://developers.google.com/workspace/chat).
 Most of them are featured in
 [guides](https://developers.google.com/workspace/chat/overview) and
