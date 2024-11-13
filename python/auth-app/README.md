@@ -24,15 +24,26 @@ please read the
   1. Enable the Cloud Datastore API for your project using
      [this wizard](https://console.cloud.google.com/flows/enableapi?apiid=datastore.googleapis.com).
   1. Follow [instructions](https://support.google.com/googleapi/answer/6158849?hl=en) for creating
-     an oauth client ID for your project. Use the type "Web application" and a redirect
-     URI of \
-     `https://<project ID>.appspot.com/auth/callback`.
+     an oauth client ID for your project. Use the type "Web application".
   1. Download the associated JSON file, move it to this directory, and name it
-     `client_secret.json`.
+     `client_secrets.json`.
 
   1. Run the following command to deploy the app:
      ```
      gcloud app deploy
+     ```
+  1. Fetch the URL:
+     ```
+     gcloud app browse
+     ```
+  1. Replace the `redirect_uris` in your `client_secrets.json` with `<URL from the previous step>/auth/callback`.
+  1. Create a [service account](https://support.google.com/a/answer/7378726?hl=en#)
+  1. Make the service account the default in the [App Engine Application Settings](https://console.cloud.google.com/appengine/settings)
+  1. Grant the service account permissions to access the datastore
+     ```
+     gcloud projects add-iam-policy-binding $PROJECT_ID \
+      --member="serviceAccount:$SERVICE_ACCOUNT_EMAIL" \
+      --role="roles/datastore.owner"
      ```
 
 ## Configure the app for Google Chat
@@ -76,7 +87,25 @@ To verify that the sample is running and responds with the correct data
 to incoming requests, run the following command from the terminal:
 
 ```
-curl -H 'Content-Type: application/json' --data '{"type": "MESSAGE", "configCompleteRedirectUrl": "https://www.example.com", "message": { "text": "header keyvalue", "thread": null }, "user": { "name": "users/123", "displayName": "me"}, "space": { "displayName": "space", "name": "spaces/-oMssgAAAAE"}}' http://127.0.0.1:8080/
+curl \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "type": "MESSAGE",
+    "configCompleteRedirectUrl": "https://www.example.com",
+    "message": {
+      "text": "header keyvalue",
+      "thread": null
+    },
+    "user": {
+      "name": "users/123",
+      "displayName": "me"
+    },
+    "space": {
+      "displayName": "space",
+      "name": "spaces/-oMssgAAAAE"
+    }
+  }' \
+  http://127.0.0.1:8080/
 ```
 
 ## Shut down the local environment

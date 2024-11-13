@@ -21,3 +21,5 @@ runtime: python310
 env_variables:
   CLIENT_SECRET_PATH: "client_secret.json"
   SESSION_SECRET: "notasecret"
+
+service_account: <SERVICE_ACCOUNT>
