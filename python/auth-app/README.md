@@ -19,8 +19,14 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 ##  Deployment Steps
 
 1. **Enable APIs:**
-   *  Enable the People API: [Enable People API](https://console.cloud.google.com/flows/enableapi?apiid=people.googleapis.com)
    *  Enable the Cloud Datastore API: [Enable Datastore API](https://console.cloud.google.com/flows/enableapi?apiid=datastore.googleapis.com)
+   *  Enable the People API: [Enable People API](https://console.cloud.google.com/flows/enableapi?apiid=people.googleapis.com)
+   *  Enable the Google Chat API:  [Enable Chat API](https://console.cloud.google.com/flows/enableapi?apiid=chat.googleapis.com)
+
+   ```bash
+   gcloud services enable \
+    datastore.googleapis.com people.googleapis.com chat.googleapis.com
+   ```
 
 2. **Create OAuth Client ID:**
    * In your Google Cloud project, go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
@@ -30,7 +36,7 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
    * Download the JSON file and rename it to `client_secrets.json` in your project directory.
 
 3. **Deploy to App Engine:**
-   * Open `app.yaml` and replace `<SERVICE_ACCOUNT>` with the email address of your App Engine default service account (you can find this in the App Engine settings in Cloud Console).
+   * Open `app.yaml` and replace `<SERVICE_ACCOUNT>` with the email address of your App Engine default service account (you can find this in the [App Engine settings](https://console.cloud.google.com/appengine/settings) in Cloud Console).
    * Deploy the app:
      ```bash
      gcloud app deploy
@@ -60,8 +66,8 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 1. **Enable the Google Chat API:**  [Enable Chat API](https://console.cloud.google.com/flows/enableapi?apiid=chat.googleapis.com)
 2. **Create a Google Chat App:**
    * Go to [Google Chat API](https://developers.google.com/chat/api/guides/quickstart/apps-script) and click "Configuration".
-   * Enter your App Engine app's URL (obtained in the previous deployment steps) as the **Bot URL**.
-   *  Complete the rest of the configuration as needed.
+   * Enter your App Engine app's URL (obtained in the previous deployment steps) as the **HTTP endpoint URL**.
+   * Complete the rest of the configuration as needed.
 
 ## Interact with the App
 
@@ -80,7 +86,7 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 2. **Set Environment Variable:**
    ```bash
    export GOOGLE_APPLICATION_CREDENTIALS=./service-acct.json 
-````
+   ```
 
 3.  **Create Virtual Environment (Recommended):**
 
@@ -103,7 +109,7 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 
 6.  **Test the App:**
 
-```
+```bash
 curl \
   -H 'Content-Type: application/json' \
   --data '{
