@@ -14,7 +14,7 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 * **Python 3.7 or higher:**  [Download](https://www.python.org/downloads/)
 * **Google Cloud SDK:**  [Install](https://cloud.google.com/sdk/docs/install)
 * **Google Cloud Project:**  [Create](https://console.cloud.google.com/projectcreate)
-* **Basic familiarity with Google Cloud Console and command line:**
+* **Basic familiarity with Google Cloud Console and command line**
 
 ##  Deployment Steps
 
@@ -24,15 +24,14 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
    *  Enable the Google Chat API:  [Enable Chat API](https://console.cloud.google.com/flows/enableapi?apiid=chat.googleapis.com)
 
    ```bash
-   gcloud services enable \
-    datastore.googleapis.com people.googleapis.com chat.googleapis.com
+   gcloud services enable datastore.googleapis.com people.googleapis.com chat.googleapis.com
    ```
 
 2. **Create OAuth Client ID:**
    * In your Google Cloud project, go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
-   * Click "Create Credentials" > "OAuth client ID".
-   * Select "Web application" as the application type.
-   * Add `http://localhost:8080/auth/callback` to "Authorized redirect URIs" for local testing.
+   * Click `Create Credentials > OAuth client ID`.
+   * Select `Web application` as the application type.
+   * Add `http://localhost:8080/auth/callback` to `Authorized redirect URIs` for local testing.
    * Download the JSON file and rename it to `client_secrets.json` in your project directory.
 
 3. **Deploy to App Engine:**
@@ -45,7 +44,7 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
      ```bash
      gcloud app describe | grep defaultHostname
      ```
-   * Update `client_secrets.json`: Replace `http://localhost:8080/auth/callback` in "Authorized redirect URIs" with `<hostname from the previous step>/auth/callback`.
+   * Update `client_secrets.json`: Replace `http://localhost:8080/auth/callback` in `Authorized redirect URIs` with `<hostname from the previous step>/auth/callback`.
    * Redeploy the app:
      ```bash
      gcloud app deploy
@@ -61,13 +60,11 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
        --role="roles/datastore.owner"
       ```
 
-## Configure Google Chat Integration
+## Create the Google Chat app
 
-1. **Enable the Google Chat API:**  [Enable Chat API](https://console.cloud.google.com/flows/enableapi?apiid=chat.googleapis.com)
-2. **Create a Google Chat App:**
-   * Go to [Google Chat API](https://developers.google.com/chat/api/guides/quickstart/apps-script) and click "Configuration".
-   * Enter your App Engine app's URL (obtained in the previous deployment steps) as the **HTTP endpoint URL**.
-   * Complete the rest of the configuration as needed.
+* Go to [Google Chat API](https://developers.google.com/chat/api/guides/quickstart/apps-script) and click `Configuration`.
+* Enter your App Engine app's URL (obtained in the previous deployment steps) as the **HTTP endpoint URL**.
+* Complete the rest of the configuration as needed.
 
 ## Interact with the App
 
@@ -75,24 +72,24 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 * @mention the app.
 * Follow the authorization link to grant the app access to your profile.
 * Send messages to the app to see your profile information.
-* Type "logout" to deauthorize the app.
+* Type `logout` to deauthorize the app.
 
 ## Run Locally
 
 1. **Set up Service Account:**
-   * Create a service account with the "Project > Editor" role.
-   * Download the service account key as a JSON file (`service-acct.json`).
+   * Create a service account with the `Project > Editor` role.
+   * Download the service account key as a JSON file (`service-account.json`).
 
 2. **Set Environment Variable:**
    ```bash
-   export GOOGLE_APPLICATION_CREDENTIALS=./service-acct.json 
+   export GOOGLE_APPLICATION_CREDENTIALS=./service-account.json 
    ```
 
 3.  **Create Virtual Environment (Recommended):**
 
     ```bash
-    python3 -m venv venv
-    source venv/bin/activate
+    python3 -m venv env
+    source env/bin/activate
     ```
 
 4.  **Install Dependencies:**
@@ -130,8 +127,3 @@ curl \
   }' \
   http://127.0.0.1:8080/
 ```
-
-## Troubleshooting
-
-  * **`SpooledTemporaryFile` Error:** If you encounter an error related to the `SpooledTemporaryFile` class,  replace `from tempfile import SpooledTemporaryFile` with `from tempfile import TemporaryFile` in `lib/werkzeug/formparser.py`.
-  * **Other Errors:** Refer to the [Google Chat API documentation](https://www.google.com/url?sa=E&source=gmail&q=https://developers.google.com/chat/api/guides/overview) and [App Engine documentation](https://cloud.google.com/appengine/docs) for troubleshooting and common issues.
