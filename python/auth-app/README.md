@@ -14,44 +14,54 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 * **Python 3.7 or higher:**  [Download](https://www.python.org/downloads/)
 * **Google Cloud SDK:**  [Install](https://cloud.google.com/sdk/docs/install)
 * **Google Cloud Project:**  [Create](https://console.cloud.google.com/projectcreate)
-* **Basic familiarity with Google Cloud Console and command line**
 
 ##  Deployment Steps
 
 1. **Enable APIs:**
-   *  Enable the Cloud Datastore API: [Enable Datastore API](https://console.cloud.google.com/flows/enableapi?apiid=datastore.googleapis.com)
-   *  Enable the People API: [Enable People API](https://console.cloud.google.com/flows/enableapi?apiid=people.googleapis.com)
-   *  Enable the Google Chat API:  [Enable Chat API](https://console.cloud.google.com/flows/enableapi?apiid=chat.googleapis.com)
 
-   ```bash
-   gcloud services enable datastore.googleapis.com people.googleapis.com chat.googleapis.com
-   ```
+   * Enable the Cloud Datastore, People, and Google Chat APIs using the
+     [console](https://console.cloud.google.com/apis/enableflow?apiid=datastore.googleapis.com,people.googleapis.com,chat.googleapis.com)
+     or gcloud:
 
-2. **Create OAuth Client ID:**
-   * In your Google Cloud project, go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
-   * Click `Create Credentials > OAuth client ID`.
-   * Select `Web application` as the application type.
-   * Add `http://localhost:8080/auth/callback` to `Authorized redirect URIs` for local testing.
-   * Download the JSON file and rename it to `client_secrets.json` in your project directory.
+     ```bash
+     gcloud services enable datastore.googleapis.com people.googleapis.com chat.googleapis.com
+     ```
 
-3. **Deploy to App Engine:**
-   * Open `app.yaml` and replace `<SERVICE_ACCOUNT>` with the email address of your App Engine default service account (you can find this in the [App Engine settings](https://console.cloud.google.com/appengine/settings) in Cloud Console).
+1. **Initiate Deployment to App Engine:**
+
+   * Open `app.yaml` and replace `<SERVICE_ACCOUNT>` with the email address of your App Engine
+     default service account (you can find this in the
+     [App Engine settings](https://console.cloud.google.com/appengine/settings) in Cloud Console).
+
    * Deploy the app:
+
      ```bash
      gcloud app deploy
      ```
+
+1. **Create and Use OAuth Client ID:**
+
    * Get the app hostname:
+
      ```bash
      gcloud app describe | grep defaultHostname
      ```
-   * Update `client_secrets.json`: Replace `http://localhost:8080/auth/callback` in `Authorized redirect URIs` with `<hostname from the previous step>/auth/callback`.
-   * Redeploy the app:
+
+   * In your Google Cloud project, go to [APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
+   * Click `Create Credentials > OAuth client ID`.
+   * Select `Web application` as the application type.
+   * Add `<hostname from the previous step>/auth/callback` to `Authorized redirect URIs`.
+   * Download the JSON file and rename it to `client_secrets.json` in your project directory.
+   * Redeploy the app with the file `client_secrets.json`:
+
      ```bash
      gcloud app deploy
      ```
 
-4. **Grant Datastore Permissions:**
+1. **Grant Datastore Permissions:**
+
    *  Grant the App Engine default service account permissions to access Datastore:
+
       ```bash
       PROJECT_ID=$(gcloud config list --format='value(core.project)')
       SERVICE_ACCOUNT_EMAIL=$(gcloud app describe | grep serviceAccount | cut -d ':' -f 2) 
@@ -62,8 +72,11 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 
 ## Create the Google Chat app
 
-* Go to [Google Chat API](https://developers.google.com/chat/api/guides/quickstart/apps-script) and click `Configuration`.
-* Enter your App Engine app's URL (obtained in the previous deployment steps) as the **HTTP endpoint URL**.
+* Go to
+  [Google Chat API](https://developers.google.com/chat/api/guides/quickstart/apps-script)
+  and click `Configuration`.
+* Enter your App Engine app's URL (obtained in the previous deployment steps)
+  as the **HTTP endpoint URL**.
 * Complete the rest of the configuration as needed.
 
 ## Interact with the App
@@ -73,57 +86,3 @@ This sample demonstrates how to create a Google Chat app that requests authoriza
 * Follow the authorization link to grant the app access to your profile.
 * Send messages to the app to see your profile information.
 * Type `logout` to deauthorize the app.
-
-## Run Locally
-
-1. **Set up Service Account:**
-   * Create a service account with the `Project > Editor` role.
-   * Download the service account key as a JSON file (`service-account.json`).
-
-2. **Set Environment Variable:**
-   ```bash
-   export GOOGLE_APPLICATION_CREDENTIALS=./service-account.json 
-   ```
-
-3.  **Create Virtual Environment (Recommended):**
-
-    ```bash
-    python3 -m venv env
-    source env/bin/activate
-    ```
-
-4.  **Install Dependencies:**
-
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-5.  **Run the App:**
-
-    ```bash
-    python main.py
-    ```
-
-6.  **Test the App:**
-
-```bash
-curl \
-  -H 'Content-Type: application/json' \
-  --data '{
-    "type": "MESSAGE",
-    "configCompleteRedirectUrl": "https://www.example.com",
-    "message": {
-      "text": "header keyvalue",
-      "thread": null
-    },
-    "user": {
-      "name": "users/123",
-      "displayName": "me"
-    },
-    "space": {
-      "displayName": "space",
-      "name": "spaces/-oMssgAAAAE"
-    }
-  }' \
-  http://127.0.0.1:8080/
-```
