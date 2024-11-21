@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "google-auth-library": "^9.10.0",
-    "express": "^4.19.2"
+    "express": "^4.21.0"
   },
   "license": "Apache-2.0"
 }
