@@ -1,0 +1,24 @@
+{
+  "name": "user-auth-app",
+  "version": "1.0.0",
+  "description": "This is a Google Chat app that uses OAuth to call Chat API, storing user tokens in a Firestore database.",
+  "main": "index.js",
+  "type": "module",
+  "license": "Apache-2.0",
+  "scripts": {
+    "start": "node index.js",
+    "lint": "eslint *.js",
+    "lint:fix": "eslint --fix *.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@google-apps/chat": "^0.11.0",
+    "@google-cloud/firestore": "^7.11.0",
+    "express": "^4.21.2",
+    "google-auth-library": "^9.15.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-google": "^0.14.0"
+  }
+}

@@ -43,6 +43,9 @@ Python, Java, Apps Script) of the following code samples and more:
     implemented.
   - **Selection input app**: This app demonstrates how to use external data
     sources to dynamically provide selection items in card widgets.
+  - **User Auth app**: This app demonstrates how to obtain authorization to call
+    Chat API with user credentials and store the user tokens in a database to be
+    reused later.
   - **Webhook app**: This app demonstrates how to send messages to Google Chat
     with incoming webhooks.
 
