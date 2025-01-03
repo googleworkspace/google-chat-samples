@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-"""The main script for the project, which starts an Express app
+"""The main script for the project, which starts a Flask app
 to listen to HTTP requests from Chat events and the OAuth flow callback."""
 
 import logging
