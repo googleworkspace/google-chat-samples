@@ -17,55 +17,41 @@ limitations under the License.
 
 <!-- [START chat_avatar_app_build] -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.google.chat</groupId>
+  <groupId>gcfv2</groupId>
   <artifactId>avatar-app</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1</version>
+  <name>Avatar App</name>
 
   <properties>
-    <maven.compiler.target>17</maven.compiler.target>
-    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.release>21</maven.compiler.release>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.google.cloud.functions</groupId>
       <artifactId>functions-framework-api</artifactId>
-      <version>1.0.1</version>
+      <version>1.1.4</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
     <dependency>
-        <groupId>com.google.code.gson</groupId>
-        <artifactId>gson</artifactId>
-        <version>2.9.1</version>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.12.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-chat -->
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-chat</artifactId>
-      <version>v1-rev20241008-2.0.0</version>
+      <version>v1-rev20250116-2.0.0</version>
     </dependency>
+
   </dependencies>
 
-  <!-- Required for Java 11 functions in the inline editor -->
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
-        <configuration>
-          <excludes>
-            <exclude>.google/</exclude>
-          </excludes>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
 </project>
 <!-- [END chat_avatar_app_build] -->

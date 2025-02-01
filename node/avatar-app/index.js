@@ -15,57 +15,73 @@
  */
 
 // [START chat_avatar_app]
+const functions = require('@google-cloud/functions-framework');
 
-// The ID of the slash command "/about".
-// It's not enabled by default, set to the actual ID to enable it. You need to
-// use the same ID as set in the Google Chat API configuration.
-const ABOUT_COMMAND_ID = "";
+// Command IDs (configure these in Google Chat API)
+const ABOUT_COMMAND_ID = 1; // ID for the "/about" slash command
+const HELP_COMMAND_ID = 2; // ID for the "Help" quick command
 
 /**
- * Google Cloud Function that responds to messages sent from a
- * Google Chat space.
+ * Google Cloud Function that handles HTTP requests from Google Chat.
  *
- * @param {Object} req Request sent from Google Chat space
- * @param {Object} res Response to send back
+ * @param {Object} req - The HTTP request object sent from Google Chat.
+ * @param {Object} res - The HTTP response object.
  */
-exports.avatarApp = function avatarApp(req, res) {
-  if (req.method === 'GET' || !req.body.message) {
-    return res.send('Hello! This function is meant to be used ' +
-      'in a Google Chat Space.');
-  }
-
-  // Stores the Google Chat event as a variable.
+functions.http('avatarApp', (req, res) => {
   const event = req.body;
 
-  // [START chat_avatar_slash_command]
-  // Checks for the presence of a slash command in the message.
-  if (event.message.slashCommand) {
-    // Executes the slash command logic based on its ID.
-    // Slash command IDs are set in the Google Chat API configuration.
-    switch (event.message.slashCommand.commandId) {
-      case ABOUT_COMMAND_ID:
-        return res.send({
-          privateMessageViewer: event.user,
-          text: 'The Avatar app replies to Google Chat messages.'
-        });
-    }
+  if (event.appCommandMetadata) {
+    handleAppCommands(event, res);
+  } else {
+    handleRegularMessage(event, res);
   }
-  // [END chat_avatar_slash_command]
+});
 
-  const sender = req.body.message.sender.displayName;
-  const image = req.body.message.sender.avatarUrl;
-  const data = createMessage(sender, image);
-  res.send(data);
-};
+// [START chat_avatar_slash_command]
+/**
+ * Handles slash and quick commands.
+ *
+ * @param {Object} event - The Google Chat event.
+ * @param {Object} res - The HTTP response object.
+ */
+function handleAppCommands(event, res) {
+  const {appCommandId, appCommandType} = event.appCommandMetadata;
+
+  switch (appCommandId) {
+    case ABOUT_COMMAND_ID:
+      return res.send({
+        privateMessageViewer: event.user,
+        text: 'The Avatar app replies to Google Chat messages.'
+      });
+    case HELP_COMMAND_ID:
+      return res.send({
+        privateMessageViewer: event.user,
+        text: 'The Avatar app replies to Google Chat messages.'
+      });
+  }
+}
+// [END chat_avatar_slash_command]
 
 /**
- * Creates a card with two widgets.
- * 
- * @param {string} displayName the sender's display name
- * @param {string} avatarUrl the URL for the sender's avatar
- * @return {Object} a card with the user's avatar.
+ * Handles regular messages (not commands).
+ *
+ * @param {Object} event - The Google Chat event.
+ * @param {Object} res - The HTTP response object.
  */
-function createMessage(displayName, avatarUrl) {
+function handleRegularMessage(event, res) {
+  const messageData = createMessage(event.user);
+  res.send(messageData);
+}
+
+/**
+ * Creates a card message with the user's avatar.
+ *
+ * @param {Object} user - The user who sent the message.
+ * @param {string} user.displayName - The user's display name.
+ * @param {string} user.avatarUrl - The URL of the user's avatar.
+ * @return {Object} - The card message object.
+ */
+function createMessage({displayName, avatarUrl}) {
   return {
     text: 'Here\'s your avatar',
     cardsV2: [{
@@ -75,13 +91,14 @@ function createMessage(displayName, avatarUrl) {
         header: {
           title: `Hello ${displayName}!`,
         },
-        sections: [{ widgets: [{
-          textParagraph: { text: 'Your avatar picture: ' }
-        }, {
-          image: { imageUrl: avatarUrl }
-        }]}]
-      }
-    }]
+        sections: [{
+          widgets: [
+            {textParagraph: {text: 'Your avatar picture:'}},
+            {image: {imageUrl: avatarUrl}},
+          ],
+        }],
+      },
+    }],
   };
 }
 // [END chat_avatar_app]

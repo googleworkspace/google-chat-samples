@@ -1,4 +1,4 @@
-# Copyright 2023 Google LLC
+# Copyright 2024 Google LLC
 #
 # Licensed under the Apache License, Version 2.0 (the 'License');
 # you may not use this file except in compliance with the License.
@@ -18,69 +18,106 @@ from typing import Any, Mapping
 import flask
 import functions_framework
 
-# The ID of the slash command "/about".
-# It's not enabled by default, set to the actual ID to enable it. You need to
-# use the same ID as set in the Google Chat API configuration.
-ABOUT_COMMAND_ID = ""
+# Command IDs (configure these in Google Chat API)
+ABOUT_COMMAND_ID = 1  # ID for the "/about" slash command
+HELP_COMMAND_ID = 2  # ID for the "Help" quick command
+
 
 @functions_framework.http
 def avatar_app(req: flask.Request) -> Mapping[str, Any]:
-  """Google Cloud Function that handles requests from Google Chat
+    """Google Cloud Function that handles HTTP requests from Google Chat.
 
-  Args:
-      flask.Request: the request
+    Args:
+        flask.Request: the request
 
-  Returns:
-      Mapping[str, Any]: the response
-  """
-  if req.method == "GET":
-    return "Hello! This function must be called from Google Chat."
+    Returns:
+        Mapping[str, Any]: the response
+    """
+    event = req.get_json(silent=True)
 
-  request_json = req.get_json(silent=True)
-
-  # [START chat_avatar_slash_command]
-  # Checks for the presence of a slash command in the message.
-  if "slashCommand" in request_json["message"]:
-    # Executes the slash command logic based on its ID.
-    # Slash command IDs are set in the Google Chat API configuration.
-    if request_json["message"]["slashCommand"]["commandId"] == ABOUT_COMMAND_ID:
-      return {
-        "privateMessageViewer": request_json["user"],
-        "text": 'The Avatar app replies to Google Chat messages.'
-      }
-  # [END chat_avatar_slash_command]
-
-  display_name = request_json["message"]["sender"]["displayName"]
-  avatar = request_json["message"]["sender"]["avatarUrl"]
-  response = create_message(name=display_name, image_url=avatar)
-  return response
+    if event and "appCommandMetadata" in event:
+        return handle_app_commands(event)
+    else:
+        return handle_regular_message(event)
 
 
-def create_message(name: str, image_url: str) -> Mapping[str, Any]:
-  """Google Cloud Function that handles requests from Google Chat
+# [START chat_avatar_slash_command]
+def handle_app_commands(event: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Handles slash and quick commands.
 
-  Args:
-      str name: the sender's display name.
-      str image_url: the URL for the sender's avatar.
+    Args:
+        Mapping[str, Any] event: The Google Chat event.
 
-  Returns:
-      Mapping[str, Any]: a card with the user's avatar.
-  """
-  return {
-    "text": "Here's your avatar",
-    "cardsV2": [{
-      "cardId": "avatarCard",
-      "card": {
-          "name": "Avatar Card",
-          "header": { "title": f"Hello {name}!" },
-          "sections": [{
-            "widgets": [{
-              "textParagraph": { "text": "Your avatar picture:" }
-            }, {
-              "image": { "imageUrl": image_url }
-            }]
-          }]
-      }
-    }]
-  }
+    Returns:
+        Mapping[str, Any]: the response
+    """
+    app_command_id = event["appCommandMetadata"]["appCommandId"]
+
+    if app_command_id == ABOUT_COMMAND_ID:
+        return {
+            "privateMessageViewer": event["user"],
+            "text": "The Avatar app replies to Google Chat messages.",
+        }
+    elif app_command_id == HELP_COMMAND_ID:
+        return {
+            "privateMessageViewer": event["user"],
+            "text": "The Avatar app replies to Google Chat messages.",
+        }
+    return {}
+
+
+# [END chat_avatar_slash_command]
+
+
+def handle_regular_message(event: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Handles regular messages (not commands).
+
+    Args:
+        Mapping[str, Any] event: The Google Chat event.
+
+    Returns:
+        Mapping[str, Any]: the response
+    """
+
+    if not event or "user" not in event:
+        return "Invalid request."
+
+    message_data = create_message(event["user"])
+    return message_data
+
+
+def create_message(user: Mapping[str, Any]) -> Mapping[str, Any]:
+    """Creates a card message with the user's avatar.
+
+    Args:
+        Mapping[str, Any] user: The user who sent the message.
+
+    Returns:
+        Mapping[str, Any]: a card with the user's avatar.
+    """
+    display_name = user.get("displayName", "")
+    avatar_url = user.get("avatarUrl", "")
+
+    return {
+        "text": "Here's your avatar",
+        "cardsV2": [
+            {
+                "cardId": "avatarCard",
+                "card": {
+                    "name": "Avatar Card",
+                    "header": {"title": f"Hello {display_name}!"},
+                    "sections": [
+                        {
+                            "widgets": [
+                                {"textParagraph": {"text": "Your avatar picture:"}},
+                                {"image": {"imageUrl": avatar_url}},
+                            ]
+                        }
+                    ],
+                },
+            }
+        ],
+    }
+
+
 # [END chat_avatar_app]
