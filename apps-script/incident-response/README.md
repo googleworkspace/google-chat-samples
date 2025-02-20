@@ -18,7 +18,7 @@ After the response team resolves the incident, they use a slash command to
 automatically create a post-mortem in Google Docs.
 The app adds a user-provided description of the incident resolution, a transcript
 of the Chat conversation, and a summary of the conversation (automatically
-generated using [Vertex AI](https://cloud.google.com/vertex-ai)) to the post-mortem.
+generated using [Vertex AI Gemini API](https://cloud.google.com/vertex-ai/generative-ai/docs/start/quickstarts/quickstart-multimodal#send-text-only-request)) to the post-mortem.
 
 ## Tutorial
 
@@ -103,6 +103,8 @@ replace placeholder information with real information.
 To learn more about authentication in Google Chat, see [Authenticate and authorize
 Chat apps and Google Chat API requests](https://developers.devsite.corp.google.com/chat/api/guides/auth).
 
+#### 4.1 Set up authentication as a user 
+
 1. In the Google Cloud console, go to **Menu** > **APIs & Services** >
    [**OAuth consent screen**](https://console.cloud.google.com/apis/credentials/consent).
 1. Under User type, select **Internal**, then click **Create**.
@@ -126,6 +128,11 @@ Chat apps and Google Chat API requests](https://developers.devsite.corp.google.c
 1. Click **Update**.
 1. Click **Save and Continue**.
 1. Review the app registration summary, then click **Back to Dashboard**.
+
+#### 4.2 Set up authentication as an app
+
+This is available in [Developer Preview](/workspace/preview) only. 
+[The Google Chat app authentication]((https://developers.google.com/workspace/chat/authenticate-authorize-chat-app)) documentation provides details on how to set up authentication as an app.
 
 ### 5. Create an Apps Script project and connect it to the Google Cloud project
 
@@ -164,6 +171,14 @@ To enable the Admin SDK Directory service:
 1. In **Identifier**, select **AdminDirectory**.
 1. Click **Add**.
 
+To enable [Oauth2 for Apps Script library](https://github.com/googleworkspace/apps-script-oauth2):
+
+1. At the left, click **Editor** code.
+1. At the left, next to **Libraries**, click **Add a library +**.
+1. Enter the script ID `1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF`.
+1. Click **Look up**, then click **Add**.
+
+
 Now that you've created and configured a Google Cloud project and Apps Script project,
 you're ready to copy the code into your project and run the sample.
 
@@ -175,6 +190,7 @@ you're ready to copy the code into your project and run the sample.
 1. In the file `Consts.js`, replace the value of the `PROJECT_ID` with the ID
    (not the number) of your GCP Project, which you can copy from the
    [Google Cloud Console](https://console.cloud.google.com/).
+1. In the file `Consts.js`, replace `APP_CREDENTIALS` with the content of the `credentials.json` that you created earlier.
 1. Click **Deploy** > **New deployment**.
 1. Click the icon besides **Select type** and select both **Wep app** and **Add-on**.
 1. Name your deployment and click **Deploy**.
@@ -211,3 +227,8 @@ The Chat app is ready to respond to messages.
 ### 8. Open the web page
 
 Navigate to the **Web app URL** from the Apps Script deployment to test your app.
+
+#### 8.1. Select the authentication mode
+
+If the checkbox 'Use app credentials' is selected, the Chat app will use app authentication to create the space, add members and post the message to the space.
+If the checkbox is not selected, the Chat app will use user credentials instead and all the actions will be done on behalf of the user.

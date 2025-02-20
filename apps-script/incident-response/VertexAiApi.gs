@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,43 +13,64 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_incident_response_vertex]
-
+// [START chat_incident_response_vertex_ai_api]
 /**
  * Summarizes a Chat conversation using the Vertex AI text prediction API.
  *
  * @param {string} chatHistory The Chat history that will be summarized.
  * @return {string} The content from the text prediction response.
  */
+
+
 function summarizeChatHistory_(chatHistory) {
-  const prompt =
-    "Summarize the following conversation between Engineers resolving an incident"
-      + " in a few sentences. Use only the information from the conversation.\n\n"
-      + chatHistory;
-  const request = {
-    instances: [
-      { prompt: prompt }
-    ],
-    parameters: {
-      temperature: 0.2,
-      maxOutputTokens: 256,
-      topK: 40,
-      topP: 0.95
+  
+  const API_ENDPOINT = `https://${VERTEX_AI_LOCATION_ID}-aiplatform.googleapis.com/v1/projects/${PROJECT_ID}/locations/${VERTEX_AI_LOCATION_ID}/publishers/google/models/${MODEL_ID}:generateContent`;
+  const prompt = "Summarize the following conversation between Engineers resolving an incident"
+      + " in a few sentences. Use only the information from the conversation.\n\n" + chatHistory;
+  // Get the access token.
+  const accessToken = ScriptApp.getOAuthToken();
+
+  const headers = {
+    'Authorization': 'Bearer ' + accessToken,
+    'Content-Type': 'application/json',
+  };
+  const payload = {
+    'contents': {
+      'role': 'user',
+      'parts' : [
+        {
+          'text': prompt
+        }
+      ]
     }
   }
-  const fetchOptions = {
-    method: 'POST',
-    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
-    contentType: 'application/json',
-    payload: JSON.stringify(request)
-  }
-  const response = UrlFetchApp.fetch(
-    `https://${VERTEX_AI_LOCATION_ID}-aiplatform.googleapis.com/v1`
-      + `/projects/${PROJECT_ID}/locations/${VERTEX_AI_LOCATION_ID}`
-      + "/publishers/google/models/text-bison:predict",
-    fetchOptions);
-  const payload = JSON.parse(response.getContentText());
-  return payload.predictions[0].content;
-}
+  const options = {
+    'method': 'post',
+    'headers': headers,
+    'payload': JSON.stringify(payload),
+    'muteHttpExceptions': true,
+  };
+  try {
+    const response = UrlFetchApp.fetch(API_ENDPOINT, options);
+    const responseCode = response.getResponseCode();
+    const responseText = response.getContentText();
 
-// [END chat_incident_response_vertex]
+    if (responseCode === 200) {
+      const jsonResponse = JSON.parse(responseText);
+      console.log(jsonResponse)
+      if (jsonResponse.candidates && jsonResponse.candidates.length > 0) {
+        return jsonResponse.candidates[0].content.parts[0].text; // Access the summarized text
+      } else {
+        return "No summary found in response.";
+      }
+
+    } else {
+      console.error("Vertex AI API Error:", responseCode, responseText);
+      return `Error: ${responseCode} - ${responseText}`;
+    }
+  } catch (e) {
+    console.error("UrlFetchApp Error:", e);
+    return "Error: " + e.toString();
+  }
+}
+// [END chat_incident_response_vertex_ai_api]

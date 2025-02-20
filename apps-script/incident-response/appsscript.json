@@ -1,35 +1,42 @@
 {
-  "timeZone": "America/Toronto",
-  "dependencies": {
-    "enabledAdvancedServices": [
-      {
-        "userSymbol": "AdminDirectory",
-        "version": "directory_v1",
-        "serviceId": "admin"
-      },
-      {
-        "userSymbol": "Chat",
-        "version": "v1",
-        "serviceId": "chat"
-      }
-    ]
-  },
-  "exceptionLogging": "STACKDRIVER",
-  "runtimeVersion": "V8",
-  "chat": {},
-  "oauthScopes": [
-    "https://www.googleapis.com/auth/chat.spaces.create",
-    "https://www.googleapis.com/auth/chat.memberships",
-    "https://www.googleapis.com/auth/chat.memberships.app",
-    "https://www.googleapis.com/auth/chat.messages",
-    "https://www.googleapis.com/auth/documents",
-    "https://www.googleapis.com/auth/admin.directory.user.readonly",
-    "https://www.googleapis.com/auth/script.external_request",
-    "https://www.googleapis.com/auth/userinfo.email",
-    "https://www.googleapis.com/auth/cloud-platform"
-  ],
-  "webapp": {
-    "executeAs": "USER_ACCESSING",
-    "access": "DOMAIN"
+    "timeZone": "America/Toronto",
+    "exceptionLogging": "STACKDRIVER",
+    "runtimeVersion": "V8",
+    "dependencies": {
+      "enabledAdvancedServices": [
+        {
+          "userSymbol": "Chat",
+          "serviceId": "chat",
+          "version": "v1"
+        },
+        {
+          "userSymbol": "AdminDirectory",
+          "version": "directory_v1",
+          "serviceId": "admin"
+        }
+      ],
+      "libraries": [
+        {
+          "userSymbol": "OAuth2",
+          "libraryId": "1B7FSrk5Zi6L1rSxxTDgDEUsPzlukDsi4KGuTMorsTQHhGBzBkMun4iDF",
+          "version": "43"
+        }
+      ]
+    },
+    "webapp": {
+      "executeAs": "USER_ACCESSING",
+      "access": "DOMAIN"
+    },
+    "oauthScopes": [
+      "https://www.googleapis.com/auth/chat.spaces",
+      "https://www.googleapis.com/auth/chat.memberships",
+      "https://www.googleapis.com/auth/chat.memberships.app",
+      "https://www.googleapis.com/auth/chat.messages",
+      "https://www.googleapis.com/auth/documents",
+      "https://www.googleapis.com/auth/script.external_request",
+      "https://www.googleapis.com/auth/userinfo.email",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/admin.directory.user.readonly"
+    ],
+    "chat": {}
   }
-}

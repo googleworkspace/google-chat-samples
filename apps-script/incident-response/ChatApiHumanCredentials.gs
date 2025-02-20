@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,21 +13,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-// [START chat_incident_response_space_creator]
+// [START handle_incident_with_human_credentials]
 
 /**
- * Creates a space in Google Chat with the provided title and members, and posts an
- * initial message to it.
+ * Handles an incident by creating a chat space, adding members, and posting a message.
+ * All the actions are done using human credentials.
  *
- * @param {Object} formData the data submitted by the user. It should contain the fields
- *                          title, description, and users.
- * @return {string} the resource name of the new space.
+ * @param {Object} formData - The data submitted by the user. It should contain the fields:
+ *                           - title: The display name of the chat space.
+ *                           - description: The description of the incident.
+ *                           - users: A comma-separated string of user emails to be added to the space.
+ * @return {string} The resource name of the new space.
  */
-function createChatSpace(formData) {
+function handleIncidentWithHumanCredentials(formData) {
   const users = formData.users.trim().length > 0 ? formData.users.split(',') : [];
-  const spaceName = setUpSpace_(formData.title, users);
-  addAppToSpace_(spaceName);
-  createMessage_(spaceName, formData.description);
+  const spaceName = setUpSpaceWithHumanCredentials_(formData.title, users);
+  addAppToSpaceWithHumanCredentials_(spaceName);
+  createMessageWithHumanCredentials_(spaceName, formData.description);
   return spaceName;
 }
 
@@ -36,7 +38,7 @@ function createChatSpace(formData) {
  *
  * @return {string} the resource name of the new space.
  */
-function setUpSpace_(displayName, users) {
+function setUpSpaceWithHumanCredentials_(displayName, users) {
   const memberships = users.map(email => ({
     member: {
       name: `users/${email}`,
@@ -61,7 +63,7 @@ function setUpSpace_(displayName, users) {
  *
  * @return {string} the resource name of the new membership.
  */
-function addAppToSpace_(spaceName) {
+function addAppToSpaceWithHumanCredentials_(spaceName) {
   const request = {
     member: {
       name: "users/app",
@@ -78,7 +80,7 @@ function addAppToSpace_(spaceName) {
  *
  * @return {string} the resource name of the new message.
  */
-function createMessage_(spaceName, text) {
+function createMessageWithHumanCredentials_(spaceName, text) {
   const request = {
     text: text
   };
@@ -86,5 +88,4 @@ function createMessage_(spaceName, text) {
   const message = Chat.Spaces.Messages.create(request, spaceName);
   return message.name;
 }
-
-// [END chat_incident_response_space_creator]
+// [END handle_incident_with_human_credentials]

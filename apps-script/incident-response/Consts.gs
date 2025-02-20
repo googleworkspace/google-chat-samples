@@ -1,5 +1,5 @@
 /**
- * Copyright 2023 Google LLC
+ * Copyright 2025 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,9 @@
 // [START chat_incident_response_consts]
 
 const PROJECT_ID = 'replace-with-your-project-id';
+const CLOSE_INCIDENT_COMMAND_ID = 3;
+const APP_CREDENTIALS = 'replace-with-your-app-credentials';
+const APP_CREDENTIALS_SCOPES = 'https://www.googleapis.com/auth/chat.bot https://www.googleapis.com/auth/chat.app.memberships https://www.googleapis.com/auth/chat.app.spaces.create';
 const VERTEX_AI_LOCATION_ID = 'us-central1';
-const CLOSE_INCIDENT_COMMAND_ID = 1;
-
+const MODEL_ID = 'gemini-1.5-flash-002';
 // [END chat_incident_response_consts]
