@@ -148,10 +148,9 @@ When calling Google Chat API, the application will its own credentials.
 The service account appears on the service account page. Next, create a private key for the service account.
 
 ##### 4.2.1 Create a private key
-> This example uses an exported service account key for simplicity's sake. Exporting a private key is not
-> recommended in production because it shouldn't be stored in an insecure location, such as source control.
+> This example uses an exported service account key for simplicity's sake.
 > [!WARNING]  
-> This example uses an exported service account key for simplicity's sake. Exporting a private key is not recommended in production because it shouldn't be stored in an insecure location, such as source control.
+> Exporting a private key is not recommended in production because it shouldn't be stored in an insecure location, such as source control.
 > To learn more about secure service account implementations and best practices, see [Choose when to use service accounts](https://cloud.google.com/iam/docs/best-practices-service-accounts#choose-when-to-use).
 
 To create and download a private key for the service account, follow these steps:
