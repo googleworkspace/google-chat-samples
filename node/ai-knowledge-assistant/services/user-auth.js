@@ -26,7 +26,7 @@ const {env} = require('../env');
 const {FirestoreService} = require('./firestore-service');
 
 // The application's OAuth client credentials.
-const keys = require('../client_secrets.json').web;
+const keys = require('../credentials.json').web;
 
 // Define the app's authorization scopes.
 const scopes = ['https://www.googleapis.com/auth/chat.messages.readonly'];
