@@ -202,23 +202,22 @@ public class App {
     String contactName = event.at("/common/parameters/contactName").asText();
     // Checks to make sure the user entered a contact name.
     // If no name value detected, returns an error message.
-    if (contactName.isEmpty()) {
-      String errorMessage = "Don't forget to name your new contact!";
-      if (event.at("/dialogEventType") != null && "SUBMIT_DIALOG".equals(event.at("/dialogEventType").asText())) {
-        return new Message().setActionResponse(new ActionResponse()
-          .setType("DIALOG")
-          .setDialogAction(new DialogAction().setActionStatus(new ActionStatus()
-            .setStatusCode("INVALID_ARGUMENT")
-            .setUserFacingMessage(errorMessage))));
-      } else {
-        return new Message()
-          .setPrivateMessageViewer(new User().setName(event.at("/user/name").asText()))
-          .setText(errorMessage);
-      }
+    String errorMessage = "Don't forget to name your new contact!";
+    if (contactName.isEmpty() && event.at("/dialogEventType") != null && "SUBMIT_DIALOG".equals(event.at("/dialogEventType").asText())) {
+      return new Message().setActionResponse(new ActionResponse()
+        .setType("DIALOG")
+        .setDialogAction(new DialogAction().setActionStatus(new ActionStatus()
+          .setStatusCode("INVALID_ARGUMENT")
+          .setUserFacingMessage(errorMessage))));
     }
     // [END status_notification]
+    if (contactName.isEmpty()) {
+      return new Message()
+        .setPrivateMessageViewer(new User().setName(event.at("/user/name").asText()))
+        .setText(errorMessage);
+    }
 
-    // [START confirmation_message]
+    // [START confirmation_success]
     // The Chat app indicates that it received form data from the dialog or card.
     // Sends private text message that confirms submission.
     String confirmationMessage = "✅ " + contactName + " has been added to your contacts.";
@@ -228,12 +227,13 @@ public class App {
         .setDialogAction(new DialogAction().setActionStatus(new ActionStatus()
           .setStatusCode("OK")
           .setUserFacingMessage("Success " + contactName))));
-    } else {
-      return new Message()
-        .setActionResponse(new ActionResponse().setType("NEW_MESSAGE"))
-        .setPrivateMessageViewer(new User().setName(event.at("/user/name").asText()))
-        .setText(confirmationMessage);
     }
+    // [END confirmation_success]
+    // [START confirmation_message]
+    return new Message()
+      .setActionResponse(new ActionResponse().setType("NEW_MESSAGE"))
+      .setPrivateMessageViewer(new User().setName(event.at("/user/name").asText()))
+      .setText(confirmationMessage);
     // [END confirmation_message]
   }
 

@@ -169,24 +169,23 @@ def submit_form(event: dict) -> dict:
   contact_name = event.get('common').get('parameters')["contactName"]
   # Checks to make sure the user entered a contact name.
   # If no name value detected, returns an error message.
-  if contact_name == "":
-    error_message = "Don't forget to name your new contact!"
-    if "SUBMIT_DIALOG" == event.get('dialogEventType'):
-      return { 'actionResponse': {
-        'type': "DIALOG",
-        'dialogAction': { 'actionStatus': {
-          'statusCode': "INVALID_ARGUMENT",
-          'userFacingMessage': error_message
-        }}
+  error_message = "Don't forget to name your new contact!"
+  if contact_name == "" and "SUBMIT_DIALOG" == event.get('dialogEventType'):
+    return { 'actionResponse': {
+      'type': "DIALOG",
+      'dialogAction': { 'actionStatus': {
+        'statusCode': "INVALID_ARGUMENT",
+        'userFacingMessage': error_message
       }}
-    else:
-      return {
-        'privateMessageViewer': event.get('user'),
-        'text': error_message
-      }
-      # [END status_notification]
-
-  # [START confirmation_message]
+    }}
+    # [END status_notification]
+  if contact_name == "":
+    return {
+      'privateMessageViewer': event.get('user'),
+      'text': error_message
+    }
+  
+  # [START confirmation_success]
   # The Chat app indicates that it received form data from the dialog or card.
   # Sends private text message that confirms submission.
   confirmation_message = "✅ " + contact_name + " has been added to your contacts.";
@@ -200,13 +199,14 @@ def submit_form(event: dict) -> dict:
         }}
       }
     }
-  else:
-    return {
-      'actionResponse': { 'type': "NEW_MESSAGE" },
-      'privateMessageViewer': event.get('user'),
-      'text': confirmation_message
-    }
-    # [END confirmation_message]
+    # [END confirmation_success]
+  # [START confirmation_message]
+  return {
+    'actionResponse': { 'type': "NEW_MESSAGE" },
+    'privateMessageViewer': event.get('user'),
+    'text': confirmation_message
+  }
+  # [END confirmation_message]
 
 
 def fetch_form_value(event: dict, widgetName: str) -> str:

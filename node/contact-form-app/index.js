@@ -197,26 +197,25 @@ function submitForm(event) {
   const contactName = event.common.parameters["contactName"];
   // Checks to make sure the user entered a contact name.
   // If no name value detected, returns an error message.
-  if (!contactName) {
-    const errorMessage = "Don't forget to name your new contact!";
-    if (event.dialogEventType === "SUBMIT_DIALOG") {
-      return { actionResponse: {
-        type: "DIALOG",
-        dialogAction: { actionStatus: {
-          statusCode: "INVALID_ARGUMENT",
-          userFacingMessage: errorMessage
-        }}
-      }};
-    } else {
-      return {
-        privateMessageViewer: event.user,
-        text: errorMessage
-      };
-    }
+  const errorMessage = "Don't forget to name your new contact!";
+  if (!contactName && event.dialogEventType === "SUBMIT_DIALOG") {
+    return { actionResponse: {
+      type: "DIALOG",
+      dialogAction: { actionStatus: {
+        statusCode: "INVALID_ARGUMENT",
+        userFacingMessage: errorMessage
+      }}
+    }};
   }
   // [END status_notification]
+  if (!contactName) {
+    return {
+      privateMessageViewer: event.user,
+      text: errorMessage
+    };
+  }
 
-  // [START confirmation_message]
+  // [START confirmation_success]
   // The Chat app indicates that it received form data from the dialog or card.
   // Sends private text message that confirms submission.
   const confirmationMessage = "✅ " + contactName + " has been added to your contacts.";
@@ -229,14 +228,15 @@ function submitForm(event) {
           userFacingMessage: "Success " + contactName
         }}
       }
-    }
-  } else {
-    return {
-      actionResponse: { type: "NEW_MESSAGE" },
-      privateMessageViewer: event.user,
-      text: confirmationMessage
     };
   }
+  // [END confirmation_success]
+  // [START confirmation_message]
+  return {
+    actionResponse: { type: "NEW_MESSAGE" },
+    privateMessageViewer: event.user,
+    text: confirmationMessage
+  };
   // [END confirmation_message]
 }
 
