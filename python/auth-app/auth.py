@@ -79,7 +79,7 @@ class Store:
 
 
 def get_user_credentials(user_name: str) -> Credentials:
-    """Gets stored crednetials for a user, if it exists."""
+    """Gets stored credentials for a user, if it exists."""
     return Store().get_user_credentials(user_name)
 
 
@@ -138,7 +138,7 @@ def on_oauth2_callback() -> flask.Response:
     saved_state = flask.session["state"]
     state = flask.request.args["state"]
     if state != saved_state:
-        logging.warn("Mismatched state in oauth response")
+        logging.warning("Mismatched state in oauth response")
         return flask.abort(403)
 
     redirect_uri = flask.url_for("auth.on_oauth2_callback", _external=True)
