@@ -1,11 +1,17 @@
 # Google Chat apps code samples
 
 This repository contains the [code samples](https://developers.google.com/workspace/chat/samples) for
-[interactive Google Chat apps](https://developers.google.com/workspace/chat).
-Most of them are featured in
+[interactive Google Chat apps *not built* as Google Workspace add-ons](https://developers.google.com/workspace/chat). Most code samples are featured in
 [guides](https://developers.google.com/workspace/chat/overview) and
 [tutorials](https://developers.google.com/workspace/chat/samples) hosted in the
 Developer Website.
+
+**Important:** The code samples for
+[interactive Google Chat apps *built* as Google Workspace add-ons](https://developers.google.com/workspace/add-ons/chat) are located in the Git repository dedicated to Google Workspace add-ons (see
+[Node.js](https://github.com/googleworkspace/add-ons-samples/tree/main/node),
+[Python](https://github.com/googleworkspace/add-ons-samples/tree/main/python),
+[Java](https://github.com/googleworkspace/add-ons-samples/tree/main/java),
+[Apps Script](https://github.com/googleworkspace/add-ons-samples/tree/main/apps-script)).
 
 **Note:** Code samples for the
 [Google Chat API](https://developers.google.com/workspace/chat/api-overview)
