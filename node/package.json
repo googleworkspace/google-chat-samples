@@ -9,7 +9,7 @@
   "author": "Eric Koleda",
   "license": "Apache-2.0",
   "devDependencies": {
-    "eslint": "^6.8.0",
+    "eslint": "^9.32.0",
     "eslint-config-google": "^0.14.0"
   },
   "scripts": {
