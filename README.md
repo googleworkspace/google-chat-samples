@@ -6,6 +6,8 @@ This repository contains the [code samples](https://developers.google.com/worksp
 [tutorials](https://developers.google.com/workspace/chat/samples) hosted in the
 Developer Website.
 
+⚠️ Make sure to clear **Build this Chat app as a Workspace add-on** and click **DISABLE** when you configure brand new Chat apps to run these code samples.
+
 **Important:** The code samples for
 [interactive Google Chat apps *built* as Google Workspace add-ons](https://developers.google.com/workspace/add-ons/chat) are located in the Git repository dedicated to Google Workspace add-ons (see
 [Node.js](https://github.com/googleworkspace/add-ons-samples/tree/main/node),
