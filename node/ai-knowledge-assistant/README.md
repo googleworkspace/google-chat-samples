@@ -25,12 +25,6 @@ It uses [Vertex AI](https://cloud.google.com/vertex-ai) with the
 model to answer to user questions based on the knowledge base extracted from the
 conversation history.
 
-## Tutorial
-
-For detailed instructions to deploy and run this sample, follow the
-[dedicated tutorial](https://developers.google.com/workspace/chat/tutorial-ai-knowledge-assistant)
-in the Google Chat developer documentation.
-
 ## Scripts
 
 - `npm run test` : Executes all the unit tests.
