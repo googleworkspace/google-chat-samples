@@ -1,5 +1,5 @@
 // To learn how to use this script, refer to the documentation:
-// https://developers.google.com/apps-script/samples/chat-apps/schedule-meetings
+// https://developers.google.com/workspace/chat/tutorial-schedule-meetings
 
 /*
 Copyright 2022 Google LLC
