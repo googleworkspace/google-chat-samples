@@ -109,10 +109,10 @@ if [ ${DEPLOY_STORAGE} -eq 1 ]; then
   BUCKET=${PROJECT}-dynamic-commands
 
   # Create bucket if it's not already present
-  ${DRY_RUN} gsutil ls -p ${PROJECT} gs://${BUCKET} > /dev/null 2>&1
+  ${DRY_RUN} gcloud storage ls --project=${PROJECT} gs://${BUCKET} > /dev/null 2>&1
   RETVAL=$?
   if (( ${RETVAL} != "0" )); then
-    ${DRY_RUN} gsutil mb -p ${PROJECT} gs://${BUCKET}
+    ${DRY_RUN} gcloud storage buckets create --project=${PROJECT} gs://${BUCKET}
   fi
 fi
 

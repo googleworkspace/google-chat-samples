@@ -93,7 +93,7 @@ These are the dynamic commands that the Chat App will recognize and load.
 This can be done from the command line with the following command:
 
 ```
-gsutil -m cp command_files/* gs://<PROJECT>-dynamic-commands
+gcloud storage cp command_files/* gs://<PROJECT>-dynamic-commands
 ```
 
 ## Set up the Chat App in Cloud Console
@@ -192,7 +192,7 @@ The bucket can be created in the
 the `gsutil` CLI as follows:
 
 ```
-gsutil mb -p <PROJECT> gs://<PROJECT>-dynamic-commands
+gcloud storage buckets create --project <PROJECT> gs://<PROJECT>-dynamic-commands
 ```
 
 
