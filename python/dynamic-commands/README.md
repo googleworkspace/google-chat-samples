@@ -192,7 +192,7 @@ The bucket can be created in the
 the `gsutil` CLI as follows:
 
 ```
-gcloud storage buckets create --project <PROJECT> gs://<PROJECT>-dynamic-commands
+gcloud storage buckets create --project <PROJECT> --if-not-exists gs://<PROJECT>-dynamic-commands
 ```
 
 
